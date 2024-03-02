@@ -1,0 +1,26 @@
+.menu-setting {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-setting .list {
+  padding: 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.menu-setting .list:hover {
+  background-color: hsla(0, 0%, 52%, 0.5);
+}
+
+.menu-setting .list:active {
+  background-color: #848484;
+}
+
+.list .icon {
+  width: 25px;
+}

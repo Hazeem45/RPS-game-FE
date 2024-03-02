@@ -1,0 +1,11 @@
+.content {
+  display: flex;
+}
+
+.sidebar-wrap {
+  min-width: 400px;
+}
+
+.child-wrap {
+  width: 100%;
+}

@@ -1,0 +1,13 @@
+.profile-nav {
+  display: flex;
+  align-items: center;
+  position: relative;
+  gap: 10px;
+  color: wheat;
+  height: 50px;
+}
+
+.profile-nav .icon {
+  width: 45px;
+  height: 45px;
+}

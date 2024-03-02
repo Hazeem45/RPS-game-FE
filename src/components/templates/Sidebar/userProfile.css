@@ -1,0 +1,45 @@
+.profile-sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  align-items: flex-start;
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.profile-picture {
+  align-self: center;
+  max-width: 250px;
+  border-radius: 50%;
+  border: 5px solid black;
+  overflow: hidden;
+  display: grid;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.user-bio {
+  margin-top: 10px;
+}
+
+.about-user {
+  display: grid;
+  width: 100%;
+}
+
+.detail-info {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  gap: 10px;
+}
+
+.profile-sidebar .icon {
+  width: 20px;
+}
