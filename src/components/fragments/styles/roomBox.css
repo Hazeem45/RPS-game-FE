@@ -1,0 +1,29 @@
+.room {
+  width: 220px;
+  padding: 7px;
+  padding-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 10px;
+  color: lightgray;
+  background: rgb(36, 37, 38);
+  transition: transform 0.2s;
+}
+
+.room:hover {
+  transform: scale(1.1);
+}
+
+.room-info {
+  display: flex;
+  width: 100%;
+}
+
+.room p {
+  margin: 0;
+}
+
+.room h3 {
+  margin-bottom: 5px;
+}

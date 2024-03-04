@@ -3,7 +3,7 @@ import "./styles/selectForm.css";
 import Label from "../elements/Label";
 import Select from "../elements/Select";
 
-function SelectBox({name, options, handleChange, label}) {
+function SelectForm({name, options, handleChange, label}) {
   return (
     <div className="select-form">
       <Label name={name} value={label} />
@@ -12,4 +12,4 @@ function SelectBox({name, options, handleChange, label}) {
   );
 }
 
-export default SelectBox;
+export default SelectForm;

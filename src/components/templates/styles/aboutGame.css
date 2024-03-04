@@ -2,4 +2,6 @@
   width: 45vh;
   align-self: flex-start;
   margin-top: 100px;
+  display: grid;
+  gap: 20px;
 }

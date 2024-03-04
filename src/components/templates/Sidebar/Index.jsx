@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import "./sidebar.css";
-import gearIcon from "../../../assets/image/gear-icon.png";
 import ProfileIcon from "../../../components/fragments/ProfileIcon";
 import StandardIcon from "../../../components/fragments/StandardIcon";
 import UserProfile from "./UserProfile";
 import Settings from "./Settings";
+import {GearIcon} from "../../../assets/Image";
 
 function Index({status}) {
   const [openProfile, setOpenProfile] = useState(true);
@@ -39,22 +39,12 @@ function Index({status}) {
           }}
         >
           <div className="icon">
-            <StandardIcon icon={gearIcon} />
+            <StandardIcon icon={GearIcon} />
           </div>
         </div>
       </div>
       <div className="content-sidebar">
-        {openProfile && (
-          <UserProfile
-            username="max.more_gaminx"
-            fullname="Marc Murph"
-            userBio="nopo bener ikan berkepala lele itu aseli, tulung penjelesannya. ASUI"
-            address="Republic of Isekai"
-            gender="Male"
-            birthday="17 August 1945"
-            join="03 March 2024"
-          />
-        )}
+        {openProfile && <UserProfile />}
         {openSetting && <Settings />}
       </div>
     </div>

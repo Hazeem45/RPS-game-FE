@@ -1,8 +1,6 @@
 import React from "react";
 
-function Label(props) {
-  const {name, value, labelClass} = props;
-
+function Label({name, value, labelClass}) {
   return (
     <label className={labelClass} htmlFor={name}>
       {value}

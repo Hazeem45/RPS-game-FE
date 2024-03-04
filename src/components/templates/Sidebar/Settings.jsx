@@ -1,9 +1,7 @@
 import React from "react";
 import "./settings.css";
 import StandardIcon from "../../fragments/StandardIcon";
-import EditProfile from "../../../assets/image/user-avatar.png";
-import Edit from "../../../assets/image/edit.png";
-import UserDetail from "../../../assets/image/file.png";
+import {EditIcon, FileIcon, UserEditIcon} from "../../../assets/Image";
 
 function Settings() {
   return (
@@ -12,19 +10,19 @@ function Settings() {
       <div className="menu-setting">
         <div className="list">
           <div className="icon">
-            <StandardIcon icon={EditProfile} />
+            <StandardIcon icon={UserEditIcon} />
           </div>
           <h4>Edit Profile</h4>
         </div>
         <div className="list">
           <div className="icon">
-            <StandardIcon icon={Edit} />
+            <StandardIcon icon={EditIcon} />
           </div>
           <h4>Edit Biodata</h4>
         </div>
         <div className="list">
           <div className="icon">
-            <StandardIcon icon={UserDetail} />
+            <StandardIcon icon={FileIcon} />
           </div>
           <h4>Personal Details</h4>
         </div>

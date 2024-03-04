@@ -1,12 +1,12 @@
 import React from "react";
 import "./styles/profileIcon.css";
-import defaultPict from "../../assets/image/default-pict.jpg";
 import Image from "../elements/Image";
+import {DefaultPict} from "../../assets/Image";
 
 function ProfileIcon({userPict, handleClick}) {
   return (
     <div className="profile-icon" onClick={handleClick}>
-      <Image src={userPict ? userPict : defaultPict} />
+      <Image src={userPict ? userPict : DefaultPict} />
     </div>
   );
 }

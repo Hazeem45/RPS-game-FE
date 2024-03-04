@@ -6,7 +6,7 @@
   background: rgb(36, 37, 38);
   padding-top: 60px;
   box-sizing: border-box;
-  animation: sidebarOpen 0.2s ease;
+  animation: sidebarOpen 0.15s ease;
 }
 
 .option-sidebar {

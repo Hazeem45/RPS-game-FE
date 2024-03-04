@@ -5,7 +5,7 @@ import Button from "../elements/Button";
 import {Link, useNavigate} from "react-router-dom";
 import CheckboxForm from "../fragments/CheckboxForm";
 import LineWithText from "../fragments/LineWithText";
-import {validationPassword, validationUsername} from "../../utils/validation";
+import {validationPassword} from "../../utils/validation";
 
 function LoginForm() {
   const [inputType, setInputType] = useState("password");
@@ -70,7 +70,7 @@ function LoginForm() {
         <Button>Login</Button>
       </form>
       <div style={{width: "100%"}}>
-        <LineWithText />
+        <LineWithText value="Or" />
         <Button styleCustom={buttonStyleCustom} handleClick={() => navigate("/register")}>
           Create New Account
         </Button>

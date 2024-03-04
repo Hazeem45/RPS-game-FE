@@ -95,7 +95,7 @@ function RegisterForm() {
         <Button>Register</Button>
       </form>
       <div style={{width: "100%", marginBottom: "10px"}}>
-        <LineWithText />
+        <LineWithText value="Or" />
         <Button styleCustom={buttonStyleCustom} handleClick={() => navigate("/login")}>
           Sign In
         </Button>

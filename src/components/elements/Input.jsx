@@ -1,8 +1,7 @@
 import React, {useState} from "react";
 
-function Input(props) {
+function Input({type, placeholder, name, handleChange, pattern, required}) {
   const [focused, setFocused] = useState(false);
-  const {type, placeholder, name, handleChange, pattern, required} = props;
 
   return (
     <input

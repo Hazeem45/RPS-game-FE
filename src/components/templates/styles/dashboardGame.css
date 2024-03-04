@@ -1,0 +1,15 @@
+.game {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.sort-room {
+  max-width: 200px;
+  margin-bottom: 30px;
+}
+.game-rooms {
+  display: grid;
+  place-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 30px;
+}

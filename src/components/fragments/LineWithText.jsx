@@ -1,10 +1,10 @@
 import React from "react";
 import "./styles/lineWithText.css";
 
-function LineWithText() {
+function LineWithText({value}) {
   return (
     <div className="line-with-text">
-      <span>Or</span>
+      <span>{value}</span>
     </div>
   );
 }

@@ -3,12 +3,7 @@ import "./userProfile.css";
 import Image from "../../elements/Image";
 import Button from "../../elements/Button";
 import StandardIcon from "../../fragments/StandardIcon";
-import ProfileDefault from "../../../assets/image/default-pict.jpg";
-import LocationIcon from "../../../assets/image/location.png";
-import BirthdayIcon from "../../../assets/image/birthday-icon.png";
-import HistoryIcon from "../../../assets/image/history.png";
-import ClockIcon from "../../../assets/image/clock.png";
-import User from "../../../assets/image/user.png";
+import {CakeIcon, ClockIcon, DefaultPict, HistoryIcon, LocationIcon, UserIcon} from "../../../assets/Image";
 
 function UserProfile({username, userBio, fullname, address, gender, birthday, join}) {
   return (
@@ -16,7 +11,7 @@ function UserProfile({username, userBio, fullname, address, gender, birthday, jo
       <div className="profile">
         <h3>@{username ? username : "user.name_"}</h3>
         <div className="profile-picture">
-          <Image src={ProfileDefault} />
+          <Image src={DefaultPict} />
         </div>
         <h3>{fullname}</h3>
         <div className="user-bio">{userBio}</div>
@@ -39,13 +34,13 @@ function UserProfile({username, userBio, fullname, address, gender, birthday, jo
             </div>
             <div className={`detail-info ${gender ? "displayInherit" : "displayNone"}`}>
               <div className="icon">
-                <StandardIcon icon={User} />
+                <StandardIcon icon={UserIcon} />
               </div>
               <span>{gender}</span>
             </div>
             <div className={`detail-info ${birthday ? "displayInherit" : "displayNone"}`}>
               <div className="icon">
-                <StandardIcon icon={BirthdayIcon} />
+                <StandardIcon icon={CakeIcon} />
               </div>
               <span>{birthday}</span>
             </div>

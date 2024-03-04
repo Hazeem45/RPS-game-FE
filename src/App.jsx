@@ -1,6 +1,5 @@
-import "./App.css";
-import "./components/elements/style.css";
 import "./assets/GlobalStyle.css";
+import "./components/elements/style.css";
 import {Route, Routes} from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
