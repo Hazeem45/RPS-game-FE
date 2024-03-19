@@ -17,3 +17,5 @@ https://www.freepik.com/icon/maps-flags_447031#fromView=search&page=1&position=3
 <a href="https://www.flaticon.com/free-icons/user" title="user icons">User icons created by Freepik - Flaticon</a>
 
 <a href="https://www.flaticon.com/free-icons/info-button" title="info button icons">Info button icons created by hqrloveq - Flaticon</a>
+
+<a href="https://www.flaticon.com/free-icons/pvp" title="pvp icons">Pvp icons created by Fliqqer - Flaticon</a>

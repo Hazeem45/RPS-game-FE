@@ -1,0 +1,27 @@
+.list-of-choices h3 {
+  font-size: 30px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.choices .image img {
+  aspect-ratio: 1/1;
+  object-fit: contain;
+}
+
+.choices .image {
+  width: 150px;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+.image.clicked {
+  background: gray;
+  box-shadow: 0 0 23px 3px orange;
+}

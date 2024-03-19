@@ -4,8 +4,10 @@ import GameBox from "../fragments/GameBox";
 import LineWithText from "../fragments/LineWithText";
 import RoomBox from "../fragments/RoomBox";
 import Select from "../elements/Select";
+import {useNavigate} from "react-router-dom";
 
 function DashboardGame() {
+  const navigate = useNavigate();
   const [sortRoom, setSortRoom] = useState("Available");
   const [room, setRoom] = useState([
     {
@@ -97,7 +99,7 @@ function DashboardGame() {
   return (
     <>
       <div className="game">
-        <GameBox onClick={() => alert("clicked")}>VS COM</GameBox>
+        <GameBox onClick={() => navigate("/versus-com")}>VS COM</GameBox>
         <GameBox onClick={() => alert("clicked")}>Create Room</GameBox>
       </div>
       <div style={{padding: "15px"}}>
@@ -115,7 +117,6 @@ function DashboardGame() {
       <div className="game-rooms">
         {room
           .filter((room) => {
-            console.log(sortRoom);
             if (sortRoom === "All Game") {
               return true;
             } else {

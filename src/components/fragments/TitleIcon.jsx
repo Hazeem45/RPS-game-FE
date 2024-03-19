@@ -3,9 +3,9 @@ import "./styles/titleIcon.css";
 import Image from "../elements/Image";
 import {RpsIcon} from "../../assets/Image";
 
-function TitleIcon({iconStyleCustom}) {
+function TitleIcon({iconStyleCustom, handleClick}) {
   return (
-    <div className="title-icon" style={iconStyleCustom}>
+    <div className="title-icon" style={iconStyleCustom} onClick={handleClick}>
       <div className="image">
         <Image src={RpsIcon} />
       </div>

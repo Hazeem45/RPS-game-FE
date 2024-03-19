@@ -1,0 +1,30 @@
+.room-detail {
+  min-height: 100vh;
+  max-height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.versus-img,
+.refresh-img {
+  display: grid;
+  place-items: center;
+  width: 100px;
+}
+
+.refresh-img {
+  position: absolute;
+  bottom: 30px;
+  line-height: 50%;
+  transition: 90ms;
+}
+
+.refresh-img:hover {
+  transform: scale(1.1);
+}
+
+.refresh-img:active {
+  rotate: -90deg;
+}
