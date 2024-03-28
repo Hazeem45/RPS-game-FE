@@ -5,7 +5,7 @@ import ProfileNav from "./ProfileNav";
 
 function Index({handleClick}) {
   return (
-    <div className="navbar">
+    <div className="navbar unselectable">
       <TitleIcon />
       <ProfileNav handleClick={handleClick} />
     </div>

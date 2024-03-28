@@ -31,15 +31,3 @@
 .draw {
   background-color: orange;
 }
-
-@keyframes popup {
-  0% {
-    transform: scale(0.5);
-  }
-  85% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
-}

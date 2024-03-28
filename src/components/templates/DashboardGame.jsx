@@ -97,12 +97,12 @@ function DashboardGame() {
   ]);
 
   return (
-    <>
+    <div className="unselectable">
       <div className="game">
         <GameBox onClick={() => navigate("/versus-com")}>VS COM</GameBox>
-        <GameBox onClick={() => alert("clicked")}>Create Room</GameBox>
+        <GameBox onClick={() => navigate("/create-room")}>Create Room</GameBox>
       </div>
-      <div style={{padding: "15px"}}>
+      <div style={{padding: "15px", cursor: "default"}}>
         <LineWithText value={`[ ${sortRoom} Rooms ]`} />
       </div>
       <div className="sort-room">
@@ -124,10 +124,21 @@ function DashboardGame() {
             }
           })
           .map((room) => {
-            return <RoomBox key={room.roomId} roomName={room.roomName} player1={room.player1} player2={room.player2} status={room.status} />;
+            return (
+              <RoomBox
+                key={room.roomId}
+                roomName={room.roomName}
+                player1={room.player1}
+                player2={room.player2}
+                status={room.status}
+                handleClick={() => {
+                  alert(`you will be navigated to room => ${room.roomName}`);
+                }}
+              />
+            );
           })}
       </div>
-    </>
+    </div>
   );
 }
 

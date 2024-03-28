@@ -9,6 +9,7 @@
   color: lightgray;
   background: rgb(36, 37, 38);
   transition: transform 0.2s;
+  cursor: pointer;
 }
 
 .room:hover {

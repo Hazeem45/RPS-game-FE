@@ -13,6 +13,11 @@ select {
   box-sizing: border-box;
 }
 
+input[type="date"],
+select {
+  cursor: pointer;
+}
+
 input[type="text"]:hover,
 input[type="email"]:hover,
 input[type="password"]:hover,
@@ -53,6 +58,7 @@ button {
   font-size: 1em;
   padding: 0.6em;
   margin: 10px 0;
+  cursor: pointer;
 }
 
 button:active {

@@ -19,6 +19,7 @@
   bottom: 30px;
   line-height: 50%;
   transition: 90ms;
+  cursor: pointer;
 }
 
 .refresh-img:hover {

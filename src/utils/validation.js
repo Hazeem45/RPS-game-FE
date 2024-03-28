@@ -35,3 +35,12 @@ export const validationPassword = (values) => {
   }
   return validation;
 };
+
+export const validationRoomName = (value) => {
+  const roomNameLength = value.length;
+  if (roomNameLength < 5) {
+    return "Room Name must be at least 5 characters";
+  } else if (roomNameLength > 20) {
+    return "Room Name is a maximum of 20 characters";
+  }
+};

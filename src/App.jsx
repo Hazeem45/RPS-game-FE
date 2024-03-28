@@ -6,6 +6,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import GameLayout from "./layouts/gameLayout/GameLayout";
 import GameVersusCom from "./pages/GameVersusCom";
+import CreateRoom from "./pages/CreateRoom";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Route path="/" element={<Dashboard />} />
       <Route element={<GameLayout />}>
         <Route path="/versus-com" element={<GameVersusCom />} />
+        <Route path="/create-room" element={<CreateRoom />} />
       </Route>
     </Routes>
   );

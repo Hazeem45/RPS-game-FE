@@ -1,9 +1,9 @@
 import React from "react";
 import "./styles/roomBox.css";
 
-function RoomBox({roomName, player1, player2, status}) {
+function RoomBox({roomName, player1, player2, status, handleClick}) {
   return (
-    <div className="room">
+    <div className="room" onClick={handleClick}>
       <h3>{roomName}</h3>
       <div>
         <div className="room-info">

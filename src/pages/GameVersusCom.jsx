@@ -24,6 +24,7 @@ function GameVersusCom() {
   const hoverStyle = {
     transform: isHover ? "scale(1.15)" : "",
     transition: "transform 0.2s",
+    cursor: "pointer",
   };
 
   const handleStyleRock = () => {

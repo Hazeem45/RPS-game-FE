@@ -18,7 +18,7 @@ function Index({status}) {
   }, [status]);
 
   return (
-    <div className="sidebar">
+    <div className="sidebar unselectable">
       <div className="option-sidebar">
         <div
           className="profile"

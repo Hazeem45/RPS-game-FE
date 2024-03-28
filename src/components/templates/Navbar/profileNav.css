@@ -5,6 +5,7 @@
   gap: 10px;
   color: wheat;
   height: 50px;
+  cursor: default;
 }
 
 .profile-nav .icon {
