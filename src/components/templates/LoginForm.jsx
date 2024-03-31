@@ -15,6 +15,12 @@ function LoginForm() {
     password: "",
   });
 
+  const buttonStyleCustom = {
+    background: "#333",
+    boxShadow: "none",
+    color: "white",
+  };
+
   const inputs = [
     {
       id: 1,
@@ -41,16 +47,17 @@ function LoginForm() {
     setValues({...values, [e.target.name]: e.target.value});
   };
 
-  const buttonStyleCustom = {
-    background: "#333",
-    boxShadow: "none",
-    color: "white",
+  const handleSubmit = () => {
+    // temporarily use password and email as accesstoken, because they are not yet connected to the backend (for testing only)
+    const accessToken = values.email + values.password;
+    localStorage.setItem("accessToken", accessToken);
+    navigate("/");
   };
 
   return (
     <div className="login-form unselectable">
       <h1>Login</h1>
-      <form>
+      <form onSubmit={handleSubmit}>
         {inputs.map((input) => (
           <InputForm key={input.id} {...input} value={values[input.name]} handleChange={handleChange} />
         ))}

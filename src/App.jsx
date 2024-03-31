@@ -7,16 +7,38 @@ import Dashboard from "./pages/Dashboard";
 import GameLayout from "./layouts/gameLayout/GameLayout";
 import GameVersusCom from "./pages/GameVersusCom";
 import CreateRoom from "./pages/CreateRoom";
+import {ProtectedRoute} from "./utils/ProtectedRoute";
 
 function App() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/" element={<Dashboard />} />
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
       <Route element={<GameLayout />}>
-        <Route path="/versus-com" element={<GameVersusCom />} />
-        <Route path="/create-room" element={<CreateRoom />} />
+        <Route
+          path="/versus-com"
+          element={
+            <ProtectedRoute>
+              <GameVersusCom />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/create-room"
+          element={
+            <ProtectedRoute>
+              <CreateRoom />
+            </ProtectedRoute>
+          }
+        />
       </Route>
     </Routes>
   );
