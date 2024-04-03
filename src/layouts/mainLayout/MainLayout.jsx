@@ -2,20 +2,17 @@ import React, {useState} from "react";
 import "./mainLayout.css";
 import Sidebar from "../../components/templates/Sidebar/Index";
 import Navbar from "../../components/templates/Navbar/Index";
+import {SidebarProvider, useSidebar} from "../../utils/SidebarContext";
 
 function MainLayout({children}) {
-  const [openSidebar, setOpenSidebar] = useState(false);
-
-  const handleClick = () => {
-    setOpenSidebar((prevState) => !prevState);
-  };
+  const {isSidebarOpen} = useSidebar();
 
   return (
     <div>
-      <Navbar handleClick={handleClick} />
+      <Navbar />
       <div className="content">
-        <div className={`sidebar-wrap ${openSidebar ? "" : "displayNone"} `}>
-          <Sidebar status={openSidebar ? "open" : "close"} />
+        <div className={`sidebar-wrap ${isSidebarOpen ? "" : "displayNone"} `}>
+          <Sidebar status={isSidebarOpen ? "open" : "close"} />
         </div>
         <div className="child-wrap">{children}</div>
       </div>

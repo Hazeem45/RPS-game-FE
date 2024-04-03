@@ -4,6 +4,7 @@ import ListOfChoices from "../fragments/ListOfChoices";
 import Image from "../elements/Image";
 import {FightIcon, RefreshIcon} from "../../assets/Image";
 import ResultBox from "../fragments/ResultBox";
+import TitlePage from "../fragments/TitlePage";
 
 function RoomDetail({
   player1,
@@ -26,6 +27,7 @@ function RoomDetail({
 }) {
   return (
     <div className="room-detail unselectable">
+      <TitlePage>VS COM</TitlePage>
       <ListOfChoices
         username={player1}
         classForRock={gameType === "vs-com" || gameType === "vs-player" ? rockSelectedP1 : ""}

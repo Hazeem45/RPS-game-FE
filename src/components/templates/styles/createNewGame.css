@@ -8,7 +8,7 @@
   justify-content: space-evenly;
 }
 
-.new-game h1 {
+.new-game .title-page {
   position: absolute;
   top: 25px;
   cursor: default;

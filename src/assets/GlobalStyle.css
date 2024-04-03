@@ -51,6 +51,8 @@ h5 {
   display: none !important;
 }
 
+/* Animation */
+
 @keyframes popup {
   0% {
     transform: scale(0.5);
@@ -60,5 +62,14 @@ h5 {
   }
   100% {
     transform: scale(1);
+  }
+}
+
+@keyframes sidebarOpen {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0%);
   }
 }

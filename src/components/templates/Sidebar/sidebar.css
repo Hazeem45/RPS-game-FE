@@ -6,7 +6,10 @@
   background: rgb(36, 37, 38);
   padding-top: 60px;
   box-sizing: border-box;
-  animation: sidebarOpen 0.15s ease;
+}
+
+.sidebar-open {
+  animation: sidebarOpen 0.25s ease;
 }
 
 .option-sidebar {
@@ -55,13 +58,4 @@
   width: 350px;
   height: 100%;
   box-sizing: border-box;
-}
-
-@keyframes sidebarOpen {
-  from {
-    transform: translateX(-100%);
-  }
-  to {
-    transform: translateX(0%);
-  }
 }

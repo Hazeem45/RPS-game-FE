@@ -7,6 +7,12 @@
   justify-content: space-evenly;
 }
 
+.room-detail .title-page {
+  position: absolute;
+  top: 25px;
+  cursor: default;
+}
+
 .versus-img,
 .refresh-img {
   display: grid;

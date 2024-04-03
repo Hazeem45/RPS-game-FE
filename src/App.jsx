@@ -9,6 +9,7 @@ import GameVersusCom from "./pages/GameVersusCom";
 import CreateRoom from "./pages/CreateRoom";
 import {ProtectedRoute} from "./utils/ProtectedRoute";
 import History from "./pages/History";
+import {SidebarProvider} from "./utils/SidebarContext";
 
 function App() {
   return (
@@ -19,11 +20,22 @@ function App() {
         path="/"
         element={
           <ProtectedRoute>
-            <Dashboard />
+            <SidebarProvider>
+              <Dashboard />
+            </SidebarProvider>
           </ProtectedRoute>
         }
       />
-      <Route path="/history" element={<History />} />
+      <Route
+        path="/history"
+        element={
+          <ProtectedRoute>
+            <SidebarProvider>
+              <History />
+            </SidebarProvider>
+          </ProtectedRoute>
+        }
+      />
       <Route element={<GameLayout />}>
         <Route
           path="/versus-com"

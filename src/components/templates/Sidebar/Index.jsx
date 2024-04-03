@@ -5,10 +5,10 @@ import StandardIcon from "../../../components/fragments/StandardIcon";
 import UserProfile from "./UserProfile";
 import Settings from "./Settings";
 import {GearIcon} from "../../../assets/Image";
+import {useSidebar} from "../../../utils/SidebarContext";
 
 function Index({status}) {
-  const [openProfile, setOpenProfile] = useState(true);
-  const [openSetting, setOpenSetting] = useState(false);
+  const {animationSidebar, openProfile, setOpenProfile, openSetting, setOpenSetting} = useSidebar();
 
   useEffect(() => {
     if (status === "close") {
@@ -18,9 +18,10 @@ function Index({status}) {
   }, [status]);
 
   return (
-    <div className="sidebar unselectable">
+    <div className={`sidebar unselectable ${animationSidebar}`}>
       <div className="option-sidebar">
         <div
+          style={{background: openProfile ? "gray" : ""}}
           className="profile"
           onClick={() => {
             setOpenProfile(true);
@@ -32,6 +33,7 @@ function Index({status}) {
           </div>
         </div>
         <div
+          style={{background: openSetting ? "gray" : ""}}
           className="setting"
           onClick={() => {
             setOpenProfile(false);

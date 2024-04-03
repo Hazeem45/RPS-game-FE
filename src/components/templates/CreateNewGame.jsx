@@ -6,6 +6,7 @@ import InputForm from "../fragments/InputForm";
 import {validationRoomName} from "../../utils/validation";
 import Popup from "../fragments/Popup";
 import {useNavigate} from "react-router-dom";
+import TitlePage from "../fragments/TitlePage";
 
 function NewGame() {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ function NewGame() {
 
   const handleSubmit = () => {
     if (roomName === "" && (choice === "" || choice === undefined)) {
-      setPopupValue("Must Give the Room a Name and Select the Available Options");
+      setPopupValue("Must Give the Room a Name and Select the Available Options!");
       setPopupVisible(true);
     } else if (roomName === "" || choice === "" || choice === undefined) {
       if (roomName === "") {
@@ -40,7 +41,7 @@ function NewGame() {
 
   return (
     <div className="new-game unselectable">
-      <h1>Create a New Room</h1>
+      <TitlePage>Create a New Room</TitlePage>
       <div style={{width: "300px"}}>
         <InputForm
           type="text"
