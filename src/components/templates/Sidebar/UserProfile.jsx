@@ -4,8 +4,11 @@ import Image from "../../elements/Image";
 import Button from "../../elements/Button";
 import StandardIcon from "../../fragments/StandardIcon";
 import {CakeIcon, ClockIcon, DefaultPict, HistoryIcon, LocationIcon, UserIcon} from "../../../assets/Image";
+import {useNavigate} from "react-router-dom";
 
 function UserProfile({username, userBio, fullname, address, gender, birthday, join}) {
+  const navigate = useNavigate();
+
   return (
     <div className="profile-sidebar">
       <div className="profile">
@@ -17,7 +20,7 @@ function UserProfile({username, userBio, fullname, address, gender, birthday, jo
         <div className="user-bio">{userBio}</div>
       </div>
       <div style={{width: "100%"}}>
-        <Button>
+        <Button handleClick={() => navigate("/history")}>
           <div className="icon">
             <StandardIcon icon={HistoryIcon} />
           </div>

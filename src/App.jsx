@@ -8,6 +8,7 @@ import GameLayout from "./layouts/gameLayout/GameLayout";
 import GameVersusCom from "./pages/GameVersusCom";
 import CreateRoom from "./pages/CreateRoom";
 import {ProtectedRoute} from "./utils/ProtectedRoute";
+import History from "./pages/History";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           </ProtectedRoute>
         }
       />
+      <Route path="/history" element={<History />} />
       <Route element={<GameLayout />}>
         <Route
           path="/versus-com"

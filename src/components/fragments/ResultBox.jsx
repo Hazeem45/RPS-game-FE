@@ -4,11 +4,11 @@ import "./styles/resultBox.css";
 function ResultBox({result}) {
   const renderResult = () => {
     if (result === "win") {
-      return <div className="win">you win</div>;
+      return <div className="result-win">you win</div>;
     } else if (result === "lose") {
-      return <div className="lose">you lose</div>;
+      return <div className="result-lose">you lose</div>;
     } else {
-      return <div className="draw">match draw</div>;
+      return <div className="result-draw">match draw</div>;
     }
   };
 

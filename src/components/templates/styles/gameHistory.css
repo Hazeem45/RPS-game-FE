@@ -1,0 +1,61 @@
+/* styles/gameHistory.css */
+
+.table-wrapper {
+  display: grid;
+  place-items: center;
+  width: 100%;
+}
+
+.styled-table {
+  width: 90%;
+  border-collapse: collapse;
+  background-color: #f7f7f7;
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 12px 15px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.styled-table th {
+  background: rgb(36, 37, 38);
+  color: white;
+  padding: 12px 15px;
+  /* text-align: left; */
+}
+
+.styled-table td {
+  padding: 12px 15px;
+  /* text-align: left; */
+  border-bottom: 1px solid #ddd;
+}
+
+.styled-table tr:hover {
+  background-color: #ddd;
+}
+
+.styled-table caption {
+  caption-side: top;
+  margin-bottom: 10px;
+}
+
+/* .styled-table h1 {
+  font-size: 4em;
+} */
+
+.styled-table .win {
+  color: #4caf50;
+  font-weight: bolder;
+}
+
+.styled-table .lose {
+  color: #ff0000;
+  font-weight: bolder;
+}
+
+.styled-table .draw {
+  color: orange;
+  font-weight: bolder;
+}
