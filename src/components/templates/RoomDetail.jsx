@@ -5,8 +5,10 @@ import Image from "../elements/Image";
 import {FightIcon, RefreshIcon} from "../../assets/Image";
 import ResultBox from "../fragments/ResultBox";
 import TitlePage from "../fragments/TitlePage";
+import Popup from "../fragments/Popup";
 
 function RoomDetail({
+  title,
   player1,
   player2,
   styleRock,
@@ -24,12 +26,16 @@ function RoomDetail({
   scissorsSelectedP2,
   handleRefresh,
   result,
+  popupVisible,
+  popupValue,
+  handleClosePopup,
 }) {
   return (
     <div className="room-detail unselectable">
-      <TitlePage>VS COM</TitlePage>
+      <TitlePage>{title}</TitlePage>
       <ListOfChoices
         username={player1}
+        player={`[ PLAYER 1 ]`}
         classForRock={gameType === "vs-com" || gameType === "vs-player" ? rockSelectedP1 : ""}
         classForPaper={gameType === "vs-com" || gameType === "vs-player" ? paperSelectedP1 : ""}
         classForScissors={gameType === "vs-com" || gameType === "vs-player" ? scissorsSelectedP1 : ""}
@@ -43,13 +49,15 @@ function RoomDetail({
         onClick={gameType === "vs-com" ? onClick : null}
       />
 
-      <div className="versus-img">{result === "" ? <Image src={FightIcon} /> : <ResultBox result={result} />}</div>
-      <div className="refresh-img" onClick={handleRefresh}>
+      {popupVisible && <Popup handleClose={handleClosePopup}>{popupValue}</Popup>}
+      <div className="versus-img">{result === "" || result === undefined ? <Image src={FightIcon} /> : <ResultBox playerName={[player1, player2]} gameType={gameType} result={result} />}</div>
+      <div className={`refresh-img ${gameType === "vs-com" ? "" : "displayNone"}`} onClick={handleRefresh}>
         <Image src={RefreshIcon} />
       </div>
 
       <ListOfChoices
         username={player2}
+        player={`[ PLAYER 2 ]`}
         classForRock={gameType === "vs-player" || gameType === "vs-com" ? rockSelectedP2 : ""}
         classForPaper={gameType === "vs-player" || gameType === "vs-com" ? paperSelectedP2 : ""}
         classForScissors={gameType === "vs-player" || gameType === "vs-com" ? scissorsSelectedP2 : ""}

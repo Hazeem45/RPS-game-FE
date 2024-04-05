@@ -11,6 +11,7 @@
   position: absolute;
   box-shadow: 0 0 12px 2px orange;
   animation: popup 370ms;
+  z-index: 5;
 }
 
 .popup div {

@@ -1,3 +1,5 @@
+// VALIDATION or RULES
+
 export const validationUsername = (values) => {
   const usernameLength = values.length;
   const underscoreCount = (values.match(/_/g) || []).length;
@@ -42,5 +44,16 @@ export const validationRoomName = (value) => {
     return "Room Name must be at least 5 characters";
   } else if (roomNameLength > 20) {
     return "Room Name is a maximum of 20 characters";
+  }
+};
+
+// game rules and set the result of game
+export const gameRules = (player1Choice, player2Choice) => {
+  if ((player1Choice === "rock" && player2Choice === "rock") || (player1Choice === "paper" && player2Choice === "paper") || (player1Choice === "scissors" && player2Choice === "scissors")) {
+    return "draw";
+  } else if ((player1Choice === "rock" && player2Choice === "scissors") || (player1Choice === "paper" && player2Choice === "rock") || (player1Choice === "scissors" && player2Choice === "paper")) {
+    return "win";
+  } else if ((player1Choice === "rock" && player2Choice === "paper") || (player1Choice === "paper" && player2Choice === "scissors") || (player1Choice === "scissors" && player2Choice === "rock")) {
+    return "lose";
   }
 };

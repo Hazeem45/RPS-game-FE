@@ -2,7 +2,10 @@ import React, {useEffect, useState} from "react";
 import RoomDetail from "../components/templates/RoomDetail";
 import {gameRules} from "../utils/validation";
 
-function GameVersusCom() {
+function GameVersusPlayer() {
+  const [roomName, setRoomName] = useState("");
+  const [player1Name, setPlayer1Name] = useState("d.destroyer");
+  const [player2Name, setPlayer2Name] = useState("Waiting...");
   const [player1Choice, setPlayer1Choice] = useState("");
   const [player2Choice, setPlayer2Choice] = useState("");
   const [result, setResult] = useState("");
@@ -17,33 +20,25 @@ function GameVersusCom() {
     setResult(resultGame);
   }, [player1Choice, player2Choice]);
 
-  // com choose
+  // temporary player 1 choose, will be fix soon when implementation fetch api
   const randomChoiceCom = () => {
     const availableChoice = ["rock", "paper", "scissors"];
     const randomInt = Math.floor(Math.random() * 3);
     const getChoice = availableChoice[randomInt];
-    setPlayer2Choice(getChoice);
+    setPlayer1Choice(getChoice);
   };
 
   // player choose handling
   const handleClick = (e) => {
     if (isChoiceDecided) {
-      setPopupValue("Click Refresh Button to Start a New Games");
+      setPopupValue("a Room Can Only be Played Once! Please Find Another Room");
       setPopupVisible(true);
     } else {
-      setPlayer1Choice(e.target.alt);
+      setPlayer2Choice(e.target.alt);
       setIsChoiceDecided(true);
+      setPlayer2Name("PLAYER 2");
       randomChoiceCom();
     }
-  };
-
-  // refresh handling
-  const handleRefresh = () => {
-    setIsChoiceDecided(false);
-    setPlayer1Choice("");
-    setPlayer2Choice("");
-    setResult("");
-    setPopupVisible(false);
   };
 
   // hover event listener
@@ -90,16 +85,16 @@ function GameVersusCom() {
 
   return (
     <RoomDetail
-      title="VS COM [demo]"
+      title={`${roomName} Room`}
       rockSelectedP1={player1Choice === "rock" ? "clicked" : ""}
       rockSelectedP2={player2Choice === "rock" ? "clicked" : ""}
       paperSelectedP1={player1Choice === "paper" ? "clicked" : ""}
       paperSelectedP2={player2Choice === "paper" ? "clicked" : ""}
       scissorsSelectedP1={player1Choice === "scissors" ? "clicked" : ""}
       scissorsSelectedP2={player2Choice === "scissors" ? "clicked" : ""}
-      player1={"YOU"}
-      player2={"COM"}
-      gameType={"vs-com"}
+      player1={player1Name}
+      player2={player2Name}
+      gameType={"vs-player"}
       styleRock={handleStyleRock()}
       stylePaper={handleStylePaper()}
       styleScissors={handleStyleScissors()}
@@ -107,7 +102,6 @@ function GameVersusCom() {
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
       result={result}
-      handleRefresh={handleRefresh}
       popupVisible={popupVisible}
       popupValue={popupValue}
       handleClosePopup={() => setPopupVisible(false)}
@@ -115,4 +109,4 @@ function GameVersusCom() {
   );
 }
 
-export default GameVersusCom;
+export default GameVersusPlayer;

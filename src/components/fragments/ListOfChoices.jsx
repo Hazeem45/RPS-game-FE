@@ -4,11 +4,12 @@ import Image from "../elements/Image";
 import {PaperIcon, RockIcon, ScissorsIcon} from "../../assets/Image";
 
 function ListOfChoices(props) {
-  const {username, styleRock, stylePaper, styleScissors, onRock, onPaper, onScissors, onMouseLeave, onClick, classForRock, classForPaper, classForScissors} = props;
+  const {username, player, styleRock, stylePaper, styleScissors, onRock, onPaper, onScissors, onMouseLeave, onClick, classForRock, classForPaper, classForScissors} = props;
 
   return (
     <div className="list-of-choices">
       <h3>{username}</h3>
+      <h4>{player}</h4>
       <div className="choices">
         <div className={`image ${classForRock}`} id="rock" style={styleRock} onMouseEnter={onRock} onMouseLeave={onMouseLeave} onClick={onClick}>
           <Image src={RockIcon} alt="rock" />

@@ -10,6 +10,7 @@ import CreateRoom from "./pages/CreateRoom";
 import {ProtectedRoute} from "./utils/ProtectedRoute";
 import History from "./pages/History";
 import {SidebarProvider} from "./utils/SidebarContext";
+import GameVersusPlayer from "./pages/GameVersusPlayer";
 
 function App() {
   return (
@@ -50,6 +51,14 @@ function App() {
           element={
             <ProtectedRoute>
               <CreateRoom />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/versus-player"
+          element={
+            <ProtectedRoute>
+              <GameVersusPlayer />
             </ProtectedRoute>
           }
         />
