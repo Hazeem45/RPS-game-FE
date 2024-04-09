@@ -73,7 +73,7 @@ function LoginForm() {
           name="checkbox"
           styleCustom={{marginBottom: "15px"}}
         />
-        <Link>Forgot Password?</Link>
+        {/* <Link>Forgot Password?</Link> */}
         <Button>Login</Button>
       </form>
       <div style={{width: "100%"}}>

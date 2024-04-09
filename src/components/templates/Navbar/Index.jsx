@@ -8,6 +8,7 @@ import {useSidebar} from "../../../utils/SidebarContext";
 function Index() {
   const {toggleSidebar, setAnimationSidebar} = useSidebar();
   const navigate = useNavigate();
+  const userPict = localStorage.getItem("foto");
 
   return (
     <div className="navbar unselectable">
@@ -22,6 +23,7 @@ function Index() {
           toggleSidebar();
           setAnimationSidebar("sidebar-open");
         }}
+        userPict={userPict}
       />
     </div>
   );

@@ -12,7 +12,8 @@ import UserIcon from "./image/user.png";
 import RockIcon from "./image/batu.png";
 import PaperIcon from "./image/kertas.png";
 import FightIcon from "./image/pvp.png";
+import LogoutIcon from "./image/logout.png";
 import RefreshIcon from "./image/refresh.png";
 import ScissorsIcon from "./image/gunting.png";
 
-export {RpsIcon, GearIcon, DefaultPict, LocationIcon, UserEditIcon, HistoryIcon, ClockIcon, CakeIcon, EditIcon, FileIcon, UserIcon, RockIcon, PaperIcon, ScissorsIcon, FightIcon, RefreshIcon};
+export {RpsIcon, GearIcon, DefaultPict, LocationIcon, UserEditIcon, HistoryIcon, ClockIcon, CakeIcon, EditIcon, FileIcon, UserIcon, RockIcon, PaperIcon, ScissorsIcon, FightIcon, RefreshIcon, LogoutIcon};

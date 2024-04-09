@@ -1,0 +1,27 @@
+.edit-biodata .biodata {
+  /* position: relative; */
+  top: 35px;
+  backdrop-filter: none;
+  /* max-height: max-content; */
+}
+
+.edit-biodata .biodata-form {
+  background-color: transparent;
+  width: 100%;
+  padding: 0px;
+  box-shadow: none;
+}
+
+.edit-biodata .biodata-form h2 {
+  display: none;
+}
+
+.edit-biodata .bio-fullname .input-form {
+  margin-top: -15px;
+}
+
+.edit-biodata .other-bio {
+  display: grid;
+  grid-template-columns: inherit;
+  gap: 0;
+}

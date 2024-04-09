@@ -1,0 +1,12 @@
+.textarea-form {
+  display: flex;
+  flex-direction: column;
+  margin: 14px 0 7px 0;
+  width: 100%;
+}
+
+.textarea-form p {
+  margin-top: 5px;
+  align-self: flex-end;
+  font-family: "Open Sans" sans-serif;
+}

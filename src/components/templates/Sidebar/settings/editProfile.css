@@ -1,0 +1,24 @@
+.form-edit-profile .edit-picture {
+  margin-top: 10px;
+  gap: 15px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.form-edit-profile .error-message {
+  background-color: transparent;
+}
+
+.edit-picture .popover-child div:first-child {
+  color: #0095f6;
+}
+
+.edit-picture .popover-child div:nth-child(2) {
+  color: red;
+}
+
+.edit-picture .profile-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+}

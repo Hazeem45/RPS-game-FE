@@ -8,6 +8,13 @@ export const SidebarProvider = ({children}) => {
   const [animationSidebar, setAnimationSidebar] = useState("");
   const [openProfile, setOpenProfile] = useState(true);
   const [openSetting, setOpenSetting] = useState(false);
+  // settings in sidebar
+  const [title, setTitle] = useState("Settings");
+  const [isMenuSettingVisible, setIsMenuSettingVisible] = useState(true);
+  const [isEditProfileVisible, setIsEditProfileVisible] = useState(false);
+  const [isEditBiodataVisible, setIsEditBiodataVisible] = useState(false);
+  const [isPersonalDetailVisible, setIsPersonalDetailVisible] = useState(false);
+
   const toggleSidebar = () => {
     setIsSidebarOpen((prevState) => !prevState);
   };
@@ -23,6 +30,16 @@ export const SidebarProvider = ({children}) => {
         setOpenProfile,
         openSetting,
         setOpenSetting,
+        title,
+        setTitle,
+        isMenuSettingVisible,
+        setIsMenuSettingVisible,
+        isEditProfileVisible,
+        setIsEditProfileVisible,
+        isEditBiodataVisible,
+        setIsEditBiodataVisible,
+        isPersonalDetailVisible,
+        setIsPersonalDetailVisible,
       }}
     >
       {children}

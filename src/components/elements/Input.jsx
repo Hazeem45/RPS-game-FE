@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 
-function Input({type, placeholder, name, handleChange, pattern, required}) {
+function Input({type, placeholder, name, handleChange, pattern, required, fileRef}) {
   const [focused, setFocused] = useState(false);
 
   return (
@@ -13,6 +13,7 @@ function Input({type, placeholder, name, handleChange, pattern, required}) {
       className="input"
       pattern={pattern}
       required={required}
+      ref={fileRef}
       // onBlur={() => {
       //   setFocused(true);
       // }}

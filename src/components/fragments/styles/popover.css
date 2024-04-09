@@ -1,0 +1,34 @@
+.popover {
+  position: absolute;
+  background-color: black;
+  left: 0;
+  right: 0;
+  text-align: center;
+  height: auto;
+  padding: 10px;
+  z-index: 5;
+  display: grid;
+  gap: 5px;
+  border-radius: 10px;
+  animation: popup 200ms;
+}
+
+.popover h3 {
+  border-bottom: 1px solid gray;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+}
+
+.popover .popover-child {
+  display: grid;
+  gap: 5px;
+}
+
+.popover .popover-child div {
+  border-radius: 5px;
+  padding: 3px;
+}
+
+.popover .popover-child div:hover {
+  background-color: gray;
+}

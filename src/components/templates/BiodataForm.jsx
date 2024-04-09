@@ -5,7 +5,7 @@ import InputForm from "../fragments/InputForm";
 import Button from "../elements/Button";
 import {useNavigate} from "react-router-dom";
 
-function BiodataForm() {
+function BiodataForm({page}) {
   const navigate = useNavigate();
   const genders = ["--", "Male", "Female", "Other"];
   const [values, setValues] = useState({
@@ -46,13 +46,15 @@ function BiodataForm() {
     );
   }, [values]);
 
-  const handleClick = () => {
-    navigate("/");
+  const handleSubmit = () => {
+    if (page) {
+      navigate("/");
+    }
   };
 
   return (
     <div className="biodata">
-      <div className="biodata-form">
+      <form className="biodata-form" onSubmit={handleSubmit}>
         <h2>Details About You</h2>
         <div className="bio-fullname">
           <InputForm
@@ -81,10 +83,8 @@ function BiodataForm() {
           <InputForm type="date" name="date" label="Date of Birth" handleChange={handleChange} value={values.date} />
           <SelectForm name="gender" label="Gender" options={genders} handleChange={handleChange} value={values.gender} />
         </div>
-        <Button styleCustom={buttonStyle} handleClick={handleClick}>
-          {buttonStyle !== null ? "Skip For Now" : "CONFIRM"}
-        </Button>
-      </div>
+        <Button styleCustom={buttonStyle}>{buttonStyle !== null ? "Skip For Now" : "CONFIRM"}</Button>
+      </form>
     </div>
   );
 }

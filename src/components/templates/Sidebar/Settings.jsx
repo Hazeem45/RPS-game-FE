@@ -1,32 +1,60 @@
-import React from "react";
+import React, {useState} from "react";
 import "./settings.css";
-import StandardIcon from "../../fragments/StandardIcon";
-import {EditIcon, FileIcon, UserEditIcon} from "../../../assets/Image";
+import MenuSettings from "./settings/MenuSettings";
+import EditProfile from "./settings/EditProfile";
+import {Link, useNavigate} from "react-router-dom";
+import EditBiodata from "./settings/EditBiodata";
+import PersonalDetail from "./settings/PersonalDetail";
+import {useSidebar} from "../../../utils/SidebarContext";
 
 function Settings() {
+  const {title, setTitle, isMenuSettingVisible, setIsMenuSettingVisible, isEditProfileVisible, setIsEditProfileVisible, isEditBiodataVisible, setIsEditBiodataVisible, isPersonalDetailVisible, setIsPersonalDetailVisible} = useSidebar();
+  const [email, setEmail] = useState("example@gmail.com");
+  const navigate = useNavigate();
+
   return (
-    <div className="unselectable">
-      <h2>Settings</h2>
-      <div className="menu-setting">
-        <div className="list">
-          <div className="icon">
-            <StandardIcon icon={UserEditIcon} />
-          </div>
-          <h4>Edit Profile</h4>
+    <div className="layout-setting unselectable">
+      <div>
+        <div
+          className={title === "Settings" ? "displayNone" : "setting-back-btn"}
+          onClick={() => {
+            setTitle("Settings");
+            setIsMenuSettingVisible(true);
+            setIsEditProfileVisible(false);
+            setIsEditBiodataVisible(false);
+            setIsPersonalDetailVisible(false);
+          }}
+        >
+          &lt; BACK
         </div>
-        <div className="list">
-          <div className="icon">
-            <StandardIcon icon={EditIcon} />
-          </div>
-          <h4>Edit Biodata</h4>
-        </div>
-        <div className="list">
-          <div className="icon">
-            <StandardIcon icon={FileIcon} />
-          </div>
-          <h4>Personal Details</h4>
-        </div>
+        <h2>{title}</h2>
       </div>
+      {isMenuSettingVisible && (
+        <MenuSettings
+          handleEditProfile={() => {
+            setTitle("Edit Profile");
+            setIsMenuSettingVisible(false);
+            setIsEditProfileVisible(true);
+          }}
+          handleEditBiodata={() => {
+            setTitle("Edit Biodata");
+            setIsMenuSettingVisible(false);
+            setIsEditBiodataVisible(true);
+          }}
+          handlePersonalDetail={() => {
+            setTitle("Personal Details");
+            setIsMenuSettingVisible(false);
+            setIsPersonalDetailVisible(true);
+          }}
+          handleLogout={() => {
+            localStorage.removeItem("accessToken");
+            navigate("/login");
+          }}
+        />
+      )}
+      {isEditProfileVisible && <EditProfile />}
+      {isEditBiodataVisible && <EditBiodata />}
+      {isPersonalDetailVisible && <PersonalDetail email={email} />}
     </div>
   );
 }

@@ -35,7 +35,7 @@ function RoomDetail({
       <TitlePage>{title}</TitlePage>
       <ListOfChoices
         username={player1}
-        player={`[ PLAYER 1 ]`}
+        player={gameType === "vs-player" ? `[ PLAYER 1 ]` : ""}
         classForRock={gameType === "vs-com" || gameType === "vs-player" ? rockSelectedP1 : ""}
         classForPaper={gameType === "vs-com" || gameType === "vs-player" ? paperSelectedP1 : ""}
         classForScissors={gameType === "vs-com" || gameType === "vs-player" ? scissorsSelectedP1 : ""}
@@ -57,7 +57,7 @@ function RoomDetail({
 
       <ListOfChoices
         username={player2}
-        player={`[ PLAYER 2 ]`}
+        player={gameType === "vs-player" ? `[ PLAYER 2 ]` : ""}
         classForRock={gameType === "vs-player" || gameType === "vs-com" ? rockSelectedP2 : ""}
         classForPaper={gameType === "vs-player" || gameType === "vs-com" ? paperSelectedP2 : ""}
         classForScissors={gameType === "vs-player" || gameType === "vs-com" ? scissorsSelectedP2 : ""}

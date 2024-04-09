@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import "./userProfile.css";
 import Image from "../../elements/Image";
 import Button from "../../elements/Button";
@@ -9,15 +9,40 @@ import {useSidebar} from "../../../utils/SidebarContext";
 
 function UserProfile({username, userBio, fullname, address, gender, birthday, join}) {
   const {setAnimationSidebar} = useSidebar();
+  const [imageFull, setImageFull] = useState(false);
   const navigate = useNavigate();
+  const userPict = localStorage.getItem("foto");
 
   return (
     <div className="profile-sidebar">
       <div className="profile">
         <h3>@{username ? username : "user.name_"}</h3>
-        <div className="profile-picture">
-          <Image src={DefaultPict} />
+        <div
+          className="profile-picture"
+          onClick={() => {
+            if (userPict === "null" || userPict === null) {
+              alert("No Profile Photo");
+              setImageFull(false);
+            } else {
+              setImageFull(true);
+            }
+          }}
+        >
+          <Image classImg="center-img" src={userPict === "null" || userPict === null ? DefaultPict : userPict} />
         </div>
+        {imageFull && (
+          <div className="picture-full" onClick={() => setImageFull(false)}>
+            <div
+              className="view-picture"
+              onClick={(e) => {
+                e.stopPropagation();
+                setImageFull(true);
+              }}
+            >
+              <Image classImg="center-img" src={userPict === "null" || userPict === null ? DefaultPict : userPict} />
+            </div>
+          </div>
+        )}
         <h3>{fullname}</h3>
         <div className="user-bio">{userBio}</div>
       </div>

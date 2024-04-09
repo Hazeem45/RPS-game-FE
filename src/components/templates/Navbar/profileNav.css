@@ -9,8 +9,7 @@
 }
 
 .profile-nav .icon {
-  width: 45px;
-  height: 45px;
   border-radius: 100%;
-  padding: 2px;
+  width: 3rem;
+  height: 3rem;
 }

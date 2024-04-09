@@ -1,7 +1,7 @@
 import React from "react";
 
-function Image({src, alt}) {
-  return <img src={src} alt={alt} />;
+function Image({src, alt, classImg}) {
+  return <img src={src} className={classImg} alt={alt} />;
 }
 
 export default Image;

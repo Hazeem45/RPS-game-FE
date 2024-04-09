@@ -1,7 +1,33 @@
+.layout-setting {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.layout-setting h2 {
+  padding-bottom: 15px;
+  border-bottom: 2px solid gray;
+}
+
+.setting-back-btn {
+  /* color: black;
+  background-color: white; */
+  margin: 0px 0px 10px -10px;
+  width: 20%;
+  padding: 5px;
+  border-radius: 7px;
+  font-weight: bolder;
+  color: orange;
+  border: 1px solid orange;
+  cursor: pointer;
+}
+
 .menu-setting {
   margin-top: 20px;
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .menu-setting .list {
@@ -11,6 +37,21 @@
   display: flex;
   align-items: center;
   gap: 13px;
+  width: 90%;
+}
+
+.layout-setting button,
+.menu-setting .list:nth-child(4) {
+  position: absolute;
+  /* width: 100%; */
+  bottom: -3px;
+}
+
+.menu-setting .list:nth-child(4) .popover {
+  bottom: 0px;
+}
+.menu-setting .list:nth-child(4) .popover .popover-child div:first-child {
+  color: red;
 }
 
 .menu-setting .list:hover {

@@ -34,8 +34,9 @@
   cursor: pointer;
 }
 
-.option-sidebar .icon {
-  width: 37px;
+.option-sidebar .profile .icon .profile-icon {
+  width: 2.7rem;
+  height: 2.7rem;
 }
 
 .option-sidebar .setting .icon {

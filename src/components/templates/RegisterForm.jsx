@@ -100,7 +100,7 @@ function RegisterForm() {
           Sign In
         </Button>
       </div>
-      {isOpen && <BiodataForm />}
+      {isOpen && <BiodataForm page="register" />}
     </div>
   );
 }
