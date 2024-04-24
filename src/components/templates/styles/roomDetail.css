@@ -7,12 +7,6 @@
   justify-content: space-evenly;
 }
 
-.room-detail .title-page {
-  position: absolute;
-  top: 25px;
-  cursor: default;
-}
-
 .versus-img,
 .refresh-img {
   display: grid;
@@ -34,4 +28,30 @@
 
 .refresh-img:active {
   rotate: -90deg;
+}
+@media only screen and (max-width: 500px) {
+  .versus-img,
+  .refresh-img {
+    width: 70px;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .room-detail .title-page h1 {
+    font-size: 20px;
+  }
+
+  .room-detail .title-page {
+    top: 25px;
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  .room-detail .title-page h1 {
+    font-size: 16px;
+  }
+
+  .room-detail .title-page {
+    top: 29px;
+  }
 }

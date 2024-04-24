@@ -10,7 +10,7 @@ function ProfileNav({username, userPict, handleClick}) {
   return (
     <div className="profile-nav">
       <h3>@{username ? username : "user.name_"}</h3>
-      <div className="icon" style={{boxShadow: isSidebarOpen ? "0 0 0px 3.5px black" : "", backgroundColor: isSidebarOpen ? "black" : ""}}>
+      <div className="icon" style={{boxShadow: isSidebarOpen ? "0 0 0px 1.5px black" : ""}}>
         <ProfileIcon classImg="center-img" handleClick={handleClick} userPict={userPict === "null" || userPict === null ? DefaultPict : userPict} />
       </div>
     </div>

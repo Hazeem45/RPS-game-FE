@@ -1,7 +1,11 @@
 import React from "react";
 
 function Image({src, alt, classImg}) {
-  return <img src={src} className={classImg} alt={alt} />;
+  const handleImage = (e) => {
+    e.preventDefault();
+  };
+
+  return <img src={src} className={`unselectable ${classImg}`} alt={alt} onContextMenu={handleImage} onDragStart={handleImage} />;
 }
 
 export default Image;

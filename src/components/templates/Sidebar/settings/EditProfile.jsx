@@ -84,9 +84,7 @@ function EditProfile() {
     <>
       <form className="form-edit-profile">
         <div className="edit-picture" onClick={() => setIsPopoverVisible(true)}>
-          <div htmlFor="editPicture">
-            <ProfileIcon classImg="center-img" userPict={setImage()} />
-          </div>
+          <ProfileIcon classImg="center-img" userPict={setImage()} />
           {isPopoverVisible && (
             <Popover
               title="Change Picture"

@@ -4,9 +4,9 @@ export const validationUsername = (values) => {
   const usernameLength = values.length;
   const underscoreCount = (values.match(/_/g) || []).length;
   const dotCount = (values.match(/\./g) || []).length;
-  if (usernameLength < 5 || usernameLength > 15) {
+  if (usernameLength < 5 || usernameLength > 13) {
     return {
-      pattern: "^[a-zA-Z0-9._]{5,15}$",
+      pattern: "^[a-zA-Z0-9._]{5,13}$",
       message: "Username must be at least 5 chars and max 15 characters",
     };
   } else {
@@ -17,7 +17,7 @@ export const validationUsername = (values) => {
       };
     } else {
       return {
-        pattern: "^[a-zA-Z0-9._]{5,15}$",
+        pattern: "^[a-zA-Z0-9._]{5,13}$",
         message: "Username can only contain letters, numbers, dot '.' and underscore '_'",
       };
     }
@@ -42,8 +42,8 @@ export const validationRoomName = (value) => {
   const roomNameLength = value.length;
   if (roomNameLength < 5) {
     return "Room Name must be at least 5 characters";
-  } else if (roomNameLength > 20) {
-    return "Room Name is a maximum of 20 characters";
+  } else if (roomNameLength > 10) {
+    return "Room Name is a maximum of 10 characters";
   }
 };
 

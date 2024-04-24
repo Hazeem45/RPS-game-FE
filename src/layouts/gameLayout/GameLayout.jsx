@@ -12,7 +12,7 @@ function GameLayout() {
   return (
     <>
       <div className="game-layout unselectable">
-        <TitleIcon iconStyleCustom={style} handleClick={() => navigate("/")} />
+        <TitleIcon iconStyleCustom={style} handleClick={() => navigate("/dashboard")} />
       </div>
       <Outlet />
     </>

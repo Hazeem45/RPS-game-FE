@@ -1,5 +1,6 @@
 .room {
-  width: 220px;
+  width: 90%;
+  height: auto;
   padding: 7px;
   padding-bottom: 12px;
   display: flex;
@@ -12,19 +13,46 @@
   cursor: pointer;
 }
 
+.room h3 {
+  margin-bottom: 10px;
+}
+
 .room:hover {
   transform: scale(1.1);
 }
 
+.detailed-room {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
 .room-info {
   display: flex;
-  width: 100%;
+  justify-content: center;
+  position: relative;
 }
 
-.room p {
-  margin: 0;
+.room-info h4 {
+  position: absolute;
+  left: 0;
+  width: 50%;
+  text-align: center;
 }
 
-.room h3 {
-  margin-bottom: 5px;
+.room-info p {
+  position: absolute;
+  right: 0;
+  width: 50%;
+  text-align: center;
+  font-size: 0.95em;
+}
+
+.room-info .available {
+  color: #4caf50;
+}
+
+.room-info .finished {
+  color: orange;
 }

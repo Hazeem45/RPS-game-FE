@@ -12,7 +12,7 @@ function DashboardGame() {
   const [room, setRoom] = useState([
     {
       roomId: 1,
-      roomName: "the One",
+      roomName: "WWWWWWWWWW",
       player1: "makmur",
       player2: "warmad",
       status: "Finished",
@@ -35,7 +35,7 @@ function DashboardGame() {
       roomId: 4,
       roomName: "Ikan Lele",
       player1: "mirzaXriot",
-      player2: "kholilGaming",
+      player2: "kholilGamingX",
       status: "Finished",
     },
     {
@@ -61,8 +61,8 @@ function DashboardGame() {
     },
     {
       roomId: 8,
-      roomName: "Khilma",
-      player1: "balikan",
+      roomName: "XontoL",
+      player1: "pler.qda",
       player2: "move-on",
       status: "Finished",
     },
@@ -97,7 +97,7 @@ function DashboardGame() {
   ]);
 
   return (
-    <div className="unselectable">
+    <div className="dashboard unselectable">
       <div className="game">
         <GameBox onClick={() => navigate("/versus-com")}>VS COM</GameBox>
         <GameBox onClick={() => navigate("/create-room")}>Create Room</GameBox>

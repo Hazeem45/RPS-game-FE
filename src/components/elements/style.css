@@ -77,6 +77,7 @@ button {
 
 button:active {
   box-shadow: none !important;
+  transform: scale(0.97);
 }
 
 span.error-message {

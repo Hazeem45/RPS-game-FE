@@ -13,7 +13,6 @@
   position: relative;
   vertical-align: middle;
   width: 50%;
-  z-index: -1;
 }
 
 .line-with-text::before {

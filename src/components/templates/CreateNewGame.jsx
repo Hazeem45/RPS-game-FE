@@ -28,8 +28,8 @@ function NewGame() {
       setPopupVisible(true);
     } else {
       const nameLength = roomName.length;
-      if (nameLength < 5 || nameLength > 20) {
-        setPopupValue("Room Name must be at least 5 characters and max 20 Characters!");
+      if (nameLength < 5 || nameLength > 10) {
+        setPopupValue("Room Name must be at least 5 characters and max 10 Characters!");
         setPopupVisible(true);
       } else {
         alert(`The room has been successfully created, then you will be navigated to room => ${roomName}`);
@@ -41,12 +41,12 @@ function NewGame() {
 
   return (
     <div className="new-game unselectable">
-      <TitlePage>Create a New Room</TitlePage>
+      <TitlePage>Create Room</TitlePage>
       <div style={{width: "300px"}}>
         <InputForm
           type="text"
           placeholder="Enter The Room Name"
-          pattern={"^.{5,20}$"}
+          pattern={"^.{5,10}$"}
           errorMessage={validationRoomName(roomName)}
           required
           handleChange={(e) => {

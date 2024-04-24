@@ -10,6 +10,26 @@
   gap: 20px;
 }
 
+.authentication-layout button {
+  margin-bottom: 0;
+}
+
 .reverse-row {
   flex-direction: row-reverse;
+}
+
+@media only screen and (max-width: 365px) {
+  .authentication-layout main {
+    width: 90%;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .authentication-layout {
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 0;
+    padding: 0;
+    width: 100vw;
+  }
 }

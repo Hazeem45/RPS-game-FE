@@ -1,5 +1,10 @@
+.main-layout {
+  height: 100vh;
+}
+
 .content {
   display: flex;
+  width: 100vw;
 }
 
 .sidebar-wrap {
@@ -10,4 +15,43 @@
   width: 100%;
   margin: 10px;
   margin-top: 70px;
+  /* overflow: hidden; */
+}
+
+.picture-full {
+  display: grid;
+  place-items: center;
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(10px);
+  z-index: 5;
+}
+
+.view-picture {
+  aspect-ratio: 1/1;
+  object-fit: contain;
+  height: 80vh;
+  filter: drop-shadow(0 0 0.8rem black);
+  border-radius: 5px;
+  animation: popup 250ms;
+}
+
+.view-picture img {
+  border-radius: 5px;
+  background-color: white;
+}
+
+@media only screen and (max-width: 768px) {
+  .sidebar-wrap {
+    width: 100vw;
+  }
+
+  .child-wrap {
+    overflow: hidden;
+  }
+
+  .view-picture {
+    width: 90%;
+    height: auto;
+  }
 }

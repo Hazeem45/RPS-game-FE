@@ -1,7 +1,21 @@
 .about-game {
-  width: 45vh;
-  align-self: flex-start;
-  margin-top: 100px;
+  width: 30vw;
+  height: 580px;
   display: grid;
+  place-content: start;
   gap: 20px;
+}
+
+@media only screen and (max-width: 600px) {
+  .about-game {
+    width: 100%;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    place-content: center;
+    height: auto;
+  }
+
+  .about-game h4 {
+    display: none;
+  }
 }

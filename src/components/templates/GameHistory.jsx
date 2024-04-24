@@ -1,8 +1,15 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import "./styles/gameHistory.css";
 import TitlePage from "../fragments/TitlePage";
+import {useSidebar} from "../../utils/SidebarContext";
 
-function GameHistory() {
+function GameHistory({username}) {
+  const {isSidebarOpen} = useSidebar();
+  const [matches, setMatches] = useState({
+    small: window.matchMedia("(max-width: 768px)").matches,
+    large: window.matchMedia("(max-width: 995px)").matches,
+  });
+
   const userHistory = [
     {
       id: 1,
@@ -42,18 +49,31 @@ function GameHistory() {
   ];
   const sortedUserHistory = userHistory.slice().sort((a, b) => b.id - a.id);
 
+  useEffect(() => {
+    const smallHandler = (e) => setMatches((prevState) => ({...prevState, small: e.matches}));
+    const largeHandler = (e) => setMatches((prevState) => ({...prevState, large: e.matches}));
+
+    const smallMediaQuery = window.matchMedia("(max-width: 768px)");
+    const largeMediaQuery = window.matchMedia("(max-width: 995px)");
+
+    smallMediaQuery.addEventListener("change", smallHandler);
+    largeMediaQuery.addEventListener("change", largeHandler);
+    return () => {
+      smallMediaQuery.removeEventListener("change", smallHandler);
+      largeMediaQuery.removeEventListener("change", largeHandler);
+    };
+  }, []);
+
   return (
     <div className="table-wrapper">
+      <TitlePage classForTitle={isSidebarOpen && matches.small ? "displayNone" : ""}>{!isSidebarOpen && username} Game History</TitlePage>
       <table className="styled-table">
-        <caption>
-          <TitlePage>Game History</TitlePage>
-        </caption>
         <thead>
           <tr>
             <th>Room Name</th>
             <th>Result</th>
             <th>Date</th>
-            <th>Time</th>
+            <th className={isSidebarOpen && matches.large ? "displayNone" : "time-column"}>Time</th>
           </tr>
         </thead>
         <tbody>
@@ -63,7 +83,7 @@ function GameHistory() {
               <td>{game.roomName}</td>
               <td className={game.result.toLowerCase()}>{game.result}</td>
               <td>{game.date}</td>
-              <td>{game.time} UTC+7</td>
+              <td className={isSidebarOpen && matches.large ? "displayNone" : "time-column"}>{game.time} UTC+7</td>
             </tr>
           ))}
         </tbody>

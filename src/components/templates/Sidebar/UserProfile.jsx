@@ -8,8 +8,8 @@ import {useNavigate} from "react-router-dom";
 import {useSidebar} from "../../../utils/SidebarContext";
 
 function UserProfile({username, userBio, fullname, address, gender, birthday, join}) {
-  const {setAnimationSidebar} = useSidebar();
-  const [imageFull, setImageFull] = useState(false);
+  const {setAnimationSidebar, setIsSidebarOpen, setViewImage, setIsHistoryOpen} = useSidebar();
+
   const navigate = useNavigate();
   const userPict = localStorage.getItem("foto");
 
@@ -22,35 +22,27 @@ function UserProfile({username, userBio, fullname, address, gender, birthday, jo
           onClick={() => {
             if (userPict === "null" || userPict === null) {
               alert("No Profile Photo");
-              setImageFull(false);
+              setViewImage(false);
             } else {
-              setImageFull(true);
+              setViewImage(true);
             }
           }}
         >
           <Image classImg="center-img" src={userPict === "null" || userPict === null ? DefaultPict : userPict} />
         </div>
-        {imageFull && (
-          <div className="picture-full" onClick={() => setImageFull(false)}>
-            <div
-              className="view-picture"
-              onClick={(e) => {
-                e.stopPropagation();
-                setImageFull(true);
-              }}
-            >
-              <Image classImg="center-img" src={userPict === "null" || userPict === null ? DefaultPict : userPict} />
-            </div>
-          </div>
-        )}
+
         <h3>{fullname}</h3>
         <div className="user-bio">{userBio}</div>
       </div>
       <div style={{width: "100%"}}>
         <Button
           handleClick={() => {
-            navigate("/history");
+            setIsHistoryOpen(true);
+            navigate(`/dashboard/profile/${username}/history`);
             setAnimationSidebar("");
+            if (window.innerWidth <= 768) {
+              setIsSidebarOpen(false);
+            }
           }}
         >
           <div className="icon">

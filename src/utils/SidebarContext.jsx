@@ -6,9 +6,12 @@ export const useSidebar = () => useContext(SidebarContext);
 export const SidebarProvider = ({children}) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [animationSidebar, setAnimationSidebar] = useState("");
+  // profle in sidebar
   const [openProfile, setOpenProfile] = useState(true);
-  const [openSetting, setOpenSetting] = useState(false);
+  const [viewImage, setViewImage] = useState(false);
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   // settings in sidebar
+  const [openSetting, setOpenSetting] = useState(false);
   const [title, setTitle] = useState("Settings");
   const [isMenuSettingVisible, setIsMenuSettingVisible] = useState(true);
   const [isEditProfileVisible, setIsEditProfileVisible] = useState(false);
@@ -23,6 +26,7 @@ export const SidebarProvider = ({children}) => {
     <SidebarContext.Provider
       value={{
         isSidebarOpen,
+        setIsSidebarOpen,
         toggleSidebar,
         animationSidebar,
         setAnimationSidebar,
@@ -40,6 +44,10 @@ export const SidebarProvider = ({children}) => {
         setIsEditBiodataVisible,
         isPersonalDetailVisible,
         setIsPersonalDetailVisible,
+        viewImage,
+        setViewImage,
+        isHistoryOpen,
+        setIsHistoryOpen,
       }}
     >
       {children}

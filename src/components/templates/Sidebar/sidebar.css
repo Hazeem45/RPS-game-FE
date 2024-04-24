@@ -6,10 +6,15 @@
   background: rgb(36, 37, 38);
   padding-top: 60px;
   box-sizing: border-box;
+  z-index: 1;
 }
 
-.sidebar-open {
-  animation: sidebarOpen 0.25s ease;
+.open-from-left {
+  animation: LeftToRight 0.25s ease;
+}
+
+.open-from-above {
+  animation: TopToBottom 0.2s ease;
 }
 
 .option-sidebar {
@@ -43,6 +48,10 @@
   width: 33px;
 }
 
+/* .option-sidebar .icon:active {
+  transform: scale(0.6);
+} */
+
 .option-sidebar .profile:hover,
 .option-sidebar .setting:hover {
   background-color: #848484;
@@ -51,12 +60,68 @@
 .option-sidebar .profile:active,
 .option-sidebar .setting:active {
   background-color: #535353;
+  transform: scale(0.9);
 }
 
 .content-sidebar {
   padding: 10px;
   color: white;
-  width: 350px;
+  width: 100%;
   height: 100%;
   box-sizing: border-box;
+}
+
+@media only screen and (max-width: 768px) {
+  .sidebar {
+    width: 100vw;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .sidebar {
+    flex-direction: column;
+  }
+
+  .option-sidebar {
+    flex-direction: row;
+    /* align-items: center; */
+    justify-content: center;
+    width: 100vw;
+    background: black;
+    padding: 0;
+    padding-bottom: 0;
+    gap: 5px;
+  }
+
+  .option-sidebar .profile,
+  .option-sidebar .setting {
+    place-items: center;
+    width: 50%;
+    height: 35px;
+    margin-bottom: -2px;
+    border-radius: 0;
+    cursor: pointer;
+  }
+
+  .option-sidebar .profile::before {
+    content: "Profile";
+    color: white;
+  }
+
+  .option-sidebar .setting::before {
+    content: "Settings";
+    color: white;
+  }
+
+  .option-sidebar .icon {
+    display: none;
+  }
+
+  .option-sidebar .profile:hover,
+  .option-sidebar .setting:hover,
+  .option-sidebar .profile:active,
+  .option-sidebar .setting:active {
+    background-color: transparent;
+    transform: scale(1);
+  }
 }

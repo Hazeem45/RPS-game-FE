@@ -8,12 +8,6 @@
   justify-content: space-evenly;
 }
 
-.new-game .title-page {
-  position: absolute;
-  top: 25px;
-  cursor: default;
-}
-
 .new-game .input-form {
   margin: 0;
 }
@@ -25,4 +19,13 @@
 .new-game .list-of-choices .choices {
   flex-direction: row;
   gap: 100px;
+}
+
+@media only screen and (max-width: 700px) {
+  .new-game .input-form {
+    margin-top: 25px;
+  }
+  .new-game .list-of-choices .choices {
+    gap: 10px;
+  }
 }

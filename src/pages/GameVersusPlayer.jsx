@@ -85,7 +85,7 @@ function GameVersusPlayer() {
 
   return (
     <RoomDetail
-      title={`${roomName} Room`}
+      title={`Room: ${roomName}`}
       rockSelectedP1={player1Choice === "rock" ? "clicked" : ""}
       rockSelectedP2={player2Choice === "rock" ? "clicked" : ""}
       paperSelectedP1={player1Choice === "paper" ? "clicked" : ""}

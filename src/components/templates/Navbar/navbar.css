@@ -11,3 +11,16 @@
   align-items: center;
   box-shadow: 0 1px 5px 0px black;
 }
+
+@media only screen and (max-width: 365px) {
+  .login-form {
+    width: 100%;
+    padding: 0;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .navbar .profile-nav h3 {
+    display: none;
+  }
+}

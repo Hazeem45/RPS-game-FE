@@ -1,8 +1,18 @@
+.edit-biodata {
+  height: 100%;
+}
+
 .edit-biodata .biodata {
-  /* position: relative; */
+  position: relative;
   top: 35px;
   backdrop-filter: none;
-  /* max-height: max-content; */
+  height: 100%;
+  place-items: start;
+}
+
+.edit-biodata .biodata button {
+  position: absolute;
+  bottom: 30px;
 }
 
 .edit-biodata .biodata-form {
