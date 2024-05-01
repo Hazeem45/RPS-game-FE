@@ -10,10 +10,12 @@ import CreateRoom from "./pages/CreateRoom";
 import {ProtectedRoute} from "./utils/ProtectedRoute";
 import {SidebarProvider} from "./utils/SidebarContext";
 import GameVersusPlayer from "./pages/GameVersusPlayer";
+import Homepage from "./pages/Homepage";
 
 function App() {
   return (
     <Routes>
+      <Route path="/homepage" element={<Homepage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route

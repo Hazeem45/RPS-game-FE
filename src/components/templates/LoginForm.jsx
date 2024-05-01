@@ -51,7 +51,7 @@ function LoginForm() {
     // temporarily use password and email as accesstoken, because they are not yet connected to the backend (for testing only)
     const accessToken = values.email + values.password;
     localStorage.setItem("accessToken", accessToken);
-    navigate("/");
+    navigate("/dashboard");
   };
 
   return (
