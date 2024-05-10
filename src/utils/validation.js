@@ -7,7 +7,7 @@ export const validationUsername = (values) => {
   if (usernameLength < 5 || usernameLength > 13) {
     return {
       pattern: "^[a-zA-Z0-9._]{5,13}$",
-      message: "Username must be at least 5 chars and max 15 characters",
+      message: "Username must be at least 5 chars and max 13 characters",
     };
   } else {
     if (underscoreCount > 1 || dotCount > 1) {
@@ -33,7 +33,7 @@ export const validationPassword = (values) => {
   if (passwordLength < 8) {
     validation.message = "Password must be at least 8 characters";
   } else {
-    validation.message = "Password must contain a number";
+    validation.message = "Password must include at least one number";
   }
   return validation;
 };

@@ -57,28 +57,10 @@ function BiodataForm({page}) {
       <form className="biodata-form" onSubmit={handleSubmit}>
         <h2>Details About You</h2>
         <div className="bio-fullname">
-          <InputForm
-            name="firstname"
-            type="text"
-            placeholder="First name"
-            label="Fullname"
-            handleChange={handleChange}
-            value={values.firstname}
-            pattern="^[a-zA-Z]+$"
-            errorMessage="Firstname must be letters without spaces and other special characters!"
-          />
-          <InputForm
-            name="lastname"
-            type="text"
-            placeholder="Last name"
-            label="‎"
-            handleChange={handleChange}
-            value={values.lastname}
-            pattern="^[a-zA-Z]+$"
-            errorMessage="Lastname must be letters without spaces and other special characters!"
-          />
+          <InputForm name="firstname" type="text" placeholder="First name" label="Fullname" handleChange={handleChange} value={values.firstname} pattern=".{0,20}$" errorMessage="Firstname max 20 chars" />
+          <InputForm name="lastname" type="text" placeholder="Last name" label="‎" handleChange={handleChange} value={values.lastname} pattern=".{0,10}$" errorMessage="Lastname max 10 chars" />
         </div>
-        <InputForm type="text" name="address" label="Address" placeholder="Unitary State of the Republic of Isekai" handleChange={handleChange} value={values.address} />
+        <InputForm type="text" name="address" label="Address" placeholder="Unitary State of the Republic of Isekai" handleChange={handleChange} value={values.address} pattern=".{0,43}$" errorMessage="Lastname max 43 chars" />
         <div className="other-bio">
           <InputForm type="date" name="date" label="Date of Birth" handleChange={handleChange} value={values.date} />
           <SelectForm name="gender" label="Gender" options={genders} handleChange={handleChange} value={values.gender} />
