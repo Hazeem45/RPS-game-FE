@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 
-function Input({type, placeholder, name, handleChange, pattern, required, fileRef}) {
+function Input({value, type, placeholder, name, handleChange, pattern, required, fileRef}) {
   const [focused, setFocused] = useState(false);
 
   return (
@@ -19,6 +19,7 @@ function Input({type, placeholder, name, handleChange, pattern, required, fileRe
       // }}
       onFocus={() => setFocused(true)}
       focused={focused.toString()}
+      value={value}
     />
   );
 }

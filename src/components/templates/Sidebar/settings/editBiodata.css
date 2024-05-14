@@ -30,6 +30,11 @@
   margin-top: -15px;
 }
 
+.edit-biodata .input-form .error-message {
+  color: white;
+  background-color: rgba(255, 0, 0, 0.4);
+}
+
 .edit-biodata .other-bio {
   display: grid;
   grid-template-columns: inherit;
