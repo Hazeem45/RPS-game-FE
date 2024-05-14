@@ -9,10 +9,15 @@ import Input from "../elements/Input";
 import ErrorMessage from "../elements/ErrorMessage";
 import {validationPassword, validationUsername} from "../../utils/validation";
 import {useNavigate} from "react-router-dom";
+import axios from "axios";
+import AuthFailMessage from "../fragments/AuthFailMessage";
 
 function RegisterForm() {
   const [inputType, setInputType] = useState("password");
-  const [isOpen, setIsOpen] = useState(false);
+  const [buttonText, setButtonText] = useState("Register");
+  const [isBiodataOpen, setIsBiodataOpen] = useState(false);
+  const [isFailMessageShow, setIsFailMessageShow] = useState(false);
+  const [failMessage, setFailMessage] = useState("");
   const navigate = useNavigate();
   const [values, setValues] = useState({
     username: "",
@@ -20,7 +25,6 @@ function RegisterForm() {
     password: "",
     confirmPassword: "",
   });
-
   const inputs = [
     {
       id: 1,
@@ -52,25 +56,58 @@ function RegisterForm() {
       required: true,
     },
   ];
-
-  const handleChange = (e) => {
-    setValues({...values, [e.target.name]: e.target.value});
-  };
-
   const buttonStyleCustom = {
     background: "#333",
     boxShadow: "none",
     color: "white",
   };
 
-  const handleSubmit = (e) => {
-    setIsOpen(!isOpen);
+  const handleChange = (e) => {
+    setValues({...values, [e.target.name]: e.target.value});
+    setIsFailMessageShow(false);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setButtonText("Loading...");
+    try {
+      const responseRegisterAPI = await axios.post("https://rps-game-be.vercel.app/user/register", {
+        username: values.username,
+        email: values.email,
+        password: values.password,
+      });
+      if (responseRegisterAPI.data.message === "registration successful") {
+        const responseLoginAPI = await axios.post("https://rps-game-be.vercel.app/user/login", {
+          email: values.email,
+          password: values.password,
+        });
+        const accessToken = responseLoginAPI.data.accessToken;
+        localStorage.setItem("accessToken", accessToken);
+        setIsBiodataOpen(true);
+      }
+    } catch (error) {
+      if (error.code === "ERR_NETWORK") {
+        setFailMessage(error.message);
+      } else {
+        if (error.response.status) {
+          if (error.response.status === 400) {
+            setFailMessage(error.response.data.errors[0].msg);
+          } else if (error.response.status === 500) {
+            setFailMessage(error.response.statusText);
+          } else {
+            setFailMessage(error.response.data.message);
+          }
+        }
+      }
+      setIsFailMessageShow(true);
+    }
+    setButtonText("Register");
   };
 
   return (
     <div className="register-form unselectable">
-      <h1>Register</h1>
+      <h1 style={{color: isFailMessageShow && "red"}}>Register</h1>
+      {isFailMessageShow && <AuthFailMessage>{failMessage}</AuthFailMessage>}
       <form onSubmit={handleSubmit}>
         {inputs.map((input) => (
           <InputForm key={input.id} {...input} value={values[input.name]} handleChange={handleChange} />
@@ -92,7 +129,7 @@ function RegisterForm() {
             name="checkbox"
           />
         </div>
-        <Button>Register</Button>
+        <Button>{buttonText}</Button>
       </form>
       <div style={{width: "100%", marginBottom: "10px"}}>
         <LineWithText value="Or" />
@@ -100,7 +137,7 @@ function RegisterForm() {
           Sign In
         </Button>
       </div>
-      {isOpen && <BiodataForm page="register" />}
+      {isBiodataOpen && <BiodataForm page="register" />}
     </div>
   );
 }
