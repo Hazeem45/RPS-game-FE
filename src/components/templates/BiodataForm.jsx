@@ -1,15 +1,17 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import "./styles/biodataForm.css";
 import SelectForm from "../fragments/SelectForm";
 import InputForm from "../fragments/InputForm";
 import Button from "../elements/Button";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
+import {changeFormatDateToDDMMYYYY, changeFormatDateToYYYYMMDD} from "../../utils/formatDate";
 // import formatTimeByTimezoneOffset from "../../utils/formatTimeByTimezoneOffset";
 
 function BiodataForm({page}) {
   const token = localStorage.getItem("accessToken");
   const [buttonText, setButtonText] = useState(page ? "CONFIRM" : "Save Changes");
+  const [textDescription, setTextDescription] = useState("");
   const navigate = useNavigate();
   const [gendersIndex, setGendersIndex] = useState([]);
   // const genders = ["Male", "Female", "Other", "--"];
@@ -25,11 +27,6 @@ function BiodataForm({page}) {
     boxShadow: "none",
     color: "white",
   });
-
-  const changeFormateDateToDDMMYYYY = (value) => {
-    const splitDate = value.split("-");
-    return `${splitDate[2]}/${splitDate[1]}/${splitDate[0]}`;
-  };
 
   const handleChange = (e) => {
     // setValues({...values, [e.target.name]: e.target.value});
@@ -58,74 +55,21 @@ function BiodataForm({page}) {
       setGendersIndex(["--", "Male", "Female", "Other"]);
     } else {
       const fetchUserBiodata = async () => {
+        setTextDescription("Please Wait...");
         try {
           const responseAPI = await axios.get("https://rps-game-be.vercel.app/user/biodata", {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           });
-          const {username, firstName, lastName, address, gender, birthDate, joinAt, joinDate} = responseAPI.data;
-          const monthNames = {
-            January: "01",
-            February: "02",
-            March: "03",
-            April: "04",
-            May: "05",
-            June: "06",
-            July: "07",
-            August: "08",
-            September: "09",
-            October: "10",
-            November: "11",
-            December: "12",
-          };
-          let userOffset = new Date().getTimezoneOffset() / 60;
-          userOffset = -userOffset;
-          const splitedDate = joinAt.split("T");
-          const splitedTime = splitedDate[1].split(".");
-          const time = splitedTime[0].split(":");
-          let hour = parseInt(time[0]) + userOffset;
-          let minute = parseInt(time[1]);
-          let UTC = userOffset > 0 ? `UTC+${userOffset}` : `UTC${userOffset}`;
-          if (hour >= 24) {
-            hour -= 24;
-          } else if (hour < 0) {
-            hour += 24;
-          }
-          const offset = userOffset > 0 ? `+${userOffset}` : userOffset;
-          const paddedHour = (hour < 10 ? "0" : "") + hour;
-          const paddedMinute = (minute < 10 ? "0" : "") + minute;
-          const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-          // ======
-          const realTime = new Date();
-          const realHour = realTime.getHours();
-          const realMinute = realTime.getMinutes();
-          console.log(`waktu sekarang : ${realHour}:${realMinute}`);
-          alert(`waktu sekarang : ${realHour}:${realMinute}`);
+          const {username, firstName, lastName, address, gender, birthDate} = responseAPI.data;
 
-          console.log({
-            joinAt: `${paddedHour}:${paddedMinute} ${UTC}`,
-            userOffset: userOffset > 0 ? `+${userOffset}` : userOffset,
-            userTimeZone: userTimeZone,
-          });
-          alert(`JoinAt: ${joinDate} ${paddedHour}:${paddedMinute} ${UTC}`);
-          alert(`userOffset: ${offset}`);
-          alert(`serTimeZone: ${userTimeZone}`);
-          const changeFormateDateToYYYYMMDD = (value) => {
-            const dateParts = value.split(" ");
-            const day = dateParts[0];
-            const monthName = dateParts[1];
-            const year = dateParts[2];
-            const monthNumber = monthNames[monthName];
-            const formattedDate = `${year}-${monthNumber}-${day}`;
-            return formattedDate;
-          };
           setValues({
             firstname: firstName !== null ? firstName : username,
             lastname: lastName !== null ? lastName : "",
             address: address !== null ? address : "",
             gender: gender !== null ? gender : "",
-            date: birthDate !== null ? changeFormateDateToYYYYMMDD(birthDate) : "",
+            date: birthDate !== null ? changeFormatDateToYYYYMMDD(birthDate) : "",
           });
           if (gender === "Male") {
             setGendersIndex(["Male", "Female", "Other", "--"]);
@@ -140,8 +84,10 @@ function BiodataForm({page}) {
             setButtonStyle(null);
           }
         } catch (error) {
+          console.log(error);
           alert(error);
         }
+        setTextDescription("");
       };
       fetchUserBiodata();
     }
@@ -150,7 +96,7 @@ function BiodataForm({page}) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setButtonText("Loading...");
-    console.log("start Loading...");
+    setTextDescription("Please Wait...");
     try {
       const responseAPI = await axios.put(
         "https://rps-game-be.vercel.app/user/biodata",
@@ -159,7 +105,7 @@ function BiodataForm({page}) {
           lastName: values.lastname !== "" ? values.lastname : null,
           infoBio: null,
           address: values.address !== "" ? values.address : null,
-          birthDate: values.date !== "" ? changeFormateDateToDDMMYYYY(values.date) : null,
+          birthDate: values.date !== "" ? changeFormatDateToDDMMYYYY(values.date) : null,
           gender: values.gender !== "" ? values.gender : null,
         },
         {
@@ -174,8 +120,8 @@ function BiodataForm({page}) {
     } catch (error) {
       alert(error.response.statusText);
     }
+    setTextDescription("");
     setButtonText(page ? "CONFIRM" : "Save Changes");
-    console.log("end loading...");
   };
 
   return (
@@ -191,6 +137,7 @@ function BiodataForm({page}) {
           <InputForm type="date" name="date" label="Date of Birth" handleChange={handleChange} value={values.date} />
           <SelectForm name="gender" label="Gender" options={gendersIndex} handleChange={handleChange} />
         </div>
+        <h3 style={{textAlign: "center", color: "#f3af34"}}>{textDescription}</h3>
         <Button styleCustom={buttonStyle}>{buttonStyle !== null ? "Skip For Now" : buttonText}</Button>
       </form>
     </div>
