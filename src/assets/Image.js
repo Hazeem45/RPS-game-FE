@@ -23,6 +23,7 @@ import TwitchIcon from "./image/twitch.svg";
 import TwitterIcon from "./image/twitter.svg";
 import TwitterCard from "./image/twitter-card.png";
 import RefreshIcon from "./image/refresh.png";
+import WarningIcon from "./image/alert.png";
 import FacebookIcon from "./image/facebook.svg";
 import ScissorsIcon from "./image/gunting.png";
 import EllipseOrange from "./image/ellipse-orange.png";
@@ -66,6 +67,7 @@ export {
   TwitterIcon,
   TwitterCard,
   RefreshIcon,
+  WarningIcon,
   FacebookIcon,
   ScissorsIcon,
   EllipseOrange,

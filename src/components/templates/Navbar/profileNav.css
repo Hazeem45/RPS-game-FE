@@ -8,6 +8,10 @@
   cursor: default;
 }
 
+.profile-nav h3 {
+  font-family: "Open Sans", sans-serif;
+  font-size: 20px;
+}
 .profile-nav .icon {
   border-radius: 100%;
   width: 3rem;

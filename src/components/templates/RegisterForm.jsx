@@ -10,7 +10,7 @@ import ErrorMessage from "../elements/ErrorMessage";
 import {validationPassword, validationUsername} from "../../utils/validation";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import AuthFailMessage from "../fragments/AuthFailMessage";
+import FailMessage from "../fragments/FailMessage";
 
 function RegisterForm() {
   const [inputType, setInputType] = useState("password");
@@ -88,16 +88,16 @@ function RegisterForm() {
     } catch (error) {
       if (error.code === "ERR_NETWORK") {
         setFailMessage(error.message);
-      } else {
-        if (error.response.status) {
-          if (error.response.status === 400) {
-            setFailMessage(error.response.data.errors[0].msg);
-          } else if (error.response.status === 500) {
-            setFailMessage(error.response.statusText);
-          } else {
-            setFailMessage(error.response.data.message);
-          }
+      } else if (error.response.status) {
+        if (error.response.status === 400) {
+          setFailMessage(error.response.data.errors[0].msg);
+        } else if (error.response.status === 500) {
+          setFailMessage(error.response.statusText);
+        } else {
+          setFailMessage(error.response.data.message);
         }
+      } else {
+        alert(error);
       }
       setIsFailMessageShow(true);
     }
@@ -107,7 +107,7 @@ function RegisterForm() {
   return (
     <div className="register-form unselectable">
       <h1 style={{color: isFailMessageShow && "red"}}>Register</h1>
-      {isFailMessageShow && <AuthFailMessage>{failMessage}</AuthFailMessage>}
+      {isFailMessageShow && <FailMessage>{failMessage}</FailMessage>}
       <form onSubmit={handleSubmit}>
         {inputs.map((input) => (
           <InputForm key={input.id} {...input} value={values[input.name]} handleChange={handleChange} />

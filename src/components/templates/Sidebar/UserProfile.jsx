@@ -7,20 +7,18 @@ import {CakeIcon, ClockIcon, DefaultPict, HistoryIcon, LocationIcon, UserIcon} f
 import {useNavigate} from "react-router-dom";
 import {useSidebar} from "../../../utils/SidebarContext";
 
-function UserProfile({username, userBio, fullname, address, gender, birthday, join}) {
+function UserProfile({username, picture, userBio, fullname, address, gender, birthday, join}) {
   const {setAnimationSidebar, setIsSidebarOpen, setViewImage, setIsHistoryOpen} = useSidebar();
-
   const navigate = useNavigate();
-  const userPict = localStorage.getItem("foto");
 
   return (
     <div className="profile-sidebar">
       <div className="profile">
-        <h3>@{username ? username : "user.name_"}</h3>
+        <h3>{username}</h3>
         <div
           className="profile-picture"
           onClick={() => {
-            if (userPict === "null" || userPict === null) {
+            if (picture === null) {
               alert("No Profile Photo");
               setViewImage(false);
             } else {
@@ -28,7 +26,7 @@ function UserProfile({username, userBio, fullname, address, gender, birthday, jo
             }
           }}
         >
-          <Image classImg="center-img" src={userPict === "null" || userPict === null ? DefaultPict : userPict} />
+          <Image classImg="center-img" src={picture ? picture : DefaultPict} />
         </div>
 
         <h3>{fullname}</h3>
@@ -75,7 +73,7 @@ function UserProfile({username, userBio, fullname, address, gender, birthday, jo
               <div className="icon">
                 <StandardIcon icon={ClockIcon} />
               </div>
-              <span>Joined On {join}</span>
+              <span>Join at {join}</span>
             </div>
           </div>
         </div>

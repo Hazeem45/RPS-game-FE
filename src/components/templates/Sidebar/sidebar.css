@@ -2,7 +2,7 @@
   position: fixed;
   display: flex;
   width: 400px;
-  height: 100vh;
+  height: 100%;
   background: rgb(36, 37, 38);
   padding-top: 60px;
   box-sizing: border-box;
@@ -123,5 +123,11 @@
   .option-sidebar .setting:active {
     background-color: transparent;
     transform: scale(1);
+  }
+}
+
+@media only screen and (min-height: 900px) {
+  .content-sidebar {
+    height: 90%;
   }
 }

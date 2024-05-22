@@ -2,12 +2,12 @@ import React, {useState} from "react";
 import "./styles/loginForm.css";
 import InputForm from "../fragments/InputForm";
 import Button from "../elements/Button";
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import CheckboxForm from "../fragments/CheckboxForm";
 import LineWithText from "../fragments/LineWithText";
 import {validationPassword} from "../../utils/validation";
 import axios from "axios";
-import AuthFailMessage from "../fragments/AuthFailMessage";
+import FailMessage from "../fragments/FailMessage";
 
 function LoginForm() {
   const [inputType, setInputType] = useState("password");
@@ -67,16 +67,16 @@ function LoginForm() {
     } catch (error) {
       if (error.code === "ERR_NETWORK") {
         setFailMessage(error.message);
-      } else {
-        if (error.response.status) {
-          if (error.response.status === 400) {
-            setFailMessage(error.response.data.errors[0].msg);
-          } else if (error.response.status === 500) {
-            setFailMessage(error.response.statusText);
-          } else {
-            setFailMessage(error.response.data.message);
-          }
+      } else if (error.response.status) {
+        if (error.response.status === 400) {
+          setFailMessage(error.response.data.errors[0].msg);
+        } else if (error.response.status === 500) {
+          setFailMessage(error.response.statusText);
+        } else {
+          setFailMessage(error.response.data.message);
         }
+      } else {
+        alert(error);
       }
       setIsFailMessageShow(true);
     }
@@ -91,7 +91,7 @@ function LoginForm() {
   return (
     <div className="login-form unselectable">
       <h1 style={{color: isFailMessageShow && "red"}}>Login</h1>
-      {isFailMessageShow && <AuthFailMessage>{failMessage}</AuthFailMessage>}
+      {isFailMessageShow && <FailMessage>{failMessage}</FailMessage>}
       <form onSubmit={handleSubmit}>
         {inputs.map((input) => (
           <InputForm key={input.id} {...input} value={values[input.name]} handleChange={handleChange} />

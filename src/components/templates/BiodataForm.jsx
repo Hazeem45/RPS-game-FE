@@ -6,15 +6,16 @@ import Button from "../elements/Button";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {changeFormatDateToDDMMYYYY, changeFormatDateToYYYYMMDD} from "../../utils/formatDate";
+import SuccessMessage from "../fragments/SuccessMessage";
 // import formatTimeByTimezoneOffset from "../../utils/formatTimeByTimezoneOffset";
 
 function BiodataForm({page}) {
   const token = localStorage.getItem("accessToken");
   const [buttonText, setButtonText] = useState(page ? "CONFIRM" : "Save Changes");
   const [textDescription, setTextDescription] = useState("");
+  const [isSuccessMessageShow, setIsSuccessMessageShow] = useState(false);
   const navigate = useNavigate();
   const [gendersIndex, setGendersIndex] = useState([]);
-  // const genders = ["Male", "Female", "Other", "--"];
   const [values, setValues] = useState({
     firstname: "",
     lastname: "",
@@ -84,8 +85,15 @@ function BiodataForm({page}) {
             setButtonStyle(null);
           }
         } catch (error) {
-          console.log(error);
-          alert(error);
+          if (error.code === "ERR_NETWORK") {
+            navigate("/dashboard");
+          } else if (error.response.status) {
+            if (error.response.status === 401 || error.response.status === 500) {
+              navigate("/dashboard");
+            }
+          } else {
+            alert(error);
+          }
         }
         setTextDescription("");
       };
@@ -96,14 +104,13 @@ function BiodataForm({page}) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setButtonText("Loading...");
-    setTextDescription("Please Wait...");
+    setTextDescription("Save update...");
     try {
       const responseAPI = await axios.put(
         "https://rps-game-be.vercel.app/user/biodata",
         {
           firstName: values.firstname !== "" ? values.firstname : null,
           lastName: values.lastname !== "" ? values.lastname : null,
-          infoBio: null,
           address: values.address !== "" ? values.address : null,
           birthDate: values.date !== "" ? changeFormatDateToDDMMYYYY(values.date) : null,
           gender: values.gender !== "" ? values.gender : null,
@@ -114,6 +121,7 @@ function BiodataForm({page}) {
           },
         }
       );
+      setIsSuccessMessageShow(true);
       if (page && responseAPI) {
         navigate("/dashboard");
       }
@@ -126,6 +134,7 @@ function BiodataForm({page}) {
 
   return (
     <div className="biodata">
+      {isSuccessMessageShow && <SuccessMessage>Successfully Updated User Data</SuccessMessage>}
       <form className="biodata-form" onSubmit={handleSubmit}>
         <h2>Details About You</h2>
         <div className="bio-fullname">
@@ -137,7 +146,7 @@ function BiodataForm({page}) {
           <InputForm type="date" name="date" label="Date of Birth" handleChange={handleChange} value={values.date} />
           <SelectForm name="gender" label="Gender" options={gendersIndex} handleChange={handleChange} />
         </div>
-        <h3 style={{textAlign: "center", color: "#f3af34"}}>{textDescription}</h3>
+        <h3 style={{textAlign: "center", color: "#f3af34"}}>{page ? "" : textDescription}</h3>
         <Button styleCustom={buttonStyle}>{buttonStyle !== null ? "Skip For Now" : buttonText}</Button>
       </form>
     </div>

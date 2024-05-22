@@ -1,22 +1,27 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import "./navbar.css";
 import TitleIcon from "../../../components/fragments/TitleIcon";
 import ProfileNav from "./ProfileNav";
 import {useNavigate} from "react-router-dom";
 import {useSidebar} from "../../../utils/SidebarContext";
+import axios from "axios";
+import {DefaultPict} from "../../../assets/Image";
 
 function Index() {
+  const token = localStorage.getItem("accessToken");
   const {toggleSidebar, setIsSidebarOpen, isSidebarOpen, setAnimationSidebar, setOpenProfile, setOpenSetting, setIsHistoryOpen, isHistoryOpen} = useSidebar();
   const navigate = useNavigate();
-  const userPict = localStorage.getItem("foto");
-  const username = localStorage.getItem("username");
+  const [userData, setUserData] = useState({
+    username: "",
+    URLPicture: null,
+  });
 
   useEffect(() => {
-    if (window.location.pathname === `/dashboard/profile/${username}`) {
+    if (window.location.pathname === `/dashboard/profile/${userData.username}`) {
       setIsSidebarOpen(true);
       setOpenProfile(true);
       setOpenSetting(false);
-    } else if (window.location.pathname === `/dashboard/profile/${username}/history`) {
+    } else if (window.location.pathname === `/dashboard/profile/${userData.username}/history`) {
       setOpenProfile(true);
       setIsHistoryOpen(true);
       setOpenSetting(false);
@@ -30,8 +35,36 @@ function Index() {
       setIsHistoryOpen(false);
       setOpenProfile(false);
       setOpenSetting(true);
+    } else if (window.location.pathname === "/dashboard") {
+      setIsSidebarOpen(false);
     }
-  }, [window.location.pathname]);
+
+    const fetchAPI = async () => {
+      try {
+        const responseAPI = await axios.get("https://rps-game-be.vercel.app/user/biodata", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const {username, profilePicture} = responseAPI.data;
+        setUserData({
+          username: username,
+          URLPicture: profilePicture,
+        });
+      } catch (error) {
+        if (error.code === "ERR_NETWORK") {
+          navigate("/dashboard");
+        } else if (error.response.status) {
+          if (error.response.status === 401 || error.response.status === 500) {
+            navigate("/dashboard");
+          }
+        } else {
+          alert(error);
+        }
+      }
+    };
+    fetchAPI();
+  }, [window.location.pathname, setUserData]);
 
   return (
     <div className="navbar unselectable">
@@ -40,7 +73,7 @@ function Index() {
           if (isSidebarOpen) {
             setOpenProfile(true);
             setOpenSetting(false);
-            navigate(`/dashboard/profile/${username}`);
+            navigate(`/dashboard/profile/${userData.username}`);
           } else {
             navigate("/dashboard");
           }
@@ -52,7 +85,7 @@ function Index() {
         }}
       />
       <ProfileNav
-        username={username}
+        username={userData.username}
         handleClick={() => {
           if (isSidebarOpen) {
             if (!isHistoryOpen) {
@@ -60,9 +93,9 @@ function Index() {
             }
           } else {
             if (isHistoryOpen) {
-              navigate(`/dashboard/profile/${username}/history`);
+              navigate(`/dashboard/profile/${userData.username}/history`);
             } else {
-              navigate(`/dashboard/profile/${username}`);
+              navigate(`/dashboard/profile/${userData.username}`);
             }
           }
           toggleSidebar();
@@ -74,7 +107,7 @@ function Index() {
             setAnimationSidebar("open-from-above");
           }
         }}
-        userPict={userPict}
+        userPict={userData.URLPicture ? userData.URLPicture : DefaultPict}
       />
     </div>
   );

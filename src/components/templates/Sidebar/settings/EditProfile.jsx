@@ -8,15 +8,56 @@ import {DefaultPict} from "../../../../assets/Image";
 import TextareaForm from "../../../fragments/TextareaForm";
 import Popover from "../../../fragments/Popover";
 import Input from "../../../elements/Input";
+import {storage} from "../../../../firebaseConfig";
+import {getDownloadURL, ref, uploadBytes} from "firebase/storage";
+import axios from "axios";
+import {jwtDecode} from "jwt-decode";
+import {decrypt} from "../../../../utils/encryption";
+import FailMessage from "../../../fragments/FailMessage";
+import SuccessMessage from "../../../fragments/SuccessMessage";
+import {useNavigate} from "react-router-dom";
 
 function EditProfile() {
-  const userPict = localStorage.getItem("foto");
-  const [uploadPhoto, setUploadPhoto] = useState(null);
-  const [changeBio, setChangeBio] = useState("");
-  const [changeUsername, setChangeUsername] = useState("");
+  const token = localStorage.getItem("accessToken");
+  const decodedToken = jwtDecode(token);
+  const [infoBio, setInfoBio] = useState("");
+  const [username, setUsername] = useState("");
   const [bioLength, setBioLength] = useState(150);
   const [isPopoverVisible, setIsPopoverVisible] = useState(false);
+  const [isFailMessageShow, setIsFailMessageShow] = useState(false);
+  const [isSuccessMessageShow, setIsSuccessMessageShow] = useState(false);
+  const [failMessage, setFailMessage] = useState("");
+  const [textDescription, setTextDescription] = useState("");
+  const [textUploadPict, setTextUploadPict] = useState("Change Profile Picture");
+  const [buttonText, setButtonText] = useState("Save Changes");
   const fileInputRef = useRef(null);
+  const [URLPicture, setURLPicture] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchAPI = async () => {
+      setTextDescription("Please Wait...");
+      try {
+        const responseAPI = await axios.get("https://rps-game-be.vercel.app/user/biodata", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const {username, info, profilePicture} = responseAPI.data;
+        setURLPicture(profilePicture);
+        setUsername(username);
+        setInfoBio(info ? info : "");
+      } catch (error) {
+        if (error.response.status === 401 || error.response.status === 500) {
+          navigate("/dashboard");
+        } else {
+          alert(error);
+        }
+      }
+      setTextDescription("");
+    };
+    fetchAPI();
+  }, []);
 
   const handleFileButtonClick = () => {
     if (fileInputRef.current) {
@@ -24,51 +65,94 @@ function EditProfile() {
     }
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
+  const handleFileChange = async (e) => {
     setIsPopoverVisible(false);
-    // Ubah gambar profil hanya jika file yang dipilih bukan null
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        // Atur gambar yang dipilih ke dalam state
-        setUploadPhoto(reader.result);
-      };
-      reader.readAsDataURL(file);
+    if (e.target.files.length > 0) {
+      const selectedFile = e.target.files[0];
+      const imagePath = `assets/user-id-${decrypt(decodedToken.encryptedId)}/photo-profile-${decodedToken.username}`;
+      const imageRef = ref(storage, imagePath);
+      setTextUploadPict("Uploading...");
+      await uploadBytes(imageRef, selectedFile);
+
+      getDownloadURL(imageRef).then(async (res) => {
+        setURLPicture(res);
+        try {
+          await axios.put(
+            "https://rps-game-be.vercel.app/user/biodata",
+            {
+              profilePicture: res,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          setURLPicture(res);
+        } catch (error) {
+          if (error.response.status === 401 || error.response.status === 500) {
+            navigate("/dashboard");
+          } else {
+            alert(error);
+          }
+        }
+      });
+      setTextUploadPict("Change Profile Picture");
     }
   };
 
   const handleDeletePict = (e) => {
-    setUploadPhoto(DefaultPict);
     e.stopPropagation();
     setIsPopoverVisible(false);
   };
 
-  const handleSaveChanges = () => {
-    if (uploadPhoto) {
-      if (uploadPhoto === DefaultPict) {
-        localStorage.setItem("foto", null);
+  const handleSaveChanges = async (e) => {
+    e.preventDefault();
+    setButtonText("Loading...");
+    setTextDescription("Save update...");
+    try {
+      await axios.put(
+        "https://rps-game-be.vercel.app/user/profile",
+        {
+          username: username,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      await axios.put(
+        "https://rps-game-be.vercel.app/user/biodata",
+        {
+          infoBio: infoBio !== "" ? infoBio : null,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setIsSuccessMessageShow(true);
+    } catch (error) {
+      if (error.code === "ERR_NETWORK") {
+        navigate("/dashboard");
+      } else if (error.response.status) {
+        if (error.response.status === 401 || error.response.status === 500) {
+          navigate("/dashboard");
+        }
       } else {
-        localStorage.setItem("foto", uploadPhoto);
+        setFailMessage(error.response.data.message);
       }
+      setIsFailMessageShow(true);
     }
-  };
-
-  const setImage = () => {
-    if (uploadPhoto !== null) {
-      return uploadPhoto;
-    } else {
-      if (userPict === "null" || userPict === null) {
-        return DefaultPict;
-      } else {
-        return userPict;
-      }
-    }
+    setTextDescription("");
+    setButtonText("Save Changes");
   };
 
   const calculatingHeight = () => {
-    const countLetter = changeBio.length;
-    const countNewline = (changeBio.match(/\n/g) || []).length;
+    const countLetter = infoBio.length;
+    const countNewline = (infoBio.match(/\n/g) || []).length;
     if (countLetter < 95) {
       if (countNewline == 0) {
         return 120;
@@ -82,9 +166,10 @@ function EditProfile() {
 
   return (
     <>
-      <form className="form-edit-profile">
+      {isSuccessMessageShow && <SuccessMessage>Successfully Updated User Data</SuccessMessage>}
+      <form className="form-edit-profile" onSubmit={handleSaveChanges}>
         <div className="edit-picture" onClick={() => setIsPopoverVisible(true)}>
-          <ProfileIcon classImg="center-img" userPict={setImage()} />
+          <ProfileIcon classImg="center-img" userPict={URLPicture ? URLPicture : DefaultPict} />
           {isPopoverVisible && (
             <Popover
               title="Change Picture"
@@ -98,20 +183,25 @@ function EditProfile() {
               }}
             />
           )}
-          <div>Change Profile Picture</div>
-          <Input type="file" name="editPict" handleChange={handleFileChange} fileRef={fileInputRef} />
+          <div>{textUploadPict}</div>
+          <Input type="file" name="editPict" handleChange={handleFileChange} fileRef={fileInputRef} accept="image/png, image/jpeg" />
         </div>
+
         <InputForm
           type="text"
           name="editUsername"
           placeholder="Input New Username"
           label="Change Username"
           handleChange={(e) => {
-            setChangeUsername(e.target.value);
+            setUsername(e.target.value);
+            setIsFailMessageShow(false);
+            setIsSuccessMessageShow(false);
           }}
-          pattern={validationUsername(changeUsername).pattern}
-          errorMessage={validationUsername(changeUsername).message}
+          value={username}
+          pattern={validationUsername(username).pattern}
+          errorMessage={validationUsername(username).message}
         />
+        {isFailMessageShow && <FailMessage>{failMessage}</FailMessage>}
         <TextareaForm
           style={{height: `${calculatingHeight()}px`}}
           name="edit-bio"
@@ -122,29 +212,31 @@ function EditProfile() {
             if (newlineCount < 2) {
               setBioLength(150);
               if (text.length <= bioLength) {
-                setChangeBio(e.target.value);
+                setInfoBio(e.target.value);
               }
             } else {
               if (newlineCount < 4) {
                 setBioLength(100);
                 if (text.length <= bioLength) {
-                  setChangeBio(e.target.value);
+                  setInfoBio(e.target.value);
                 }
               } else if (newlineCount > 10) {
                 setBioLength(10);
               } else {
                 setBioLength(30);
                 if (text.length <= bioLength) {
-                  setChangeBio(e.target.value);
+                  setInfoBio(e.target.value);
                 }
               }
             }
+            setIsSuccessMessageShow(false);
           }}
-          textLength={changeBio.length}
+          value={infoBio}
+          textLength={infoBio.length}
           maxLength={bioLength}
         />
-        <p>*save all changes before leave</p>
-        <Button handleClick={handleSaveChanges}>Save Changes</Button>
+        <h3 style={{textAlign: "center", color: "#f3af34"}}>{textDescription}</h3>
+        <Button>{buttonText}</Button>
       </form>
     </>
   );

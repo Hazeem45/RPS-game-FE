@@ -1,9 +1,10 @@
-div.auth-fail-message {
-  color: red;
+div.success-message {
+  font-weight: 600;
+  color: rgb(16, 116, 16);
   width: 100%;
   box-sizing: border-box;
-  background-color: pink;
-  border: 2px dashed red;
+  background-color: rgb(186, 255, 186);
+  border: 2px dashed green;
   border-radius: 5px;
   padding: 15px;
   display: grid;

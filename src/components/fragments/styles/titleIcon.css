@@ -1,7 +1,7 @@
 .title-icon {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-evenly;
   padding: 0 10px;
   border-radius: 5px;
   width: 190px;
@@ -18,4 +18,9 @@
 
 .title-icon h2 {
   margin: 0;
+}
+
+.title-icon:active {
+  transform: scale(97%);
+  transition: 2ms;
 }

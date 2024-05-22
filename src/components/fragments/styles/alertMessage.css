@@ -1,0 +1,45 @@
+div.alert-message {
+  position: fixed;
+  inset: 0;
+  backdrop-filter: brightness(30%);
+  z-index: 10;
+  display: grid;
+  place-items: center;
+}
+
+.alert-message .alert-box {
+  max-width: auto;
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 0 10px 2px black;
+}
+
+.alert-message .title {
+  font-family: "Open Sans", sans-serif;
+  border-radius: 10px 10px 0 0;
+  padding: 8px 10px;
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  gap: 7px;
+  background-color: orangered;
+  color: black;
+  letter-spacing: normal;
+  justify-content: center;
+  word-spacing: normal;
+}
+
+.alert-message .title img {
+  max-width: 25px;
+}
+
+.alert-message .message-content {
+  padding: 10px;
+}
+
+.alert-message .alert-button {
+  width: 100px;
+}
