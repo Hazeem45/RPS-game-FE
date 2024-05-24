@@ -9,6 +9,7 @@ import {DefaultPict, GearIcon} from "../../../assets/Image";
 import {useSidebar} from "../../../utils/SidebarContext";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
+import {getLocaleDate} from "../../../utils/formatDate";
 
 function Index() {
   const token = localStorage.getItem("accessToken");
@@ -25,7 +26,7 @@ function Index() {
     address: null,
     gender: null,
     birthDate: null,
-    joinDate: null,
+    joinAt: null,
   });
 
   const backgroundColor = () => {
@@ -44,7 +45,7 @@ function Index() {
             Authorization: `Bearer ${token}`,
           },
         });
-        const {username, profilePicture, firstName, lastName, info, address, gender, birthDate, joinDate} = responseAPI.data;
+        const {username, profilePicture, firstName, lastName, info, address, gender, birthDate, joinAt} = responseAPI.data;
         setUserData({
           username: username,
           URLPicture: profilePicture,
@@ -54,7 +55,7 @@ function Index() {
           address: address,
           gender: gender,
           birthDate: birthDate,
-          joinDate: joinDate,
+          joinAt: getLocaleDate(joinAt).date,
         });
       } catch (error) {
         if (error.code === "ERR_NETWORK") {
@@ -127,7 +128,7 @@ function Index() {
                   address={userData.address}
                   gender={userData.gender}
                   birthday={userData.birthDate}
-                  join={userData.joinDate}
+                  join={userData.joinAt}
                 />
               }
             />
@@ -135,7 +136,7 @@ function Index() {
         )}
         {openSetting && (
           <Routes>
-            <Route path="/settings" element={<Settings />} />
+            <Route path="/settings" element={<Settings URLPicture={userData.URLPicture} />} />
           </Routes>
         )}
       </div>

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import "./settings.css";
 import MenuSettings from "./settings/MenuSettings";
 import EditProfile from "./settings/EditProfile";
@@ -7,9 +7,8 @@ import EditBiodata from "./settings/EditBiodata";
 import PersonalDetail from "./settings/PersonalDetail";
 import {useSidebar} from "../../../utils/SidebarContext";
 
-function Settings() {
+function Settings({URLPicture}) {
   const {title, setTitle, isMenuSettingVisible, setIsMenuSettingVisible, isEditProfileVisible, setIsEditProfileVisible, isEditBiodataVisible, setIsEditBiodataVisible, isPersonalDetailVisible, setIsPersonalDetailVisible} = useSidebar();
-  const [email, setEmail] = useState("example@gmail.com");
   const navigate = useNavigate();
 
   return (
@@ -54,7 +53,7 @@ function Settings() {
       )}
       {isEditProfileVisible && <EditProfile />}
       {isEditBiodataVisible && <EditBiodata />}
-      {isPersonalDetailVisible && <PersonalDetail email={email} />}
+      {isPersonalDetailVisible && <PersonalDetail URLPicture={URLPicture} />}
     </div>
   );
 }

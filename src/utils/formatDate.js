@@ -28,3 +28,18 @@ export const changeFormatDateToYYYYMMDD = (value) => {
   const formattedDate = `${year}-${monthNumber}-${day}`;
   return formattedDate;
 };
+
+export const getLocaleDate = (value) => {
+  const date = new Date(value);
+  const splitedDate = date.toString().split(" ");
+  const time = splitedDate[4].slice(0, -3);
+  const timeZone = splitedDate[5].replace(/[0]/g, "");
+  const localZone = [splitedDate[6], splitedDate[7], splitedDate[8]].join(" ");
+  const dateAsObject = {
+    date: `${splitedDate[2]} ${splitedDate[1]} ${splitedDate[3]}`,
+    time: time,
+    timeZone: timeZone.replace("GMT", "UTC"),
+    localZone: localZone,
+  };
+  return dateAsObject;
+};

@@ -6,9 +6,11 @@ import {useNavigate} from "react-router-dom";
 import {useSidebar} from "../../../utils/SidebarContext";
 import axios from "axios";
 import {DefaultPict} from "../../../assets/Image";
+import {jwtDecode} from "jwt-decode";
 
 function Index() {
   const token = localStorage.getItem("accessToken");
+  const decodedToken = jwtDecode(token);
   const {toggleSidebar, setIsSidebarOpen, isSidebarOpen, setAnimationSidebar, setOpenProfile, setOpenSetting, setIsHistoryOpen, isHistoryOpen} = useSidebar();
   const navigate = useNavigate();
   const [userData, setUserData] = useState({
@@ -17,11 +19,11 @@ function Index() {
   });
 
   useEffect(() => {
-    if (window.location.pathname === `/dashboard/profile/${userData.username}`) {
+    if (window.location.pathname === `/dashboard/profile/${decodedToken.username}`) {
       setIsSidebarOpen(true);
       setOpenProfile(true);
       setOpenSetting(false);
-    } else if (window.location.pathname === `/dashboard/profile/${userData.username}/history`) {
+    } else if (window.location.pathname === `/dashboard/profile/${decodedToken.username}/history`) {
       setOpenProfile(true);
       setIsHistoryOpen(true);
       setOpenSetting(false);
@@ -85,7 +87,7 @@ function Index() {
         }}
       />
       <ProfileNav
-        username={userData.username}
+        username={decodedToken.username}
         handleClick={() => {
           if (isSidebarOpen) {
             if (!isHistoryOpen) {

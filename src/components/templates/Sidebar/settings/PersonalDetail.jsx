@@ -2,8 +2,10 @@ import React, {useEffect, useState} from "react";
 import "./personalDetail.css";
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
+import {getLocaleDate} from "../../../../utils/formatDate";
+import Input from "../../../elements/Input";
 
-function PersonalDetail() {
+function PersonalDetail({URLPicture}) {
   const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
   const [textDescription, setTextDescription] = useState("");
@@ -11,6 +13,8 @@ function PersonalDetail() {
     id: "",
     username: "",
     email: "",
+    joinDate: "",
+    userTimezone: "",
   });
   useEffect(() => {
     const fetchAPI = async () => {
@@ -21,8 +25,10 @@ function PersonalDetail() {
             Authorization: `Bearer ${token}`,
           },
         });
-        const {id, username, email} = responseAPI.data;
-        setUserData({id, username, email});
+        const {id, username, email, joinAt} = responseAPI.data;
+        const joinDate = `${getLocaleDate(joinAt).date} ${getLocaleDate(joinAt).time}`;
+        const userTimezone = `${getLocaleDate(joinAt).timeZone} ${getLocaleDate(joinAt).localZone}`;
+        setUserData({id, username, email, joinDate, userTimezone});
       } catch (error) {
         if (error.code === "ERR_NETWORK") {
           navigate("/dashboard");
@@ -53,6 +59,32 @@ function PersonalDetail() {
         <div>
           <p style={{color: "#f3af34"}}>Your Email :</p>
           <p>{userData.email}</p>
+        </div>
+        <div>
+          <p style={{color: "#f3af34"}}>Join At :</p>
+          <p>{userData.joinDate}</p>
+        </div>
+        <div>
+          <p style={{color: "#f3af34"}}>Your Time Zone :</p>
+          <p>{userData.userTimezone}</p>
+        </div>
+        <div>
+          <p style={{color: "#f3af34"}}>Your URL Profile Picture :</p>
+          <div style={{display: "flex", alignItems: "center", gap: "5px"}}>
+            <input type="text" value={URLPicture ? URLPicture : "picture not set"} readOnly />
+            <button
+              style={{position: "inherit", width: "70px", background: "orange"}}
+              onClick={() => {
+                if (URLPicture) {
+                  navigator.clipboard.writeText(URLPicture);
+                  alert("URL copied");
+                }
+              }}
+            >
+              Copy
+            </button>
+          </div>
+          <p>*Don't share your Profile Picture URL </p>
         </div>
       </div>
       <Link>Change Password?</Link>
