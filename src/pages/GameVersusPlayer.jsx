@@ -1,48 +1,110 @@
 import React, {useEffect, useState} from "react";
 import RoomDetail from "../components/templates/RoomDetail";
 import {gameRules} from "../utils/validation";
+import {useParams} from "react-router-dom";
+import {jwtDecode} from "jwt-decode";
+import axios from "axios";
 
 function GameVersusPlayer() {
-  const [roomName, setRoomName] = useState("");
-  const [player1Name, setPlayer1Name] = useState("d.destroyer");
-  const [player2Name, setPlayer2Name] = useState("Waiting...");
-  const [player1Choice, setPlayer1Choice] = useState("");
-  const [player2Choice, setPlayer2Choice] = useState("");
-  const [result, setResult] = useState("");
+  const {roomId} = useParams();
+  const token = localStorage.getItem("accessToken");
+  const decodedToken = jwtDecode(token);
+  const [roomDetails, setRoomDetails] = useState({
+    roomName: null,
+    player1Name: null,
+    player2Name: null,
+    player1Choice: null,
+    player2Choice: null,
+    gameResult: null,
+  });
   const [isHover, setIsHover] = useState(false);
   const [onHover, setOnHover] = useState("");
   const [isChoiceDecided, setIsChoiceDecided] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
   const [popupValue, setPopupValue] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const resultGame = gameRules(player1Choice, player2Choice);
-    setResult(resultGame);
-  }, [player1Choice, player2Choice]);
+    const fetchAPIroomDetail = async () => {
+      setIsLoading(true);
+      try {
+        const responseAPI = await axios.get(`https://rps-game-be.vercel.app/game/room/${roomId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const {roomName, player1, player2, player1Choice, player2Choice, gameResult} = responseAPI.data;
+        setRoomDetails({
+          roomName,
+          player1Name: player1,
+          player2Name: player2 ? player2 : "Waiting...",
+          player1Choice: player1Choice.toLowerCase(),
+          player2Choice: player2Choice ? player2Choice.toLowerCase() : null,
+          gameResult,
+        });
+        if (player2Choice) {
+          setIsChoiceDecided(true);
+        }
+      } catch (error) {
+        if (error.code === "ERR_NETWORK") {
+          navigate("/dashboard");
+        } else if (error.response.status) {
+          if (error.response.status === 401 || error.response.status === 500 || error.response.status === 504) {
+            navigate("/dashboard");
+          }
+        } else {
+          alert(error);
+        }
+      }
+      setIsLoading(false);
+    };
+    fetchAPIroomDetail();
+  }, []);
 
-  // temporary player 1 choose, will be fix soon when implementation fetch api
-  const randomChoiceCom = () => {
-    const availableChoice = ["rock", "paper", "scissors"];
-    const randomInt = Math.floor(Math.random() * 3);
-    const getChoice = availableChoice[randomInt];
-    setPlayer1Choice(getChoice);
-  };
-
-  // player choose handling
-  const handleClick = (e) => {
+  // player 2 choose
+  const handleClick = async (e) => {
     if (isChoiceDecided) {
       setPopupValue("a Room Can Only be Played Once! Please Find Another Room");
       setPopupVisible(true);
     } else {
-      setPlayer2Choice(e.target.alt);
-      setIsChoiceDecided(true);
-      setPlayer2Name("PLAYER 2");
-      randomChoiceCom();
+      setPopupVisible(false);
+      if (e.target.alt) {
+        setRoomDetails({...roomDetails, player2Choice: e.target.alt});
+        setIsLoading(true);
+        try {
+          const responseAPI = await axios.put(
+            `https://rps-game-be.vercel.app/game/room/${roomId}`,
+            {player2Choice: e.target.alt},
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          const {player1Choice, yourChoice, gameResult} = responseAPI.data;
+          setRoomDetails({
+            ...roomDetails,
+            player1Choice: player1Choice.toLowerCase(),
+            player2Choice: yourChoice.toLowerCase(),
+            player2Name: decodedToken.username,
+            gameResult,
+          });
+          setIsChoiceDecided(true);
+        } catch (error) {
+          if (error.response.status === 403) {
+            setPopupValue(error.response.data.message);
+            setRoomDetails({...roomDetails, player2Choice: null});
+            setPopupVisible(true);
+          } else {
+            alert(error);
+          }
+        }
+        setIsLoading(false);
+      }
     }
   };
 
   // hover event listener
-
   const handleMouseEnter = (e) => {
     setOnHover(e.target.id);
     setIsHover(true);
@@ -85,15 +147,15 @@ function GameVersusPlayer() {
 
   return (
     <RoomDetail
-      title={`Room: ${roomName}`}
-      rockSelectedP1={player1Choice === "rock" ? "clicked" : ""}
-      rockSelectedP2={player2Choice === "rock" ? "clicked" : ""}
-      paperSelectedP1={player1Choice === "paper" ? "clicked" : ""}
-      paperSelectedP2={player2Choice === "paper" ? "clicked" : ""}
-      scissorsSelectedP1={player1Choice === "scissors" ? "clicked" : ""}
-      scissorsSelectedP2={player2Choice === "scissors" ? "clicked" : ""}
-      player1={player1Name}
-      player2={player2Name}
+      title={roomDetails.roomName}
+      rockSelectedP1={roomDetails.player1Choice === "rock" ? "clicked" : ""}
+      rockSelectedP2={roomDetails.player2Choice === "rock" ? "clicked" : ""}
+      paperSelectedP1={roomDetails.player1Choice === "paper" ? "clicked" : ""}
+      paperSelectedP2={roomDetails.player2Choice === "paper" ? "clicked" : ""}
+      scissorsSelectedP1={roomDetails.player1Choice === "scissors" ? "clicked" : ""}
+      scissorsSelectedP2={roomDetails.player2Choice === "scissors" ? "clicked" : ""}
+      player1={roomDetails.player1Name}
+      player2={roomDetails.player2Name}
       gameType={"vs-player"}
       styleRock={handleStyleRock()}
       stylePaper={handleStylePaper()}
@@ -101,10 +163,11 @@ function GameVersusPlayer() {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
-      result={result}
+      result={roomDetails.gameResult}
       popupVisible={popupVisible}
       popupValue={popupValue}
       handleClosePopup={() => setPopupVisible(false)}
+      loading={isLoading}
     />
   );
 }

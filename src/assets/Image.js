@@ -13,6 +13,7 @@ import UserIcon from "./image/user.png";
 import RockIcon from "./image/batu.png";
 import PaperIcon from "./image/kertas.png";
 import FightIcon from "./image/pvp.png";
+import CrownIcon from "./image/crown.png";
 import EvanImage from "./image/evan-lahti.jpg";
 import JadaImage from "./image/jada-griffin.jpg";
 import AaronImage from "./image/aaron-williams.jpg";
@@ -57,6 +58,7 @@ export {
   RpsImage,
   PaperIcon,
   FightIcon,
+  CrownIcon,
   EvanImage,
   JadaImage,
   AaronImage,

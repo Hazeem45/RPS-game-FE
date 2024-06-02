@@ -53,6 +53,6 @@
   color: #4caf50;
 }
 
-.room-info .finished {
-  color: orange;
+.room-info .finish {
+  color: orangered;
 }

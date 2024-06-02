@@ -39,7 +39,7 @@ function App() {
           }
         />
         <Route
-          path="/versus-player"
+          path="/versus-player/:roomId"
           element={
             <ProtectedRoute>
               <GameVersusPlayer />

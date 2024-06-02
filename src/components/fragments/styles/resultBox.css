@@ -19,7 +19,7 @@
 }
 
 .result-player {
-  background-color: orangered;
+  background-image: black;
   box-shadow: 0 0 10px 2px black;
   color: white;
   width: 100%;
@@ -28,6 +28,17 @@
   place-items: center;
   text-align: center;
   border-radius: 10px;
+  text-transform: none;
+  background: radial-gradient(circle, rgba(255, 165, 0, 1) 0%, rgba(255, 70, 0, 1) 100%);
+  color: #222;
+  text-shadow: 0 1px 1px white;
+}
+
+.icon-result {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  margin-top: -15px;
 }
 
 .result-win {

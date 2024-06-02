@@ -5,7 +5,7 @@ import {gameRules} from "../utils/validation";
 function GameVersusCom() {
   const [player1Choice, setPlayer1Choice] = useState("");
   const [player2Choice, setPlayer2Choice] = useState("");
-  const [result, setResult] = useState("");
+  const [result, setResult] = useState(null);
   const [isHover, setIsHover] = useState(false);
   const [onHover, setOnHover] = useState("");
   const [isChoiceDecided, setIsChoiceDecided] = useState(false);

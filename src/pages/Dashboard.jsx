@@ -43,6 +43,12 @@ function Dashboard() {
             setAlertTitle(`${error.response.statusText}`);
             setAlertMessage("Try to reload the page or contact the developer");
             setAlertButton("RELOAD");
+          } else if (error.response.status === 504) {
+            setAlertTitle(`${error.message}`);
+            setAlertMessage("Try to reload the page or contact the developer");
+            setAlertButton("RELOAD");
+          } else {
+            alert(error);
           }
           setIsAlertShow(true);
         } else {

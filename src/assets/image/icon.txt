@@ -23,3 +23,5 @@ https://www.freepik.com/icon/maps-flags_447031#fromView=search&page=1&position=3
 <a href="https://www.flaticon.com/free-icons/logout" title="logout icons">Logout icons created by SumberRejeki - Flaticon</a>
 
 <a href="https://www.flaticon.com/free-icons/warning" title="warning icons">Warning icons created by Hilmy Abiyyu A. - Flaticon</a>
+
+<a href="https://www.flaticon.com/free-icons/crown" title="crown icons">Crown icons created by smashingstocks - Flaticon</a>

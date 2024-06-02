@@ -33,7 +33,7 @@ function PersonalDetail({URLPicture}) {
         if (error.code === "ERR_NETWORK") {
           navigate("/dashboard");
         } else if (error.response.status) {
-          if (error.response.status === 401 || error.response.status === 500) {
+          if (error.response.status === 401 || error.response.status === 500 || error.response.status === 504) {
             navigate("/dashboard");
           }
         } else {

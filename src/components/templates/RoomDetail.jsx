@@ -6,6 +6,7 @@ import {FightIcon, RefreshIcon} from "../../assets/Image";
 import ResultBox from "../fragments/ResultBox";
 import TitlePage from "../fragments/TitlePage";
 import Popup from "../fragments/Popup";
+import LoaderSpin from "../fragments/LoaderSpin";
 
 function RoomDetail({
   title,
@@ -29,6 +30,7 @@ function RoomDetail({
   popupVisible,
   popupValue,
   handleClosePopup,
+  loading,
 }) {
   return (
     <div className="room-detail unselectable">
@@ -50,7 +52,7 @@ function RoomDetail({
       />
 
       {popupVisible && <Popup handleClose={handleClosePopup}>{popupValue}</Popup>}
-      <div className="versus-img">{result === "" || result === undefined ? <Image src={FightIcon} /> : <ResultBox playerName={[player1, player2]} gameType={gameType} result={result} />}</div>
+      {loading ? <LoaderSpin /> : <div className="versus-img">{result === null || result === undefined ? <Image src={FightIcon} /> : <ResultBox gameType={gameType} result={result} />}</div>}
       <div className={`refresh-img ${gameType === "vs-com" ? "" : "displayNone"}`} onClick={handleRefresh}>
         <Image src={RefreshIcon} />
       </div>

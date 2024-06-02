@@ -2,54 +2,46 @@ import React, {useEffect, useState} from "react";
 import "./styles/gameHistory.css";
 import TitlePage from "../fragments/TitlePage";
 import {useSidebar} from "../../utils/SidebarContext";
+import axios from "axios";
+import {getLocaleDate} from "../../utils/formatDate";
+import {useNavigate} from "react-router-dom";
 
 function GameHistory({username}) {
-  const {isSidebarOpen} = useSidebar();
+  const token = localStorage.getItem("accessToken");
+  const navigate = useNavigate();
+  const {isSidebarOpen, setIsHistoryOpen} = useSidebar();
   const [matches, setMatches] = useState({
     small: window.matchMedia("(max-width: 768px)").matches,
     large: window.matchMedia("(max-width: 995px)").matches,
   });
-
-  const userHistory = [
-    {
-      id: 1,
-      roomName: "Zeeeber",
-      result: "WIN",
-      date: "12 January 2024",
-      time: "18:00",
-    },
-    {
-      id: 2,
-      roomName: "F22Raptor",
-      result: "LOSE",
-      date: "31 February 2024",
-      time: "17:00",
-    },
-    {
-      id: 3,
-      roomName: "XtraX",
-      result: "DRAW",
-      date: "07 April 2024",
-      time: "14:00",
-    },
-    {
-      id: 4,
-      roomName: "Wengdev",
-      result: "WIN",
-      date: "12 May 2024",
-      time: "08:00",
-    },
-    {
-      id: 5,
-      roomName: "Re:born",
-      result: "WIN",
-      date: "02 July 2024",
-      time: "17:45",
-    },
-  ];
-  const sortedUserHistory = userHistory.slice().sort((a, b) => b.id - a.id);
+  const [userHistory, setUserHistory] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    const fetchAPIuserHistory = async () => {
+      setIsLoading(true);
+      try {
+        const responseAPI = await axios.get("https://rps-game-be.vercel.app/game/history", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setUserHistory(responseAPI.data);
+      } catch (error) {
+        if (error.code === "ERR_NETWORK") {
+          navigate("/dashboard");
+        } else if (error.response.status) {
+          if (error.response.status === 401 || error.response.status === 500 || error.response.status === 504) {
+            navigate("/dashboard");
+          }
+        } else {
+          alert(error);
+        }
+      }
+      setIsLoading(false);
+    };
+    fetchAPIuserHistory();
+
     const smallHandler = (e) => setMatches((prevState) => ({...prevState, small: e.matches}));
     const largeHandler = (e) => setMatches((prevState) => ({...prevState, large: e.matches}));
 
@@ -77,17 +69,48 @@ function GameHistory({username}) {
           </tr>
         </thead>
         <tbody>
-          {/* Membuat baris tabel menggunakan pengulangan map */}
-          {sortedUserHistory.map((game) => (
-            <tr key={game.id} onClick={() => alert(`you will be navigated to room => ${game.roomName}`)}>
+          {userHistory.map((game) => (
+            <tr key={game.roomId} onClick={() => navigate(`/versus-player/${game.roomId}`)}>
               <td>{game.roomName}</td>
               <td className={game.result.toLowerCase()}>{game.result}</td>
-              <td>{game.date}</td>
-              <td className={isSidebarOpen && matches.large ? "displayNone" : "time-column"}>{game.time} UTC+7</td>
+              <td>{getLocaleDate(game.date).date}</td>
+              <td className={isSidebarOpen && matches.large ? "displayNone" : "time-column"}>
+                {`${getLocaleDate(game.date).time} 
+                ${getLocaleDate(game.date).timeZone}`}
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
+      {userHistory.length < 1 && (
+        <div className="rooms-container-2">
+          {isLoading ? (
+            <div className="box-loader">
+              <div className="loader"></div>
+            </div>
+          ) : (
+            <div style={{display: "flex", alignItems: "center", marginTop: "-50px", fontSize: "18px"}}>
+              <div>
+                You don't have a game history yet. return to the{" "}
+                <div
+                  style={{display: "inline", color: "orangered", textDecoration: "orangered underline", cursor: "pointer"}}
+                  onClick={() => {
+                    setIsHistoryOpen(false);
+                    if (isSidebarOpen) {
+                      navigate(`/dashboard/profile/${username}`);
+                    } else {
+                      navigate("/dashboard");
+                    }
+                  }}
+                >
+                  Dashboard
+                </div>{" "}
+                to play
+              </div>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

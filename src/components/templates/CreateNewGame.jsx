@@ -7,15 +7,17 @@ import {validationRoomName} from "../../utils/validation";
 import Popup from "../fragments/Popup";
 import {useNavigate} from "react-router-dom";
 import TitlePage from "../fragments/TitlePage";
+import axios from "axios";
 
 function NewGame() {
+  const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
   const [roomName, setRoomName] = useState("");
   const [choice, setChoice] = useState("");
   const [popupVisible, setPopupVisible] = useState(false);
   const [popupValue, setPopupValue] = useState("");
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (roomName === "" && (choice === "" || choice === undefined)) {
       setPopupValue("Must Give the Room a Name and Select the Available Options!");
       setPopupVisible(true);
@@ -32,7 +34,36 @@ function NewGame() {
         setPopupValue("Room Name must be at least 5 characters and max 10 Characters!");
         setPopupVisible(true);
       } else {
-        alert(`The room has been successfully created, then you will be navigated to room => ${roomName}`);
+        try {
+          const responseAPI = await axios.post(
+            "https://rps-game-be.vercel.app/game/new-room",
+            {
+              roomName,
+              player1Choice: choice,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          const {roomId, message} = responseAPI.data;
+          alert(message);
+          navigate(`/versus-player/${roomId}`);
+        } catch (error) {
+          if (error.code === "ERR_NETWORK") {
+            navigate("/dashboard");
+          } else if (error.response.status) {
+            if (error.response.status === 401 || error.response.status === 500 || error.response.status === 504) {
+              navigate("/dashboard");
+            } else {
+              setPopupValue(error.response.data.message);
+            }
+            setPopupVisible(true);
+          } else {
+            alert(error);
+          }
+        }
       }
     }
   };

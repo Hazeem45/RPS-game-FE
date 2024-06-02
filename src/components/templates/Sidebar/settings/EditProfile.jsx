@@ -48,7 +48,7 @@ function EditProfile() {
         setUsername(username);
         setInfoBio(info ? info : "");
       } catch (error) {
-        if (error.response.status === 401 || error.response.status === 500) {
+        if (error.response.status === 401 || error.response.status === 500 || error.response.status === 504) {
           navigate("/dashboard");
         } else {
           alert(error);
@@ -90,7 +90,7 @@ function EditProfile() {
           );
           setURLPicture(res);
         } catch (error) {
-          if (error.response.status === 401 || error.response.status === 500) {
+          if (error.response.status === 401 || error.response.status === 500 || error.response.status === 504) {
             navigate("/dashboard");
           } else {
             alert(error);
@@ -138,7 +138,7 @@ function EditProfile() {
       if (error.code === "ERR_NETWORK") {
         navigate("/dashboard");
       } else if (error.response.status) {
-        if (error.response.status === 401 || error.response.status === 500) {
+        if (error.response.status === 401 || error.response.status === 500 || error.response.status === 504) {
           navigate("/dashboard");
         }
       } else {

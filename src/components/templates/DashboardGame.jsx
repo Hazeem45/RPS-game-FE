@@ -1,104 +1,74 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import "./styles/dashboardGame.css";
 import GameBox from "../fragments/GameBox";
 import LineWithText from "../fragments/LineWithText";
 import RoomBox from "../fragments/RoomBox";
 import Select from "../elements/Select";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import axios from "axios";
 
 function DashboardGame() {
+  const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
   const [sortRoom, setSortRoom] = useState("Available");
-  const [room, setRoom] = useState([
-    {
-      roomId: 1,
-      roomName: "WWWWWWWWWW",
-      player1: "makmur",
-      player2: "warmad",
-      status: "Finished",
-    },
-    {
-      roomId: 2,
-      roomName: "Veler",
-      player1: "makmur",
-      player2: "warmad",
-      status: "Finished",
-    },
-    {
-      roomId: 3,
-      roomName: "Game Room",
-      player1: "warmad",
-      player2: "--",
-      status: "Available",
-    },
-    {
-      roomId: 4,
-      roomName: "Ikan Lele",
-      player1: "mirzaXriot",
-      player2: "kholilGamingX",
-      status: "Finished",
-    },
-    {
-      roomId: 5,
-      roomName: "Nopo Bener",
-      player1: "D'xagree",
-      player2: "--",
-      status: "Available",
-    },
-    {
-      roomId: 6,
-      roomName: "Clasher",
-      player1: "swagger",
-      player2: "--",
-      status: "Available",
-    },
-    {
-      roomId: 7,
-      roomName: "Wengdev",
-      player1: "rjs_",
-      player2: "--",
-      status: "Available",
-    },
-    {
-      roomId: 8,
-      roomName: "XontoL",
-      player1: "pler.qda",
-      player2: "move-on",
-      status: "Finished",
-    },
-    {
-      roomId: 9,
-      roomName: "tulung",
-      player1: "No-Mercy",
-      player2: "Forget.it",
-      status: "Finished",
-    },
-    {
-      roomId: 10,
-      roomName: "PEJATEN",
-      player1: "mang_eak",
-      player2: "zeeeb",
-      status: "Finished",
-    },
-    {
-      roomId: 11,
-      roomName: "SCP 999",
-      player1: "afh.imyh",
-      player2: "l3l3",
-      status: "Finished",
-    },
-    {
-      roomId: 12,
-      roomName: "Raptor",
-      player1: "mang_eak",
-      player2: "--",
-      status: "Available",
-    },
-  ]);
+  const [allRoom, setAllRoom] = useState([]);
+  const [availableRoom, setAvailableRoom] = useState([]);
+  const [finishedRoom, setFinishedRoom] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchAPIGameRoom = async () => {
+      setIsLoading(true);
+      try {
+        const responseAPIallRoom = await axios.get("https://rps-game-be.vercel.app/game/all-rooms", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setAllRoom(responseAPIallRoom.data);
+
+        const responseAPIavailableRoom = await axios.get("https://rps-game-be.vercel.app/game/available-rooms", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setAvailableRoom(responseAPIavailableRoom.data);
+
+        const responseAPIfinishedRoom = await axios.get("https://rps-game-be.vercel.app/game/finished-rooms", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setFinishedRoom(responseAPIfinishedRoom.data);
+      } catch (error) {
+        if (error.code === "ERR_NETWORK") {
+          navigate("/dashboard");
+        } else if (error.response.status) {
+          if (error.response.status === 401 || error.response.status === 500 || error.response.status === 504) {
+            navigate("/dashboard");
+          }
+        } else {
+          alert(error);
+        }
+      }
+      setIsLoading(false);
+    };
+    fetchAPIGameRoom();
+  }, [setAllRoom, setAvailableRoom, setFinishedRoom]);
+
+  const chooseRoomType = () => {
+    if (sortRoom === "Available") {
+      return availableRoom;
+    } else if (sortRoom === "Finish") {
+      return finishedRoom;
+    } else {
+      return allRoom;
+    }
+  };
 
   return (
     <div className="dashboard unselectable">
-      <div className="game">
+      <div className="game-bar">
         <GameBox onClick={() => navigate("/versus-com")}>VS COM</GameBox>
         <GameBox onClick={() => navigate("/create-room")}>Create Room</GameBox>
       </div>
@@ -108,36 +78,32 @@ function DashboardGame() {
       <div className="sort-room">
         <Select
           name="type-room"
-          options={["Available", "Finished", "All Game"]}
+          options={["Available", "Finish", "All Game"]}
           handleChange={(e) => {
             setSortRoom(e.target.value);
           }}
         />
       </div>
-      <div className="game-rooms">
-        {room
-          .filter((room) => {
-            if (sortRoom === "All Game") {
-              return true;
-            } else {
-              return room.status === sortRoom;
-            }
-          })
-          .map((room) => {
-            return (
-              <RoomBox
-                key={room.roomId}
-                roomName={room.roomName}
-                player1={room.player1}
-                player2={room.player2}
-                status={room.status}
-                handleClick={() => {
-                  alert(`you will be navigated to room => ${room.roomName}`);
-                }}
-              />
-            );
+      {chooseRoomType().length > 0 ? (
+        <div className="rooms-container">
+          {chooseRoomType().map((room) => {
+            return <RoomBox key={room.roomId} handleClick={() => navigate(`/versus-player/${room.roomId}`)} roomName={room.roomName} player1={room.player1} player2={room.player2} status={room.roomStatus} />;
           })}
-      </div>
+        </div>
+      ) : (
+        <div className="rooms-container-2">
+          {isLoading ? (
+            <div className="box-loader">
+              <div className="loader"></div>
+            </div>
+          ) : (
+            <div>
+              <h4>{sortRoom} room was not found!</h4>
+              {sortRoom === "Available" && <Link to={"/create-room"}>Create New Room</Link>}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

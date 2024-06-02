@@ -94,7 +94,7 @@ function RegisterForm() {
         } else if (error.response.status === 500) {
           setFailMessage(error.response.statusText);
         } else {
-          setFailMessage(error.response.data.message);
+          setFailMessage(error.message);
         }
       } else {
         alert(error);
