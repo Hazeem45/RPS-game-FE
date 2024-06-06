@@ -63,6 +63,7 @@ function LoginForm() {
         const accessToken = responseAPI.data.accessToken;
         localStorage.setItem("accessToken", accessToken);
         navigate("/dashboard");
+        location.reload();
       }
     } catch (error) {
       if (error.code === "ERR_NETWORK") {
@@ -81,11 +82,6 @@ function LoginForm() {
       setIsFailMessageShow(true);
     }
     setButtonText("Login");
-
-    // temporarily use password and email as accesstoken, because they are not yet connected to the backend (for testing only)
-    // const accessToken = values.email + values.password;
-    // localStorage.setItem("accessToken", accessToken);
-    // navigate("/dashboard");
   };
 
   return (

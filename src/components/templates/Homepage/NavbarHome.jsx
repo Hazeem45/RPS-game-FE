@@ -5,8 +5,6 @@ import {UserIcon} from "../../../assets/Image";
 
 function NavbarHome({accessToken}) {
   const navigate = useNavigate();
-  const username = localStorage.getItem("username");
-
   const [showMenu, setShowMenu] = useState(false);
 
   const toggleMenu = () => {
@@ -39,11 +37,11 @@ function NavbarHome({accessToken}) {
               </li>
               <li
                 onClick={() => {
-                  accessToken ? navigate(`/dashboard/profile/${username}`) : navigate("/login");
+                  accessToken ? navigate(`/dashboard/profile`) : navigate("/login");
                 }}
               >
-                {accessToken ? "profile " : "login"}
                 {accessToken && <Image src={UserIcon} />}
+                {accessToken ? "profile" : "login"}
               </li>
             </ul>
           </div>

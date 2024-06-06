@@ -5,11 +5,12 @@ import InputForm from "../fragments/InputForm";
 import Button from "../elements/Button";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import {changeFormatDateToDDMMYYYY, changeFormatDateToYYYYMMDD} from "../../utils/formatDate";
+import {changeFormatDateToDDMMYYYY, changeFormatDateToDayMonthYear, changeFormatDateToYYYYMMDD} from "../../utils/formatDate";
 import SuccessMessage from "../fragments/SuccessMessage";
-// import formatTimeByTimezoneOffset from "../../utils/formatTimeByTimezoneOffset";
+import {useProfile} from "../../utils/UserProfileContext";
 
 function BiodataForm({page}) {
+  const {userData, setUserData} = useProfile();
   const token = localStorage.getItem("accessToken");
   const [buttonText, setButtonText] = useState(page ? "CONFIRM" : "Save Changes");
   const [textDescription, setTextDescription] = useState("");
@@ -17,11 +18,11 @@ function BiodataForm({page}) {
   const navigate = useNavigate();
   const [gendersIndex, setGendersIndex] = useState([]);
   const [values, setValues] = useState({
-    firstname: "",
-    lastname: "",
-    address: "",
-    gender: "",
-    date: "",
+    firstname: null,
+    lastname: null,
+    address: null,
+    gender: null,
+    date: null,
   });
   const [buttonStyle, setButtonStyle] = useState({
     background: "#333",
@@ -30,7 +31,6 @@ function BiodataForm({page}) {
   });
 
   const handleChange = (e) => {
-    // setValues({...values, [e.target.name]: e.target.value});
     const {name, value} = e.target;
     if (name === "gender" && value === "--") {
       setValues({...values, gender: ""});
@@ -55,51 +55,26 @@ function BiodataForm({page}) {
       );
       setGendersIndex(["--", "Male", "Female", "Other"]);
     } else {
-      const fetchUserBiodata = async () => {
-        setTextDescription("Please Wait...");
-        try {
-          const responseAPI = await axios.get("https://rps-game-be.vercel.app/user/biodata", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          const {username, firstName, lastName, address, gender, birthDate} = responseAPI.data;
+      setValues({
+        firstname: userData.firstname,
+        lastname: userData.lastname,
+        address: userData.address,
+        gender: userData.gender,
+        date: userData.birthDate ? changeFormatDateToYYYYMMDD(userData.birthDate) : null,
+      });
 
-          setValues({
-            firstname: firstName !== null ? firstName : username,
-            lastname: lastName !== null ? lastName : "",
-            address: address !== null ? address : "",
-            gender: gender !== null ? gender : "",
-            date: birthDate !== null ? changeFormatDateToYYYYMMDD(birthDate) : "",
-          });
-          if (gender === "Male") {
-            setGendersIndex(["Male", "Female", "Other", "--"]);
-          } else if (gender === "Female") {
-            setGendersIndex(["Female", "Male", "Other", "--"]);
-          } else if (gender === "Other") {
-            setGendersIndex(["Other", "Male", "Female", "--"]);
-          } else if (gender === null) {
-            setGendersIndex(["--", "Male", "Female", "Other"]);
-          }
-          if (!page) {
-            setButtonStyle(null);
-          }
-        } catch (error) {
-          if (error.code === "ERR_NETWORK") {
-            navigate("/dashboard");
-          } else if (error.response.status) {
-            if (error.response.status === 401 || error.response.status === 500 || error.response.status === 504) {
-              navigate("/dashboard");
-            }
-          } else {
-            alert(error);
-          }
-        }
-        setTextDescription("");
-      };
-      fetchUserBiodata();
+      if (userData.gender === "Male") {
+        setGendersIndex(["Male", "Female", "Other", "--"]);
+      } else if (userData.gender === "Female") {
+        setGendersIndex(["Female", "Male", "Other", "--"]);
+      } else if (userData.gender === "Other") {
+        setGendersIndex(["Other", "Male", "Female", "--"]);
+      } else if (userData.gender === "") {
+        setGendersIndex(["--", "Male", "Female", "Other"]);
+      }
+      setButtonStyle(null);
     }
-  }, [page && values]);
+  }, [page && values, userData]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -109,11 +84,11 @@ function BiodataForm({page}) {
       const responseAPI = await axios.put(
         "https://rps-game-be.vercel.app/user/biodata",
         {
-          firstName: values.firstname !== "" ? values.firstname : null,
-          lastName: values.lastname !== "" ? values.lastname : null,
-          address: values.address !== "" ? values.address : null,
-          birthDate: values.date !== "" ? changeFormatDateToDDMMYYYY(values.date) : null,
-          gender: values.gender !== "" ? values.gender : null,
+          firstName: values.firstname !== null ? values.firstname : null,
+          lastName: values.lastname !== null ? values.lastname : null,
+          address: values.address !== null ? values.address : null,
+          birthDate: values.date !== null ? changeFormatDateToDDMMYYYY(values.date) : null,
+          gender: values.gender !== null ? values.gender : null,
         },
         {
           headers: {
@@ -122,11 +97,22 @@ function BiodataForm({page}) {
         }
       );
       setIsSuccessMessageShow(true);
+      console.log(changeFormatDateToDayMonthYear(values.date));
+      setUserData({
+        ...userData,
+        firstname: values.firstname,
+        lastname: values.lastname,
+        address: values.address,
+        gender: values.gender,
+        birthDate: values.date ? changeFormatDateToDayMonthYear(values.date) : null,
+      });
       if (page && responseAPI) {
         navigate("/dashboard");
+        location.reload();
       }
     } catch (error) {
-      alert(error.response.statusText);
+      console.log(error);
+      alert(error);
     }
     setTextDescription("");
     setButtonText(page ? "CONFIRM" : "Save Changes");

@@ -1,16 +1,13 @@
 import React, {createContext, useContext, useState} from "react";
 
 const SidebarContext = createContext();
-
 export const useSidebar = () => useContext(SidebarContext);
+
 export const SidebarProvider = ({children}) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [animationSidebar, setAnimationSidebar] = useState("");
-  // profle in sidebar
   const [openProfile, setOpenProfile] = useState(true);
   const [viewImage, setViewImage] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
-  // settings in sidebar
   const [openSetting, setOpenSetting] = useState(false);
   const [title, setTitle] = useState("Settings");
   const [isMenuSettingVisible, setIsMenuSettingVisible] = useState(true);
@@ -28,8 +25,6 @@ export const SidebarProvider = ({children}) => {
         isSidebarOpen,
         setIsSidebarOpen,
         toggleSidebar,
-        animationSidebar,
-        setAnimationSidebar,
         openProfile,
         setOpenProfile,
         openSetting,

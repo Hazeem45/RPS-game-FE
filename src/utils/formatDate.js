@@ -29,6 +29,14 @@ export const changeFormatDateToYYYYMMDD = (value) => {
   return formattedDate;
 };
 
+// change format date from YYYY-MM-DD to DAY[space]MONTH[space]YEAR
+export const changeFormatDateToDayMonthYear = (value) => {
+  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const [year, month, day] = value.split("-");
+  const monthIndex = parseInt(month) - 1;
+  return `${day} ${months[monthIndex]} ${year}`;
+};
+
 export const getLocaleDate = (value) => {
   const date = new Date(value);
   const splitedDate = date.toString().split(" ");

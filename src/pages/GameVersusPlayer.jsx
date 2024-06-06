@@ -1,14 +1,13 @@
 import React, {useEffect, useState} from "react";
 import RoomDetail from "../components/templates/RoomDetail";
-import {gameRules} from "../utils/validation";
 import {useParams} from "react-router-dom";
-import {jwtDecode} from "jwt-decode";
 import axios from "axios";
+import {useProfile} from "../utils/UserProfileContext";
 
 function GameVersusPlayer() {
   const {roomId} = useParams();
   const token = localStorage.getItem("accessToken");
-  const decodedToken = jwtDecode(token);
+  const {userData} = useProfile();
   const [roomDetails, setRoomDetails] = useState({
     roomName: null,
     player1Name: null,
@@ -86,8 +85,7 @@ function GameVersusPlayer() {
             ...roomDetails,
             player1Choice: player1Choice.toLowerCase(),
             player2Choice: yourChoice.toLowerCase(),
-            player2Name: decodedToken.username,
-            gameResult,
+            player2Name: userData.username,
           });
           setIsChoiceDecided(true);
         } catch (error) {

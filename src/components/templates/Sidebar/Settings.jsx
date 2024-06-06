@@ -2,14 +2,12 @@ import React from "react";
 import "./settings.css";
 import MenuSettings from "./settings/MenuSettings";
 import EditProfile from "./settings/EditProfile";
-import {Link, useNavigate} from "react-router-dom";
 import EditBiodata from "./settings/EditBiodata";
 import PersonalDetail from "./settings/PersonalDetail";
 import {useSidebar} from "../../../utils/SidebarContext";
 
-function Settings({URLPicture}) {
+function Settings() {
   const {title, setTitle, isMenuSettingVisible, setIsMenuSettingVisible, isEditProfileVisible, setIsEditProfileVisible, isEditBiodataVisible, setIsEditBiodataVisible, isPersonalDetailVisible, setIsPersonalDetailVisible} = useSidebar();
-  const navigate = useNavigate();
 
   return (
     <div className="layout-setting unselectable">
@@ -47,13 +45,13 @@ function Settings({URLPicture}) {
           }}
           handleLogout={() => {
             localStorage.removeItem("accessToken");
-            navigate("/login");
+            location.reload();
           }}
         />
       )}
       {isEditProfileVisible && <EditProfile />}
       {isEditBiodataVisible && <EditBiodata />}
-      {isPersonalDetailVisible && <PersonalDetail URLPicture={URLPicture} />}
+      {isPersonalDetailVisible && <PersonalDetail />}
     </div>
   );
 }

@@ -16,12 +16,14 @@ import {decrypt} from "../../../../utils/encryption";
 import FailMessage from "../../../fragments/FailMessage";
 import SuccessMessage from "../../../fragments/SuccessMessage";
 import {useNavigate} from "react-router-dom";
+import {useProfile} from "../../../../utils/UserProfileContext";
 
 function EditProfile() {
   const token = localStorage.getItem("accessToken");
   const decodedToken = jwtDecode(token);
-  const [infoBio, setInfoBio] = useState("");
+  const {userData, setUserData} = useProfile();
   const [username, setUsername] = useState("");
+  const [infoBio, setInfoBio] = useState("");
   const [bioLength, setBioLength] = useState(150);
   const [isPopoverVisible, setIsPopoverVisible] = useState(false);
   const [isFailMessageShow, setIsFailMessageShow] = useState(false);
@@ -31,33 +33,12 @@ function EditProfile() {
   const [textUploadPict, setTextUploadPict] = useState("Change Profile Picture");
   const [buttonText, setButtonText] = useState("Save Changes");
   const fileInputRef = useRef(null);
-  const [URLPicture, setURLPicture] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchAPI = async () => {
-      setTextDescription("Please Wait...");
-      try {
-        const responseAPI = await axios.get("https://rps-game-be.vercel.app/user/biodata", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const {username, info, profilePicture} = responseAPI.data;
-        setURLPicture(profilePicture);
-        setUsername(username);
-        setInfoBio(info ? info : "");
-      } catch (error) {
-        if (error.response.status === 401 || error.response.status === 500 || error.response.status === 504) {
-          navigate("/dashboard");
-        } else {
-          alert(error);
-        }
-      }
-      setTextDescription("");
-    };
-    fetchAPI();
-  }, []);
+    setUsername(userData.username === null ? "" : userData.username);
+    setInfoBio(userData.infoBio === null ? "" : userData.infoBio);
+  }, [userData]);
 
   const handleFileButtonClick = () => {
     if (fileInputRef.current) {
@@ -69,13 +50,12 @@ function EditProfile() {
     setIsPopoverVisible(false);
     if (e.target.files.length > 0) {
       const selectedFile = e.target.files[0];
-      const imagePath = `assets/user-id-${decrypt(decodedToken.encryptedId)}/photo-profile-${decodedToken.username}`;
+      const imagePath = `assets/user-id-${decrypt(decodedToken.encryptedId)}/photo-profile-${userData.username}`;
       const imageRef = ref(storage, imagePath);
       setTextUploadPict("Uploading...");
       await uploadBytes(imageRef, selectedFile);
 
       getDownloadURL(imageRef).then(async (res) => {
-        setURLPicture(res);
         try {
           await axios.put(
             "https://rps-game-be.vercel.app/user/biodata",
@@ -88,7 +68,7 @@ function EditProfile() {
               },
             }
           );
-          setURLPicture(res);
+          setUserData({...userData, pictureURL: res});
         } catch (error) {
           if (error.response.status === 401 || error.response.status === 500 || error.response.status === 504) {
             navigate("/dashboard");
@@ -101,9 +81,35 @@ function EditProfile() {
     }
   };
 
-  const handleDeletePict = (e) => {
+  const handleDeletePict = async (e) => {
     e.stopPropagation();
     setIsPopoverVisible(false);
+    if (userData.pictureURL !== DefaultPict) {
+      setTextUploadPict("Removing image...");
+      try {
+        await axios.put(
+          "https://rps-game-be.vercel.app/user/biodata",
+          {
+            profilePicture: null,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setUserData({...userData, pictureURL: DefaultPict});
+      } catch (error) {
+        if (error.response.status === 401 || error.response.status === 500 || error.response.status === 504) {
+          navigate("/dashboard");
+        } else {
+          alert(error);
+        }
+      }
+      setTextUploadPict("Change Profile Picture");
+    } else {
+      alert(`You don't have a profile picture`);
+    }
   };
 
   const handleSaveChanges = async (e) => {
@@ -169,7 +175,7 @@ function EditProfile() {
       {isSuccessMessageShow && <SuccessMessage>Successfully Updated User Data</SuccessMessage>}
       <form className="form-edit-profile" onSubmit={handleSaveChanges}>
         <div className="edit-picture" onClick={() => setIsPopoverVisible(true)}>
-          <ProfileIcon classImg="center-img" userPict={URLPicture ? URLPicture : DefaultPict} />
+          <ProfileIcon classImg="center-img" userPict={userData.pictureURL} />
           {isPopoverVisible && (
             <Popover
               title="Change Picture"

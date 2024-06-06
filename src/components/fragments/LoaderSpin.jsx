@@ -1,10 +1,10 @@
 import React from "react";
 import "./styles/loader.css";
 
-function LoaderSpin() {
+function LoaderSpin({customLoader}) {
   return (
     <div className="box-loader-circle">
-      <div className="loader"></div>
+      <div className="loader" style={customLoader}></div>
     </div>
   );
 }

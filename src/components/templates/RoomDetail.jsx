@@ -52,7 +52,13 @@ function RoomDetail({
       />
 
       {popupVisible && <Popup handleClose={handleClosePopup}>{popupValue}</Popup>}
-      {loading ? <LoaderSpin /> : <div className="versus-img">{result === null || result === undefined ? <Image src={FightIcon} /> : <ResultBox gameType={gameType} result={result} />}</div>}
+      {loading ? (
+        <div style={{width: "100px", height: "100px"}}>
+          <LoaderSpin />
+        </div>
+      ) : (
+        <div className="versus-img">{result === null || result === undefined ? <Image src={FightIcon} /> : <ResultBox gameType={gameType} result={result} />}</div>
+      )}
       <div className={`refresh-img ${gameType === "vs-com" ? "" : "displayNone"}`} onClick={handleRefresh}>
         <Image src={RefreshIcon} />
       </div>

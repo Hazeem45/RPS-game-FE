@@ -1,82 +1,57 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import "./personalDetail.css";
-import {Link, useNavigate} from "react-router-dom";
-import axios from "axios";
+import {Link} from "react-router-dom";
 import {getLocaleDate} from "../../../../utils/formatDate";
-import Input from "../../../elements/Input";
+import {useProfile} from "../../../../utils/UserProfileContext";
+import {jwtDecode} from "jwt-decode";
+import {decrypt} from "../../../../utils/encryption";
 
-function PersonalDetail({URLPicture}) {
+function PersonalDetail() {
   const token = localStorage.getItem("accessToken");
-  const navigate = useNavigate();
-  const [textDescription, setTextDescription] = useState("");
-  const [userData, setUserData] = useState({
-    id: "",
-    username: "",
-    email: "",
-    joinDate: "",
-    userTimezone: "",
-  });
-  useEffect(() => {
-    const fetchAPI = async () => {
-      setTextDescription("Please Wait...");
-      try {
-        const responseAPI = await axios.get("https://rps-game-be.vercel.app/user", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const {id, username, email, joinAt} = responseAPI.data;
-        const joinDate = `${getLocaleDate(joinAt).date} ${getLocaleDate(joinAt).time}`;
-        const userTimezone = `${getLocaleDate(joinAt).timeZone} ${getLocaleDate(joinAt).localZone}`;
-        setUserData({id, username, email, joinDate, userTimezone});
-      } catch (error) {
-        if (error.code === "ERR_NETWORK") {
-          navigate("/dashboard");
-        } else if (error.response.status) {
-          if (error.response.status === 401 || error.response.status === 500 || error.response.status === 504) {
-            navigate("/dashboard");
-          }
-        } else {
-          alert(error);
-        }
-      }
-      setTextDescription("");
-    };
-    fetchAPI();
-  }, []);
+  const decodedToken = jwtDecode(token);
+  const {userData} = useProfile();
+  const [userId, setUserId] = useState(decodedToken.encryptedId);
 
   return (
     <div className="personal-detail">
       <div style={{display: "flex", flexDirection: "column", gap: "15px"}}>
         <div>
           <p style={{color: "#f3af34"}}>Your ID : </p>
-          <p>{userData.id}</p>
+          <input style={{background: "transparent", border: "none", color: "white"}} type="text" value={userId} readOnly />
+          <button
+            style={{position: "inherit", width: "100px", background: "orange"}}
+            onClick={() => {
+              setUserId(decrypt(decodedToken.encryptedId));
+            }}
+          >
+            Decrypt!
+          </button>
         </div>
         <div>
           <p style={{color: "#f3af34"}}>Username : </p>
-          <p>{userData.username}</p>
+          <p>{userData.username === null ? "" : userData.username}</p>
         </div>
         <div>
           <p style={{color: "#f3af34"}}>Your Email :</p>
-          <p>{userData.email}</p>
+          <p>{userData.email === null ? "" : userData.email}</p>
         </div>
         <div>
           <p style={{color: "#f3af34"}}>Join At :</p>
-          <p>{userData.joinDate}</p>
+          <p>{`${getLocaleDate(userData.joinDate).date} ${getLocaleDate(userData.joinDate).time} ${getLocaleDate(userData.joinDate).timeZone}`}</p>
         </div>
         <div>
-          <p style={{color: "#f3af34"}}>Your Time Zone :</p>
-          <p>{userData.userTimezone}</p>
+          <p style={{color: "#f3af34"}}>Your Locale Zone :</p>
+          <p>{getLocaleDate(userData.joinDate).localZone}</p>
         </div>
         <div>
           <p style={{color: "#f3af34"}}>Your URL Profile Picture :</p>
           <div style={{display: "flex", alignItems: "center", gap: "5px"}}>
-            <input type="text" value={URLPicture ? URLPicture : "picture not set"} readOnly />
+            <input type="text" value={userData.pictureURL ? userData.pictureURL : "No Profile Picture"} readOnly />
             <button
               style={{position: "inherit", width: "70px", background: "orange"}}
               onClick={() => {
-                if (URLPicture) {
-                  navigator.clipboard.writeText(URLPicture);
+                if (userData.pictureURL) {
+                  navigator.clipboard.writeText(userData.pictureURL);
                   alert("URL copied");
                 }
               }}
@@ -88,7 +63,6 @@ function PersonalDetail({URLPicture}) {
         </div>
       </div>
       <Link>Change Password?</Link>
-      <h3 style={{textAlign: "center", color: "#f3af34"}}>{textDescription}</h3>
     </div>
   );
 }

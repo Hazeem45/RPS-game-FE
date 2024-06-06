@@ -6,6 +6,7 @@ import RoomBox from "../fragments/RoomBox";
 import Select from "../elements/Select";
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
+import LoaderSpin from "../fragments/LoaderSpin";
 
 function DashboardGame() {
   const token = localStorage.getItem("accessToken");
@@ -87,14 +88,14 @@ function DashboardGame() {
       {chooseRoomType().length > 0 ? (
         <div className="rooms-container">
           {chooseRoomType().map((room) => {
-            return <RoomBox key={room.roomId} handleClick={() => navigate(`/versus-player/${room.roomId}`)} roomName={room.roomName} player1={room.player1} player2={room.player2} status={room.roomStatus} />;
+            return <RoomBox key={room.roomId} handleClick={() => navigate(`/versus-player/${room.roomId}`)} roomName={room.roomName} player1={room.player1} player2={room.player2 ? room.player2 : "---"} status={room.roomStatus} />;
           })}
         </div>
       ) : (
         <div className="rooms-container-2">
           {isLoading ? (
-            <div className="box-loader">
-              <div className="loader"></div>
+            <div style={{width: "100px", height: "100px"}}>
+              <LoaderSpin />
             </div>
           ) : (
             <div>

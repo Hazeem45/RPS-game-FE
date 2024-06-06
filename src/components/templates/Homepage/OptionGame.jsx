@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {CreateRoomPageOverview, DashboardPageOverview, GameBackground, GameHistoryPageOverview, RpsImage, SwitchLeftIcon, SwitchRightIcon, VersusComPageOverview, VersusPlayerPageOverview} from "../../../assets/Image";
 
 function OptionGame() {

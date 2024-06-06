@@ -1,7 +1,5 @@
 import React from "react";
 import "./styles/popover.css";
-import Input from "../elements/Input";
-import Label from "../elements/Label";
 
 function Popover({title, child1, child2, handleClose, handleClickChild1, handleClickChild2}) {
   return (

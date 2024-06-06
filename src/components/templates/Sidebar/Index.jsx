@@ -8,26 +8,11 @@ import Settings from "./Settings";
 import {DefaultPict, GearIcon} from "../../../assets/Image";
 import {useSidebar} from "../../../utils/SidebarContext";
 import {useNavigate} from "react-router-dom";
-import axios from "axios";
-import {getLocaleDate} from "../../../utils/formatDate";
 
 function Index() {
-  const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
-  const {animationSidebar, openProfile, setOpenProfile, openSetting, setOpenSetting, setTitle, setIsMenuSettingVisible, setIsEditProfileVisible, setIsEditBiodataVisible, setIsPersonalDetailVisible, setIsHistoryOpen, isHistoryOpen} =
-    useSidebar();
+  const {openProfile, setOpenProfile, openSetting, setOpenSetting, setTitle, setIsMenuSettingVisible, setIsEditProfileVisible, setIsEditBiodataVisible, setIsPersonalDetailVisible, setIsHistoryOpen, isHistoryOpen} = useSidebar();
   const [matches, setMatches] = useState(window.matchMedia("(min-width: 500px)").matches);
-  const [userData, setUserData] = useState({
-    username: "",
-    URLPicture: null,
-    firstName: null,
-    lastName: null,
-    info: null,
-    address: null,
-    gender: null,
-    birthDate: null,
-    joinAt: null,
-  });
 
   const backgroundColor = () => {
     if (matches) {
@@ -38,48 +23,15 @@ function Index() {
   };
 
   useEffect(() => {
-    const fetchAPI = async () => {
-      try {
-        const responseAPI = await axios.get("https://rps-game-be.vercel.app/user/biodata", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const {username, profilePicture, firstName, lastName, info, address, gender, birthDate, joinAt} = responseAPI.data;
-        setUserData({
-          username: username,
-          URLPicture: profilePicture,
-          firstName: firstName,
-          lastName: lastName,
-          info: info,
-          address: address,
-          gender: gender,
-          birthDate: birthDate,
-          joinAt: getLocaleDate(joinAt).date,
-        });
-      } catch (error) {
-        if (error.code === "ERR_NETWORK") {
-          navigate("/dashboard");
-        } else if (error.response.status) {
-          if (error.response.status === 401 || error.response.status === 500 || error.response.status === 504) {
-            navigate("/dashboard");
-          }
-        } else {
-          alert(error);
-        }
-      }
-    };
-    fetchAPI();
-
     const handler = (e) => setMatches(e.matches);
     const mediaQuery = window.matchMedia("(min-width: 500px)");
     mediaQuery.addEventListener("change", handler);
 
     return () => mediaQuery.removeEventListener("change", handler);
-  }, [window.location.pathname, setUserData]);
+  }, [window.location.pathname]);
 
   return (
-    <div className={`sidebar unselectable ${animationSidebar}`}>
+    <div className={`sidebar unselectable ${window.innerWidth > 768 ? "open-from-left" : ""}`}>
       <div className="option-sidebar">
         <div
           style={{background: openProfile ? backgroundColor() : ""}}
@@ -87,7 +39,7 @@ function Index() {
           onClick={() => {
             setOpenProfile(true);
             setOpenSetting(false);
-            navigate(isHistoryOpen ? `/dashboard/profile/${userData.username}/history` : `/dashboard/profile/${userData.username}`);
+            navigate(isHistoryOpen ? `/dashboard/profile/history` : `/dashboard/profile`);
           }}
         >
           <div className="icon">
@@ -117,26 +69,12 @@ function Index() {
       <div className="content-sidebar">
         {openProfile && (
           <Routes>
-            <Route
-              path={`/profile/${userData.username}/*`}
-              element={
-                <UserProfile
-                  username={userData.username}
-                  picture={userData.URLPicture}
-                  fullname={`${userData.firstName} ${userData.lastName}`}
-                  userBio={userData.info}
-                  address={userData.address}
-                  gender={userData.gender}
-                  birthday={userData.birthDate}
-                  join={userData.joinAt}
-                />
-              }
-            />
+            <Route path={`/profile/*`} element={<UserProfile />} />
           </Routes>
         )}
         {openSetting && (
           <Routes>
-            <Route path="/settings" element={<Settings URLPicture={userData.URLPicture} />} />
+            <Route path="/settings" element={<Settings />} />
           </Routes>
         )}
       </div>

@@ -5,6 +5,7 @@ import {useSidebar} from "../../utils/SidebarContext";
 import axios from "axios";
 import {getLocaleDate} from "../../utils/formatDate";
 import {useNavigate} from "react-router-dom";
+import LoaderSpin from "../fragments/LoaderSpin";
 
 function GameHistory({username}) {
   const token = localStorage.getItem("accessToken");
@@ -58,7 +59,7 @@ function GameHistory({username}) {
 
   return (
     <div className="table-wrapper">
-      <TitlePage classForTitle={isSidebarOpen && matches.small ? "displayNone" : ""}>{!isSidebarOpen && username} Game History</TitlePage>
+      <TitlePage classForTitle={isSidebarOpen && matches.small ? "displayNone" : ""}>{isSidebarOpen || matches.small ? "" : username} Game History</TitlePage>
       <table className="styled-table">
         <thead>
           <tr>
@@ -85,8 +86,8 @@ function GameHistory({username}) {
       {userHistory.length < 1 && (
         <div className="rooms-container-2">
           {isLoading ? (
-            <div className="box-loader">
-              <div className="loader"></div>
+            <div style={{width: "100px", height: "100px"}}>
+              <LoaderSpin />
             </div>
           ) : (
             <div style={{display: "flex", alignItems: "center", marginTop: "-50px", fontSize: "18px"}}>
@@ -97,7 +98,7 @@ function GameHistory({username}) {
                   onClick={() => {
                     setIsHistoryOpen(false);
                     if (isSidebarOpen) {
-                      navigate(`/dashboard/profile/${username}`);
+                      navigate(`/dashboard/profile`);
                     } else {
                       navigate("/dashboard");
                     }
