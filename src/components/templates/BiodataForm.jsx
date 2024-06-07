@@ -8,9 +8,10 @@ import axios from "axios";
 import {changeFormatDateToDDMMYYYY, changeFormatDateToDayMonthYear, changeFormatDateToYYYYMMDD} from "../../utils/formatDate";
 import SuccessMessage from "../fragments/SuccessMessage";
 import {useProfile} from "../../utils/UserProfileContext";
+import {errorHandler} from "../../utils/errorHandler";
 
 function BiodataForm({page}) {
-  const {userData, setUserData} = useProfile();
+  const {userData, setUserData, setAlertTitle, setAlertMessage, setAlertButton, setIsAlertVisible} = useProfile();
   const token = localStorage.getItem("accessToken");
   const [buttonText, setButtonText] = useState(page ? "CONFIRM" : "Save Changes");
   const [textDescription, setTextDescription] = useState("");
@@ -111,8 +112,10 @@ function BiodataForm({page}) {
         location.reload();
       }
     } catch (error) {
-      console.log(error);
-      alert(error);
+      setIsAlertVisible(true);
+      setAlertTitle(errorHandler(error).alertTitle);
+      setAlertMessage(errorHandler(error).alertMessage);
+      setAlertButton(errorHandler(error).alertButton);
     }
     setTextDescription("");
     setButtonText(page ? "CONFIRM" : "Save Changes");

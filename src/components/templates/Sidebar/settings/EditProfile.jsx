@@ -15,13 +15,13 @@ import {jwtDecode} from "jwt-decode";
 import {decrypt} from "../../../../utils/encryption";
 import FailMessage from "../../../fragments/FailMessage";
 import SuccessMessage from "../../../fragments/SuccessMessage";
-import {useNavigate} from "react-router-dom";
 import {useProfile} from "../../../../utils/UserProfileContext";
+import {errorHandler} from "../../../../utils/errorHandler";
 
 function EditProfile() {
   const token = localStorage.getItem("accessToken");
   const decodedToken = jwtDecode(token);
-  const {userData, setUserData} = useProfile();
+  const {userData, setUserData, setAlertTitle, setAlertMessage, setAlertButton, setIsAlertVisible} = useProfile();
   const [username, setUsername] = useState("");
   const [infoBio, setInfoBio] = useState("");
   const [bioLength, setBioLength] = useState(150);
@@ -33,7 +33,6 @@ function EditProfile() {
   const [textUploadPict, setTextUploadPict] = useState("Change Profile Picture");
   const [buttonText, setButtonText] = useState("Save Changes");
   const fileInputRef = useRef(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     setUsername(userData.username === null ? "" : userData.username);
@@ -70,11 +69,10 @@ function EditProfile() {
           );
           setUserData({...userData, pictureURL: res});
         } catch (error) {
-          if (error.response.status === 401 || error.response.status === 500 || error.response.status === 504) {
-            navigate("/dashboard");
-          } else {
-            alert(error);
-          }
+          setIsAlertVisible(true);
+          setAlertTitle(errorHandler(error).alertTitle);
+          setAlertMessage(errorHandler(error).alertMessage);
+          setAlertButton(errorHandler(error).alertButton);
         }
       });
       setTextUploadPict("Change Profile Picture");
@@ -100,11 +98,10 @@ function EditProfile() {
         );
         setUserData({...userData, pictureURL: DefaultPict});
       } catch (error) {
-        if (error.response.status === 401 || error.response.status === 500 || error.response.status === 504) {
-          navigate("/dashboard");
-        } else {
-          alert(error);
-        }
+        setIsAlertVisible(true);
+        setAlertTitle(errorHandler(error).alertTitle);
+        setAlertMessage(errorHandler(error).alertMessage);
+        setAlertButton(errorHandler(error).alertButton);
       }
       setTextUploadPict("Change Profile Picture");
     } else {
@@ -140,17 +137,21 @@ function EditProfile() {
         }
       );
       setIsSuccessMessageShow(true);
+      setUserData({...userData, username: username, infoBio: infoBio});
     } catch (error) {
-      if (error.code === "ERR_NETWORK") {
-        navigate("/dashboard");
-      } else if (error.response.status) {
-        if (error.response.status === 401 || error.response.status === 500 || error.response.status === 504) {
-          navigate("/dashboard");
+      if (error.response.status === 400 || error.response.status === 409) {
+        if (error.response.status === 400) {
+          setFailMessage(error.response.data.errors[0].msg);
+        } else if (error.response.status === 409) {
+          setFailMessage(error.response.data.message);
         }
+        setIsFailMessageShow(true);
       } else {
-        setFailMessage(error.response.data.message);
+        setIsAlertVisible(true);
+        setAlertTitle(errorHandler(error).alertTitle);
+        setAlertMessage(errorHandler(error).alertMessage);
+        setAlertButton(errorHandler(error).alertButton);
       }
-      setIsFailMessageShow(true);
     }
     setTextDescription("");
     setButtonText("Save Changes");

@@ -3,11 +3,12 @@ import RoomDetail from "../components/templates/RoomDetail";
 import {useParams} from "react-router-dom";
 import axios from "axios";
 import {useProfile} from "../utils/UserProfileContext";
+import {errorHandler} from "../utils/errorHandler";
 
 function GameVersusPlayer() {
   const {roomId} = useParams();
   const token = localStorage.getItem("accessToken");
-  const {userData} = useProfile();
+  const {userData, setAlertTitle, setAlertMessage, setAlertButton, setIsAlertVisible} = useProfile();
   const [roomDetails, setRoomDetails] = useState({
     roomName: null,
     player1Name: null,
@@ -45,15 +46,10 @@ function GameVersusPlayer() {
           setIsChoiceDecided(true);
         }
       } catch (error) {
-        if (error.code === "ERR_NETWORK") {
-          navigate("/dashboard");
-        } else if (error.response.status) {
-          if (error.response.status === 401 || error.response.status === 500 || error.response.status === 504) {
-            navigate("/dashboard");
-          }
-        } else {
-          alert(error);
-        }
+        setIsAlertVisible(true);
+        setAlertTitle(errorHandler(error).alertTitle);
+        setAlertMessage(errorHandler(error).alertMessage);
+        setAlertButton(errorHandler(error).alertButton);
       }
       setIsLoading(false);
     };
@@ -94,7 +90,10 @@ function GameVersusPlayer() {
             setRoomDetails({...roomDetails, player2Choice: null});
             setPopupVisible(true);
           } else {
-            alert(error);
+            setIsAlertVisible(true);
+            setAlertTitle(errorHandler(error).alertTitle);
+            setAlertMessage(errorHandler(error).alertMessage);
+            setAlertButton(errorHandler(error).alertButton);
           }
         }
         setIsLoading(false);

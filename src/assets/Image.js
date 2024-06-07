@@ -10,6 +10,7 @@ import CakeIcon from "./image/birthday-icon.png";
 import EditIcon from "./image/edit.png";
 import FileIcon from "./image/file.png";
 import UserIcon from "./image/user.png";
+import HomeIcon from "./image/home-page.png";
 import RockIcon from "./image/batu.png";
 import PaperIcon from "./image/kertas.png";
 import FightIcon from "./image/pvp.png";
@@ -54,6 +55,7 @@ export {
   EditIcon,
   FileIcon,
   UserIcon,
+  HomeIcon,
   RockIcon,
   RpsImage,
   PaperIcon,

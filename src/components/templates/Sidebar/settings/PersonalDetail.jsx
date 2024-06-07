@@ -51,7 +51,18 @@ function PersonalDetail() {
               style={{position: "inherit", width: "70px", background: "orange"}}
               onClick={() => {
                 if (userData.pictureURL) {
-                  navigator.clipboard.writeText(userData.pictureURL);
+                  // Create a temporary input element
+                  const tempInput = document.createElement("input");
+                  tempInput.value = userData.pictureURL;
+                  document.body.appendChild(tempInput);
+                  // Select the URL text
+                  tempInput.select();
+                  tempInput.setSelectionRange(0, 99999); // For mobile devices
+                  // Execute the copy command
+                  document.execCommand("copy");
+                  // Remove the temporary input element
+                  document.body.removeChild(tempInput);
+                  // navigator.clipboard.writeText(userData.pictureURL);
                   alert("URL copied");
                 }
               }}

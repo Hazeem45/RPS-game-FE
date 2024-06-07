@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import Image from "../../elements/Image";
 import {UserIcon} from "../../../assets/Image";
+import {validateToken} from "../../../utils/validation";
 
 function NavbarHome({accessToken}) {
   const navigate = useNavigate();
@@ -37,7 +38,16 @@ function NavbarHome({accessToken}) {
               </li>
               <li
                 onClick={() => {
-                  accessToken ? navigate(`/dashboard/profile`) : navigate("/login");
+                  if (accessToken) {
+                    if (validateToken(accessToken)) {
+                      navigate(`/dashboard/profile`);
+                    } else {
+                      navigate(`/dashboard`);
+                      location.reload();
+                    }
+                  } else {
+                    navigate("/login");
+                  }
                 }}
               >
                 {accessToken && <Image src={UserIcon} />}

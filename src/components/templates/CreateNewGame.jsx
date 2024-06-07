@@ -8,10 +8,13 @@ import Popup from "../fragments/Popup";
 import {useNavigate} from "react-router-dom";
 import TitlePage from "../fragments/TitlePage";
 import axios from "axios";
+import {useProfile} from "../../utils/UserProfileContext";
+import {errorHandler} from "../../utils/errorHandler";
 
 function NewGame() {
   const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
+  const {setAlertTitle, setAlertMessage, setAlertButton, setIsAlertVisible} = useProfile();
   const [roomName, setRoomName] = useState("");
   const [choice, setChoice] = useState("");
   const [popupVisible, setPopupVisible] = useState(false);
@@ -51,17 +54,14 @@ function NewGame() {
           alert(message);
           navigate(`/versus-player/${roomId}`);
         } catch (error) {
-          if (error.code === "ERR_NETWORK") {
-            navigate("/dashboard");
-          } else if (error.response.status) {
-            if (error.response.status === 401 || error.response.status === 500 || error.response.status === 504) {
-              navigate("/dashboard");
-            } else {
-              setPopupValue(error.response.data.message);
-            }
+          if (error.response.status === 409) {
+            setPopupValue(error.response.data.message);
             setPopupVisible(true);
           } else {
-            alert(error);
+            setIsAlertVisible(true);
+            setAlertTitle(errorHandler(error).alertTitle);
+            setAlertMessage(errorHandler(error).alertMessage);
+            setAlertButton(errorHandler(error).alertButton);
           }
         }
       }

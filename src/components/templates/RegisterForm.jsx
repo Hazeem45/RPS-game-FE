@@ -86,11 +86,14 @@ function RegisterForm() {
         setIsBiodataOpen(true);
       }
     } catch (error) {
+      console.log(error);
       if (error.code === "ERR_NETWORK") {
         setFailMessage(error.message);
       } else if (error.response.status) {
         if (error.response.status === 400) {
           setFailMessage(error.response.data.errors[0].msg);
+        } else if (error.response.status === 409) {
+          setFailMessage(error.response.data.message);
         } else if (error.response.status === 500) {
           setFailMessage(error.response.statusText);
         } else {

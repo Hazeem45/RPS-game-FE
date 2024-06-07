@@ -1,10 +1,12 @@
 import React, {useState} from "react";
 import StandardIcon from "../../../fragments/StandardIcon";
-import {EditIcon, FileIcon, LogoutIcon, UserEditIcon} from "../../../../assets/Image";
+import {EditIcon, FileIcon, HomeIcon, LogoutIcon, UserEditIcon} from "../../../../assets/Image";
 import Popover from "../../../fragments/Popover";
+import {useNavigate} from "react-router-dom";
 
 function MenuSettings({handleEditProfile, handleEditBiodata, handlePersonalDetail, handleLogout}) {
   const [isPopoverVisible, setIsPopoverVisible] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="menu-setting">
@@ -25,6 +27,12 @@ function MenuSettings({handleEditProfile, handleEditBiodata, handlePersonalDetai
           <StandardIcon icon={FileIcon} />
         </div>
         <h4>Personal Details</h4>
+      </div>
+      <div className="list" onClick={() => navigate("/")}>
+        <div className="icon">
+          <StandardIcon icon={HomeIcon} />
+        </div>
+        <h4>Homepage</h4>
       </div>
       <div className="list" onClick={() => setIsPopoverVisible(true)}>
         {isPopoverVisible && (

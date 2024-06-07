@@ -33,6 +33,9 @@ function MainLayout({children}) {
       setOpenSetting(true);
     } else if (window.location.pathname === "/dashboard") {
       setIsSidebarOpen(false);
+      setOpenProfile(false);
+      setOpenSetting(false);
+      setIsHistoryOpen(false);
     }
 
     const handler = (e) => setMatches(e.matches);

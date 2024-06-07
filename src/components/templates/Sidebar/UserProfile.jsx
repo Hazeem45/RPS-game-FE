@@ -18,12 +18,12 @@ function UserProfile() {
   return (
     <div className="profile-sidebar">
       <div className="profile">
-        <h3>@{userData.username}</h3>
+        <h3>{userData.username ? userData.username : "Loading..."}</h3>
         <div
           style={{background: "lightgray"}}
           className="profile-picture"
           onClick={() => {
-            if (userData.pictureURL !== DefaultPict) {
+            if (userData.pictureURL !== DefaultPict && userData.pictureURL !== null) {
               setViewImage(true);
             }
           }}
@@ -76,7 +76,7 @@ function UserProfile() {
               <div className="icon">
                 <StandardIcon icon={ClockIcon} />
               </div>
-              <span>Join at {userData.joinDate && getLocaleDate(userData.joinDate).date}</span>
+              <span>{userData.joinDate ? `Join at ${getLocaleDate(userData.joinDate).date}` : "Loading..."}</span>
             </div>
           </div>
         </div>

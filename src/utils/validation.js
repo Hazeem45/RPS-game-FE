@@ -1,4 +1,21 @@
-// VALIDATION or RULES
+import {jwtDecode} from "jwt-decode";
+
+// access token validation
+export const validateToken = (token) => {
+  try {
+    const decodedToken = jwtDecode(token);
+    const currentTime = Date.now() / 1000; // Current time in seconds
+
+    if (decodedToken.exp < currentTime) {
+      console.error("Token has expired");
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error("Invalid token");
+    return false;
+  }
+};
 
 export const validationUsername = (values) => {
   const usernameLength = values.length;

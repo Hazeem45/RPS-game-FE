@@ -48,7 +48,7 @@
 }
 
 .layout-setting button,
-.menu-setting .list:nth-child(4) {
+.menu-setting .list:last-child {
   position: absolute;
   /* width: 100%; */
   bottom: -3px;
@@ -71,8 +71,8 @@
   background-color: #848484;
 }
 
-.menu-setting .list:nth-child(4):hover,
-.menu-setting .list:nth-child(4):active {
+.menu-setting .list:last-child:hover,
+.menu-setting .list:last-child:active {
   background-color: transparent;
 }
 

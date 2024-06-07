@@ -3,10 +3,8 @@ import "./authLayout.css";
 import AboutGame from "../../components/templates/AboutGame";
 
 function AuthLayout({children}) {
-  const authType = children.type.name;
-
   return (
-    <div className={`authentication-layout ${authType === "LoginForm" ? "" : "reverse-row"}`}>
+    <div className={`authentication-layout ${location.pathname === "/register" && "reverse-row"}`}>
       <AboutGame />
       <main>{children}</main>
     </div>

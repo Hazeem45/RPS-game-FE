@@ -2,6 +2,7 @@ import React from "react";
 import Image from "../../elements/Image";
 import {MainBackground, Scrolldown} from "../../../assets/Image";
 import {useNavigate} from "react-router-dom";
+import {validateToken} from "../../../utils/validation";
 
 function MainSection({accessToken}) {
   const navigate = useNavigate();
@@ -22,7 +23,14 @@ function MainSection({accessToken}) {
       <div className="content">
         <h1>play traditional game</h1>
         <p>experience new traditional game play</p>
-        <div onClick={() => navigate("/dashboard")}>
+        <div
+          onClick={() => {
+            navigate("/dashboard");
+            if (!validateToken(accessToken)) {
+              location.reload();
+            }
+          }}
+        >
           <button className="btn btn-warning">{accessToken ? "play" : "login to play"}</button>
         </div>
       </div>

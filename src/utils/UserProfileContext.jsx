@@ -2,6 +2,7 @@ import axios from "axios";
 import {createContext, useContext, useEffect, useState} from "react";
 import AlertMessage from "../components/fragments/AlertMessage";
 import {DefaultPict} from "../assets/Image";
+import {errorHandler} from "./errorHandler";
 
 const UserProfileContext = createContext();
 export const useProfile = () => useContext(UserProfileContext);
@@ -47,41 +48,19 @@ export const ProfileProvider = ({children}) => {
           pictureURL: profilePicture ? profilePicture : DefaultPict,
         });
       } catch (error) {
-        console.error(error);
-        if (error.code === "ERR_NETWORK") {
-          setAlertTitle(`${error.message}`);
-          setAlertMessage("Try refresh the page or contact the developer");
-          setIsAlertVisible(true);
-          setAlertButton("RELOAD");
-        } else if (error.response.status) {
-          if (error.response.status === 401) {
-            setAlertTitle(`${error.response.data.name} ( ${error.response.data.message} )`);
-            setAlertMessage("Please relog to continue using the app");
-            setAlertButton("RELOG");
-          } else if (error.response.status === 500) {
-            setAlertTitle(`${error.response.statusText}`);
-            setAlertMessage("Try to reload the page or contact the developer");
-            setAlertButton("RELOAD");
-          } else if (error.response.status === 504) {
-            setAlertTitle(`${error.message}`);
-            setAlertMessage("Try to reload the page or contact the developer");
-            setAlertButton("RELOAD");
-          } else {
-            alert(error);
-          }
-          setIsAlertVisible(true);
-        } else {
-          alert(error);
-        }
+        setIsAlertVisible(true);
+        setAlertTitle(errorHandler(error).alertTitle);
+        setAlertMessage(errorHandler(error).alertMessage);
+        setAlertButton(errorHandler(error).alertButton);
       }
     };
-    if (window.location.pathname !== "/login" && window.location.pathname !== "/register") {
+    if (window.location.pathname !== "/" && window.location.pathname !== "/login" && window.location.pathname !== "/register") {
       fetchAPI();
     }
   }, []);
 
   return (
-    <UserProfileContext.Provider value={{userData, setUserData}}>
+    <UserProfileContext.Provider value={{userData, setUserData, setAlertTitle, setAlertMessage, setAlertButton, setIsAlertVisible}}>
       {isAlertVisible && (
         <AlertMessage
           title={alertTitle}

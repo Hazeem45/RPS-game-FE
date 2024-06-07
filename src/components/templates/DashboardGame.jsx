@@ -7,10 +7,13 @@ import Select from "../elements/Select";
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import LoaderSpin from "../fragments/LoaderSpin";
+import {errorHandler} from "../../utils/errorHandler";
+import {useProfile} from "../../utils/UserProfileContext";
 
 function DashboardGame() {
   const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
+  const {setAlertTitle, setAlertMessage, setAlertButton, setIsAlertVisible} = useProfile();
   const [sortRoom, setSortRoom] = useState("Available");
   const [allRoom, setAllRoom] = useState([]);
   const [availableRoom, setAvailableRoom] = useState([]);
@@ -42,15 +45,10 @@ function DashboardGame() {
         });
         setFinishedRoom(responseAPIfinishedRoom.data);
       } catch (error) {
-        if (error.code === "ERR_NETWORK") {
-          navigate("/dashboard");
-        } else if (error.response.status) {
-          if (error.response.status === 401 || error.response.status === 500 || error.response.status === 504) {
-            navigate("/dashboard");
-          }
-        } else {
-          alert(error);
-        }
+        setIsAlertVisible(true);
+        setAlertTitle(errorHandler(error).alertTitle);
+        setAlertMessage(errorHandler(error).alertMessage);
+        setAlertButton(errorHandler(error).alertButton);
       }
       setIsLoading(false);
     };
