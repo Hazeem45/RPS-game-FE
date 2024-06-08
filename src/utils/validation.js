@@ -17,6 +17,21 @@ export const validateToken = (token) => {
   }
 };
 
+// validation image
+export const checkIfValidImage = (file) => {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const image = new Image();
+      image.onload = () => resolve(true);
+      image.onerror = () => resolve(false);
+      image.src = reader.result;
+    };
+    reader.onerror = () => resolve(false);
+    reader.readAsDataURL(file);
+  });
+};
+
 export const validationUsername = (values) => {
   const usernameLength = values.length;
   const underscoreCount = (values.match(/_/g) || []).length;
