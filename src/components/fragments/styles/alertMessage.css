@@ -37,9 +37,21 @@ div.alert-message {
 }
 
 .alert-message .message-content {
+  text-transform: capitalize;
   padding: 10px;
+  text-align: center;
 }
 
 .alert-message .alert-button {
   width: 100px;
+}
+
+@media screen and (max-width: 500px) {
+  .alert-message .alert-box {
+    max-width: 95%;
+  }
+
+  .alert-message .message-content {
+    padding: 7px;
+  }
 }

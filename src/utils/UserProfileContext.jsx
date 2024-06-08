@@ -13,7 +13,6 @@ export const ProfileProvider = ({children}) => {
   const [alertMessage, setAlertMessage] = useState("");
   const [alertButton, setAlertButton] = useState("");
   const [isAlertVisible, setIsAlertVisible] = useState(false);
-  const errorName = alertTitle.split(" ");
   const [userData, setUserData] = useState({
     username: null,
     firstname: null,
@@ -35,7 +34,6 @@ export const ProfileProvider = ({children}) => {
           },
         });
         const {username, firstName, lastName, address, gender, birthDate, info, joinAt, profilePicture} = responseAPIBiodata.data;
-        console.log(responseAPIBiodata.data);
         setUserData({
           username,
           firstname: firstName !== null ? firstName : username,
@@ -65,11 +63,13 @@ export const ProfileProvider = ({children}) => {
         <AlertMessage
           title={alertTitle}
           handleButton={() => {
-            if (errorName[0] === "TokenExpiredError" || errorName[0] === "JsonWebTokenError") {
+            if (alertButton === "RELOG") {
               localStorage.removeItem("accessToken");
               location.reload();
-            } else {
+            } else if (alertButton === "RELOAD") {
               location.reload();
+            } else if (alertButton === "CLOSE") {
+              setIsAlertVisible(false);
             }
           }}
           butonText={alertButton}

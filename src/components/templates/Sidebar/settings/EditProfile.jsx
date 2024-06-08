@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import "./editProfile.css";
 import Button from "../../../elements/Button";
-import {validationUsername} from "../../../../utils/validation";
+import {checkIfValidImage, validateToken, validationUsername} from "../../../../utils/validation";
 import InputForm from "../../../fragments/InputForm";
 import ProfileIcon from "../../../fragments/ProfileIcon";
 import {DefaultPict} from "../../../../assets/Image";
@@ -49,32 +49,67 @@ function EditProfile() {
     setIsPopoverVisible(false);
     if (e.target.files.length > 0) {
       const selectedFile = e.target.files[0];
-      const imagePath = `assets/user-id-${decrypt(decodedToken.encryptedId)}/photo-profile-${userData.username}`;
-      const imageRef = ref(storage, imagePath);
-      setTextUploadPict("Uploading...");
-      await uploadBytes(imageRef, selectedFile);
-
-      getDownloadURL(imageRef).then(async (res) => {
-        try {
-          await axios.put(
-            "https://rps-game-be.vercel.app/user/biodata",
-            {
-              profilePicture: res,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-          setUserData({...userData, pictureURL: res});
-        } catch (error) {
-          setIsAlertVisible(true);
-          setAlertTitle(errorHandler(error).alertTitle);
-          setAlertMessage(errorHandler(error).alertMessage);
-          setAlertButton(errorHandler(error).alertButton);
+      try {
+        // File type validation
+        const allowedTypes = ["image/jpeg", "image/png"];
+        if (!allowedTypes.includes(selectedFile.type)) {
+          throw new Error("Only JPG, JPEG, and PNG files are allowed");
         }
-      });
+
+        // File size validation
+        const minSize = 11 * 1024; // 11 KB
+        const maxSize = 7 * 1024 * 1024; // 7 MB
+        if (selectedFile.size < minSize) {
+          throw new Error("This file is to small, File size must be at least 11KB");
+        } else if (selectedFile.size > maxSize) {
+          throw new Error("This file is to large, Maximum file size is 7 MB");
+        }
+
+        // File corruption check
+        const fileIsValidImage = await checkIfValidImage(selectedFile);
+        if (!fileIsValidImage) {
+          throw new Error("The file is corrupted or not a valid image");
+        }
+
+        setTextUploadPict("Uploading...");
+        setUserData({...userData, pictureURL: null});
+        const imagePath = `assets/user-id-${decrypt(decodedToken.encryptedId)}/photo-profile-${userData.username}`;
+        const imageRef = ref(storage, imagePath);
+        await uploadBytes(imageRef, selectedFile);
+
+        getDownloadURL(imageRef).then(async (res) => {
+          try {
+            await axios.put(
+              "https://rps-game-be.vercel.app/user/biodata",
+              {
+                profilePicture: res,
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+            setUserData({...userData, pictureURL: res});
+          } catch (error) {
+            setIsAlertVisible(true);
+            setAlertTitle(errorHandler(error).alertTitle);
+            setAlertMessage(errorHandler(error).alertMessage);
+            setAlertButton(errorHandler(error).alertButton);
+          }
+        });
+      } catch (error) {
+        if (error.message === "Only JPG, JPEG, and PNG files are allowed") {
+          setAlertTitle("Invalid Type File");
+        } else if (error.message === "The file is corrupted or not a valid image") {
+          setAlertTitle("Invalid Image");
+        } else {
+          setAlertTitle("Invalid File Size");
+          setAlertMessage(error.message);
+        }
+        setAlertButton("CLOSE");
+        setIsAlertVisible(true);
+      }
       setTextUploadPict("Change Profile Picture");
     }
   };

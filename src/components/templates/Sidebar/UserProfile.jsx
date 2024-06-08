@@ -28,7 +28,13 @@ function UserProfile() {
             }
           }}
         >
-          {userData.pictureURL ? <Image classImg="center-img" src={userData.pictureURL} /> : <LoaderSpin />}
+          {userData.pictureURL ? (
+            <Image classImg="center-img" src={userData.pictureURL} />
+          ) : (
+            <div style={{background: "lightgrey", width: "100%", height: "100%", padding: "10px", boxSizing: "border-box"}}>
+              <LoaderSpin />
+            </div>
+          )}
         </div>
 
         <h3>

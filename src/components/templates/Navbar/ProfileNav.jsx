@@ -8,7 +8,7 @@ function ProfileNav({username, userPict, handleClick}) {
 
   return (
     <div className="profile-nav">
-      <h3>{username}</h3>
+      <h3>{username ? username : "Loading..."}</h3>
       <div className="icon" style={{boxShadow: isSidebarOpen ? "0 0 0px 1.5px black" : ""}}>
         <ProfileIcon classImg="center-img" handleClick={handleClick} userPict={userPict} />
       </div>
