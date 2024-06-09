@@ -23,6 +23,7 @@ export const ProfileProvider = ({children}) => {
     infoBio: null,
     joinDate: null,
     pictureURL: null,
+    email: null,
   });
 
   useEffect(() => {
@@ -33,7 +34,7 @@ export const ProfileProvider = ({children}) => {
             Authorization: `Bearer ${token}`,
           },
         });
-        const {username, firstName, lastName, address, gender, birthDate, info, joinAt, profilePicture} = responseAPIBiodata.data;
+        const {username, firstName, lastName, address, gender, birthDate, info, joinAt, profilePicture, email, newToken} = responseAPIBiodata.data;
         setUserData({
           username,
           firstname: firstName !== null ? firstName : username,
@@ -44,7 +45,9 @@ export const ProfileProvider = ({children}) => {
           infoBio: info,
           joinDate: joinAt,
           pictureURL: profilePicture ? profilePicture : DefaultPict,
+          email,
         });
+        localStorage.setItem("accessToken", newToken);
       } catch (error) {
         setIsAlertVisible(true);
         setAlertTitle(errorHandler(error).alertTitle);

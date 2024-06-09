@@ -33,7 +33,7 @@ function PersonalDetail() {
         </div>
         <div>
           <p style={{color: "#f3af34"}}>Your Email :</p>
-          <p>{userData.email === null ? "" : userData.email}</p>
+          <p>{userData.email === null ? "" : decrypt(userData.email)}</p>
         </div>
         <div>
           <p style={{color: "#f3af34"}}>Join At :</p>
