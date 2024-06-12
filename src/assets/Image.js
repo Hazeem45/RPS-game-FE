@@ -32,6 +32,7 @@ import EllipseOrange from "./image/ellipse-orange.png";
 import MainBackground from "./image/main-bg.jpg";
 import SwitchLeftIcon from "./image/switch-left.svg";
 import GameBackground from "./image/the-games-bg.jpg";
+import SearchUserIcon from "./image/search-people.png";
 import ScoreBackground from "./image/top-score-bg.png";
 import SwitchRightIcon from "./image/switch-right.svg";
 import FeatureBackground from "./image/features.jpg";
@@ -78,6 +79,7 @@ export {
   SwitchLeftIcon,
   MainBackground,
   GameBackground,
+  SearchUserIcon,
   ScoreBackground,
   SwitchRightIcon,
   FeatureBackground,

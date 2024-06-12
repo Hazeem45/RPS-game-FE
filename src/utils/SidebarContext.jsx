@@ -6,9 +6,10 @@ export const useSidebar = () => useContext(SidebarContext);
 export const SidebarProvider = ({children}) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [openProfile, setOpenProfile] = useState(true);
+  const [openSetting, setOpenSetting] = useState(false);
+  const [openSearchBar, setOpenSearchBar] = useState(false);
   const [viewImage, setViewImage] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
-  const [openSetting, setOpenSetting] = useState(false);
   const [title, setTitle] = useState("Settings");
   const [isMenuSettingVisible, setIsMenuSettingVisible] = useState(true);
   const [isEditProfileVisible, setIsEditProfileVisible] = useState(false);
@@ -43,6 +44,8 @@ export const SidebarProvider = ({children}) => {
         setViewImage,
         isHistoryOpen,
         setIsHistoryOpen,
+        openSearchBar,
+        setOpenSearchBar,
       }}
     >
       {children}

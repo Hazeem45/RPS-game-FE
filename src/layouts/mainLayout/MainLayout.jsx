@@ -8,7 +8,7 @@ import {DefaultPict} from "../../assets/Image";
 import {useProfile} from "../../utils/UserProfileContext";
 
 function MainLayout({children}) {
-  const {isSidebarOpen, viewImage, setViewImage, setIsSidebarOpen, setOpenProfile, setOpenSetting, setIsHistoryOpen} = useSidebar();
+  const {isSidebarOpen, viewImage, setViewImage, setIsSidebarOpen, setOpenProfile, setOpenSearchBar, openSearchBar, setOpenSetting, setIsHistoryOpen} = useSidebar();
   const {userData} = useProfile();
   const [matches, setMatches] = useState(window.matchMedia("(max-width: 768px)").matches);
 
@@ -17,10 +17,12 @@ function MainLayout({children}) {
       setIsSidebarOpen(true);
       setOpenProfile(true);
       setOpenSetting(false);
+      setOpenSearchBar(false);
     } else if (window.location.pathname === `/dashboard/profile/history`) {
       setOpenProfile(true);
       setIsHistoryOpen(true);
       setOpenSetting(false);
+      setOpenSearchBar(false);
       if (window.innerWidth <= 768) {
         setIsSidebarOpen(false);
       } else {
@@ -30,12 +32,20 @@ function MainLayout({children}) {
       setIsSidebarOpen(true);
       setIsHistoryOpen(false);
       setOpenProfile(false);
+      setOpenSearchBar(false);
       setOpenSetting(true);
+    } else if (window.location.pathname === "/dashboard/search") {
+      setIsSidebarOpen(true);
+      setIsHistoryOpen(false);
+      setOpenProfile(false);
+      setOpenSearchBar(true);
+      setOpenSetting(false);
     } else if (window.location.pathname === "/dashboard") {
       setIsSidebarOpen(false);
       setOpenProfile(false);
       setOpenSetting(false);
       setIsHistoryOpen(false);
+      setOpenSearchBar(false);
     }
 
     const handler = (e) => setMatches(e.matches);

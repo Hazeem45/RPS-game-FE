@@ -8,7 +8,7 @@ import {useProfile} from "../../../utils/UserProfileContext";
 
 function Index() {
   const {userData} = useProfile();
-  const {toggleSidebar, setIsSidebarOpen, isSidebarOpen, setOpenProfile, setOpenSetting, setIsHistoryOpen, isHistoryOpen} = useSidebar();
+  const {toggleSidebar, setIsSidebarOpen, isSidebarOpen, setOpenProfile, setOpenSetting, setOpenSearchBar, setIsHistoryOpen, isHistoryOpen} = useSidebar();
   const navigate = useNavigate();
 
   return (
@@ -18,6 +18,7 @@ function Index() {
           if (isSidebarOpen) {
             setOpenProfile(true);
             setOpenSetting(false);
+            setOpenSearchBar(false);
             navigate(`/dashboard/profile`);
           } else {
             navigate("/dashboard");

@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 
-function Input({accept, value, type, placeholder, name, handleChange, pattern, required, fileRef}) {
+function Input({accept, value, type, placeholder, name, handleChange, pattern, required, fileRef, disabled, maxLength}) {
   const [focused, setFocused] = useState(false);
 
   return (
@@ -21,6 +21,8 @@ function Input({accept, value, type, placeholder, name, handleChange, pattern, r
       focused={focused.toString()}
       value={value}
       accept={accept}
+      disabled={disabled}
+      maxLength={maxLength}
     />
   );
 }
