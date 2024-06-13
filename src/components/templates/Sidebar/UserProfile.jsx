@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import "./userProfile.css";
 import Image from "../../elements/Image";
 import Button from "../../elements/Button";
@@ -10,26 +10,65 @@ import {getLocaleDate} from "../../../utils/formatDate";
 import {useProfile} from "../../../utils/UserProfileContext";
 import LoaderSpin from "../../fragments/LoaderSpin";
 
-function UserProfile() {
+function UserProfile({playerProfile}) {
   const {setIsSidebarOpen, setViewImage, setIsHistoryOpen} = useSidebar();
   const {userData} = useProfile();
   const navigate = useNavigate();
+  const [profileData, setProfileData] = useState({
+    username: null,
+    firstname: null,
+    lastname: null,
+    pictureURL: null,
+    info: null,
+    address: null,
+    gender: null,
+    birthDate: null,
+    joinAt: null,
+  });
+
+  useEffect(() => {
+    if (location.pathname === "/dashboard/profile" || location.pathname === "/dashboard/profile/history") {
+      setProfileData({
+        username: userData.username,
+        firstname: userData.firstname,
+        lastname: userData.lastname,
+        pictureURL: userData.pictureURL,
+        info: userData.infoBio,
+        gender: userData.gender,
+        address: userData.address,
+        birthDate: userData.birthDate,
+        joinAt: userData.joinDate,
+      });
+    } else {
+      setProfileData({
+        username: playerProfile.username,
+        firstname: playerProfile.firstname,
+        lastname: playerProfile.lastname,
+        pictureURL: playerProfile.pictureURL,
+        info: playerProfile.info,
+        gender: playerProfile.gender,
+        address: playerProfile.address,
+        birthDate: playerProfile.birthDate,
+        joinAt: playerProfile.joinAt,
+      });
+    }
+  }, [userData, playerProfile]);
 
   return (
     <div className="profile-sidebar">
       <div className="profile">
-        <h3>{userData.username ? userData.username : "Loading..."}</h3>
+        <h3>{profileData.username ? profileData.username : "Loading..."}</h3>
         <div
           style={{background: "lightgray"}}
           className="profile-picture"
           onClick={() => {
-            if (userData.pictureURL !== DefaultPict && userData.pictureURL !== null) {
+            if (profileData.pictureURL !== DefaultPict && profileData.pictureURL !== null) {
               setViewImage(true);
             }
           }}
         >
-          {userData.pictureURL ? (
-            <Image classImg="center-img" src={userData.pictureURL} />
+          {profileData.pictureURL ? (
+            <Image classImg="center-img" src={profileData.pictureURL} />
           ) : (
             <div style={{background: "lightgrey", width: "100%", height: "100%", padding: "10px", boxSizing: "border-box"}}>
               <LoaderSpin />
@@ -38,9 +77,9 @@ function UserProfile() {
         </div>
 
         <h3>
-          {userData.firstname} {userData.lastname}
+          {profileData.firstname} {profileData.lastname}
         </h3>
-        <div className="user-bio">{userData.infoBio}</div>
+        <div className="user-bio">{profileData.info}</div>
       </div>
       <div style={{width: "100%"}}>
         <Button
@@ -60,29 +99,29 @@ function UserProfile() {
         <div className="about-user">
           <h3>Intro</h3>
           <div className="detail">
-            <div className={`detail-info ${userData.address ? "displayInherit" : "displayNone"}`}>
+            <div className={`detail-info ${profileData.address ? "displayInherit" : "displayNone"}`}>
               <div className="icon">
                 <StandardIcon icon={LocationIcon} />
               </div>
-              <span>{userData.address}</span>
+              <span>{profileData.address}</span>
             </div>
-            <div className={`detail-info ${userData.gender ? "displayInherit" : "displayNone"}`}>
+            <div className={`detail-info ${profileData.gender ? "displayInherit" : "displayNone"}`}>
               <div className="icon">
                 <StandardIcon icon={UserIcon} />
               </div>
-              <span>{userData.gender}</span>
+              <span>{profileData.gender}</span>
             </div>
-            <div className={`detail-info ${userData.birthDate ? "displayInherit" : "displayNone"}`}>
+            <div className={`detail-info ${profileData.birthDate ? "displayInherit" : "displayNone"}`}>
               <div className="icon">
                 <StandardIcon icon={CakeIcon} />
               </div>
-              <span>{userData.birthDate}</span>
+              <span>{profileData.birthDate}</span>
             </div>
             <div className="detail-info">
               <div className="icon">
                 <StandardIcon icon={ClockIcon} />
               </div>
-              <span>{userData.joinDate ? `Join at ${getLocaleDate(userData.joinDate).date}` : "Loading..."}</span>
+              <span>{profileData.joinAt ? `Join at ${getLocaleDate(profileData.joinAt).date}` : "Loading..."}</span>
             </div>
           </div>
         </div>

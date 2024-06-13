@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import "./userSearch.css";
 import Input from "../../elements/Input";
 import axios from "axios";
@@ -7,6 +7,7 @@ import {useProfile} from "../../../utils/UserProfileContext";
 import {DefaultPict} from "../../../assets/Image";
 import LoaderSpin from "../../fragments/LoaderSpin";
 import {errorHandler} from "../../../utils/errorHandler";
+import {useNavigate, useParams} from "react-router-dom";
 
 function UserSearch() {
   const token = localStorage.getItem("accessToken");
@@ -16,13 +17,13 @@ function UserSearch() {
   const [isInputDisabled, setIsInputDisabled] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
   const [resultDescription, setResultDescription] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const fetchAPI = async (target) => {
     setIsInputDisabled(true);
     setIsLoading(true);
     try {
-      const responseAPI = await axios.get(`https://rps-game-be.vercel.app/user/search-user?username=${username}`, {
+      const responseAPI = await axios.get(`https://rps-game-be.vercel.app/user/search-user?username=${target}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -41,6 +42,22 @@ function UserSearch() {
     }
     setIsInputDisabled(false);
     setIsLoading(false);
+  };
+
+  useEffect(() => {
+    // Get the current URL
+    const url = window.location.href;
+    const value = url.split("=");
+    if (value[1] !== undefined) {
+      fetchAPI(value[1]);
+      setUsername(value[1]);
+    }
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    navigate(`/dashboard/search?username=${username}`);
+    fetchAPI(username);
   };
 
   return (
@@ -79,7 +96,7 @@ function UserSearch() {
       ) : (
         <div className="result-search">
           {searchResult.map((profile) => (
-            <div key={profile.username} className="profile-wrapper" onClick={() => alert(`you will be navigate to /${profile.username}`)}>
+            <div key={profile.username} className="profile-box" onClick={() => navigate(`/${profile.username}`)}>
               <ProfileNav username={profile.username} userPict={profile.profilePicture ? profile.profilePicture : DefaultPict} />
             </div>
           ))}

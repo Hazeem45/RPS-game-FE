@@ -11,6 +11,7 @@ import {ProtectedRoute} from "./utils/ProtectedRoute";
 import {SidebarProvider} from "./utils/SidebarContext";
 import GameVersusPlayer from "./pages/GameVersusPlayer";
 import Homepage from "./pages/Homepage";
+import PlayerProfile from "./pages/PlayerProfile";
 
 function App() {
   return (
@@ -24,6 +25,16 @@ function App() {
           <ProtectedRoute>
             <SidebarProvider>
               <Dashboard />
+            </SidebarProvider>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/:username"
+        element={
+          <ProtectedRoute>
+            <SidebarProvider>
+              <PlayerProfile />
             </SidebarProvider>
           </ProtectedRoute>
         }

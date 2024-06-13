@@ -6,10 +6,12 @@ import {useSidebar} from "../../utils/SidebarContext";
 import Image from "../../components/elements/Image";
 import {DefaultPict} from "../../assets/Image";
 import {useProfile} from "../../utils/UserProfileContext";
+import {useNavigate} from "react-router-dom";
 
 function MainLayout({children}) {
-  const {isSidebarOpen, viewImage, setViewImage, setIsSidebarOpen, setOpenProfile, setOpenSearchBar, openSearchBar, setOpenSetting, setIsHistoryOpen} = useSidebar();
-  const {userData} = useProfile();
+  const {isSidebarOpen, viewImage, setViewImage, setIsSidebarOpen, setOpenProfile, setOpenSearchBar, openSearchBar, setOpenSetting, setIsHistoryOpen, toggleSidebar, isHistoryOpen} = useSidebar();
+  const {userData, visitedPicture, setVisitedPicture} = useProfile();
+  const navigate = useNavigate();
   const [matches, setMatches] = useState(window.matchMedia("(max-width: 768px)").matches);
 
   useEffect(() => {
@@ -56,7 +58,44 @@ function MainLayout({children}) {
 
   return (
     <div className="main-layout" style={{overflow: isSidebarOpen && matches ? "hidden" : ""}}>
-      <Navbar />
+      <Navbar
+        handleClickIconGame={() => {
+          if (isSidebarOpen) {
+            setOpenProfile(true);
+            setOpenSetting(false);
+            setOpenSearchBar(false);
+            navigate(`/dashboard/profile`);
+          } else {
+            navigate("/dashboard");
+          }
+          setIsHistoryOpen(false);
+          if (window.innerWidth <= 768) {
+            setIsSidebarOpen(false);
+          }
+        }}
+        handleClickIconProfile={() => {
+          if (
+            location.pathname === "/dashboard" ||
+            location.pathname === `/dashboard/profile` ||
+            location.pathname === `/dashboard/profile/history` ||
+            location.pathname === `/dashboard/search` ||
+            location.pathname === `/dashboard/settings`
+          ) {
+            if (isSidebarOpen) {
+              if (!isHistoryOpen) {
+                navigate("/dashboard");
+              }
+            } else {
+              if (isHistoryOpen) {
+                navigate(`/dashboard/profile/history`);
+              } else {
+                navigate(`/dashboard/profile`);
+              }
+            }
+            toggleSidebar();
+          }
+        }}
+      />
       <div className="content">
         <div className={`sidebar-wrap ${isSidebarOpen ? "" : "displayNone"}`}>
           <Sidebar status={isSidebarOpen ? "open" : "close"} />
@@ -71,7 +110,7 @@ function MainLayout({children}) {
                 setViewImage(true);
               }}
             >
-              <Image classImg="center-img" src={userData.pictureURL ? userData.pictureURL : DefaultPict} />
+              <Image classImg="center-img" src={location.pathname === "/dashboard/profile" || location.pathname === "/dashboard/profile/history" ? userData.pictureURL : visitedPicture} />
             </div>
           </div>
         )}

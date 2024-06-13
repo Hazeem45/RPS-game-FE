@@ -59,6 +59,10 @@
 }
 
 @media only screen and (max-width: 500px) {
+  .time-column {
+    display: none;
+  }
+
   .table-wrapper .title-page h1 {
     text-align: center;
     font-size: 25px !important;
@@ -70,8 +74,8 @@
 }
 
 @media only screen and (max-width: 600px) {
-  .time-column {
-    display: none;
+  .styled-table {
+    width: 100%;
   }
 }
 

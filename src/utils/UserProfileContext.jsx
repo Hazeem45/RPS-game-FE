@@ -13,6 +13,7 @@ export const ProfileProvider = ({children}) => {
   const [alertMessage, setAlertMessage] = useState("");
   const [alertButton, setAlertButton] = useState("");
   const [isAlertVisible, setIsAlertVisible] = useState(false);
+  const [visitedPicture, setVisitedPicture] = useState(null);
   const [userData, setUserData] = useState({
     username: null,
     firstname: null,
@@ -61,7 +62,7 @@ export const ProfileProvider = ({children}) => {
   }, []);
 
   return (
-    <UserProfileContext.Provider value={{userData, setUserData, setAlertTitle, setAlertMessage, setAlertButton, setIsAlertVisible}}>
+    <UserProfileContext.Provider value={{userData, setUserData, setAlertTitle, setAlertMessage, setAlertButton, setIsAlertVisible, visitedPicture, setVisitedPicture}}>
       {isAlertVisible && (
         <AlertMessage
           title={alertTitle}

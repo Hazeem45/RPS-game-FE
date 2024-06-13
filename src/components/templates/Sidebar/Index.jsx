@@ -98,23 +98,25 @@ function Index() {
           </div>
         </div>
       </div>
-      <div className="content-sidebar">
-        {openProfile && (
-          <Routes>
-            <Route path={`/profile/*`} element={<UserProfile />} />
-          </Routes>
-        )}
-        {openSearchBar && (
-          <Routes>
-            <Route path="/search" element={<UserSearch />} />
-          </Routes>
-        )}
-        {openSetting && (
-          <Routes>
-            <Route path="/settings" element={<Settings />} />
-          </Routes>
-        )}
-      </div>
+      {(location.pathname === `/dashboard/profile` || location.pathname === `/dashboard/profile/history` || location.pathname === `/dashboard/search` || location.pathname === `/dashboard/settings`) && (
+        <div className="content-sidebar">
+          {openProfile && (
+            <Routes>
+              <Route path={`/profile/*`} element={<UserProfile />} />
+            </Routes>
+          )}
+          {openSearchBar && (
+            <Routes>
+              <Route path="/search" element={<UserSearch />} />
+            </Routes>
+          )}
+          {openSetting && (
+            <Routes>
+              <Route path="/settings" element={<Settings />} />
+            </Routes>
+          )}
+        </div>
+      )}
     </div>
   );
 }

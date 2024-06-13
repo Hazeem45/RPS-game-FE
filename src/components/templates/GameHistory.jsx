@@ -9,7 +9,7 @@ import LoaderSpin from "../fragments/LoaderSpin";
 import {useProfile} from "../../utils/UserProfileContext";
 import {errorHandler} from "../../utils/errorHandler";
 
-function GameHistory({username}) {
+function GameHistory({username, gameHistory}) {
   const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
   const {setAlertTitle, setAlertMessage, setAlertButton, setIsAlertVisible} = useProfile();
@@ -21,25 +21,34 @@ function GameHistory({username}) {
   const [userHistory, setUserHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  const fetchAPIuserHistory = async () => {
+    setIsLoading(true);
+    try {
+      const responseAPI = await axios.get("https://rps-game-be.vercel.app/game/history", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setUserHistory(responseAPI.data);
+    } catch (error) {
+      setIsAlertVisible(true);
+      setAlertTitle(errorHandler(error).alertTitle);
+      setAlertMessage(errorHandler(error).alertMessage);
+      setAlertButton(errorHandler(error).alertButton);
+    }
+    setIsLoading(false);
+  };
+
   useEffect(() => {
-    const fetchAPIuserHistory = async () => {
-      setIsLoading(true);
-      try {
-        const responseAPI = await axios.get("https://rps-game-be.vercel.app/game/history", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setUserHistory(responseAPI.data);
-      } catch (error) {
-        setIsAlertVisible(true);
-        setAlertTitle(errorHandler(error).alertTitle);
-        setAlertMessage(errorHandler(error).alertMessage);
-        setAlertButton(errorHandler(error).alertButton);
+    if (location.pathname === "/dashboard/profile/history") {
+      fetchAPIuserHistory();
+    } else {
+      if (gameHistory) {
+        setUserHistory(gameHistory);
+      } else {
+        setIsLoading(true);
       }
-      setIsLoading(false);
-    };
-    fetchAPIuserHistory();
+    }
 
     const smallHandler = (e) => setMatches((prevState) => ({...prevState, small: e.matches}));
     const largeHandler = (e) => setMatches((prevState) => ({...prevState, large: e.matches}));
@@ -53,15 +62,15 @@ function GameHistory({username}) {
       smallMediaQuery.removeEventListener("change", smallHandler);
       largeMediaQuery.removeEventListener("change", largeHandler);
     };
-  }, []);
+  }, [gameHistory]);
 
   return (
     <div className="table-wrapper">
-      <TitlePage classForTitle={isSidebarOpen && matches.small ? "displayNone" : ""}>{isSidebarOpen || matches.small ? "" : username} Game History</TitlePage>
+      <TitlePage classForTitle={isSidebarOpen && matches.small ? "displayNone" : ""}>{location.pathname !== "/dashboard/profile/history" && username} Game History</TitlePage>
       <table className="styled-table">
         <thead>
           <tr>
-            <th>Room Name</th>
+            <th>Room</th>
             <th>Result</th>
             <th>Date</th>
             <th className={isSidebarOpen && matches.large ? "displayNone" : "time-column"}>Time</th>
@@ -89,23 +98,27 @@ function GameHistory({username}) {
             </div>
           ) : (
             <div style={{display: "flex", alignItems: "center", marginTop: "-50px", fontSize: "18px"}}>
-              <div>
-                You don't have a game history yet. return to the{" "}
-                <div
-                  style={{display: "inline", color: "orangered", textDecoration: "orangered underline", cursor: "pointer"}}
-                  onClick={() => {
-                    setIsHistoryOpen(false);
-                    if (isSidebarOpen) {
-                      navigate(`/dashboard/profile`);
-                    } else {
-                      navigate("/dashboard");
-                    }
-                  }}
-                >
-                  Dashboard
-                </div>{" "}
-                to play
-              </div>
+              {location.pathname === "/dashboard/profile/history" ? (
+                <div>
+                  You don't have a game history yet. return to the{" "}
+                  <div
+                    style={{display: "inline", color: "orangered", textDecoration: "orangered underline", cursor: "pointer"}}
+                    onClick={() => {
+                      setIsHistoryOpen(false);
+                      if (isSidebarOpen) {
+                        navigate(`/dashboard/profile`);
+                      } else {
+                        navigate("/dashboard");
+                      }
+                    }}
+                  >
+                    Dashboard
+                  </div>{" "}
+                  to play
+                </div>
+              ) : (
+                <div>{username} don't have game history</div>
+              )}
             </div>
           )}
         </div>
