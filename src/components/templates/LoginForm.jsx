@@ -66,6 +66,7 @@ function LoginForm() {
         location.reload();
       }
     } catch (error) {
+      console.log(error);
       if (error.code === "ERR_NETWORK") {
         setFailMessage(error.message);
       } else if (error.response.status) {
@@ -73,6 +74,11 @@ function LoginForm() {
           setFailMessage(error.response.data.errors[0].msg);
         } else if (error.response.status === 500) {
           setFailMessage(error.response.statusText);
+        } else if (error.response.status === 401) {
+          setValues({...values, password: ""});
+          setFailMessage(error.response.data.message);
+        } else if (error.response.status === 404) {
+          setFailMessage(error.response.data.message);
         } else {
           setFailMessage(error.message);
         }
