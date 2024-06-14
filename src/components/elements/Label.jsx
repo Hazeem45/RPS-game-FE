@@ -1,8 +1,8 @@
 import React from "react";
 
-function Label({name, value, labelClass, handleClick}) {
+function Label({name, value, labelClass, handleClick, styleLabel}) {
   return (
-    <label className={labelClass} htmlFor={name} onClick={handleClick}>
+    <label style={styleLabel} className={labelClass} htmlFor={name} onClick={handleClick}>
       {value}
     </label>
   );

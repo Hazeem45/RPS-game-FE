@@ -19,11 +19,11 @@ function BiodataForm({page}) {
   const navigate = useNavigate();
   const [gendersIndex, setGendersIndex] = useState([]);
   const [values, setValues] = useState({
-    firstname: null,
-    lastname: null,
-    address: null,
-    gender: null,
-    date: null,
+    firstname: "",
+    lastname: "",
+    address: "",
+    gender: "",
+    date: "",
   });
   const [buttonStyle, setButtonStyle] = useState({
     background: "#333",
@@ -128,7 +128,7 @@ function BiodataForm({page}) {
         <h2>Details About You</h2>
         <div className="bio-fullname">
           <InputForm name="firstname" type="text" placeholder="First name" label="Fullname" handleChange={handleChange} value={values.firstname} pattern=".{0,20}$" errorMessage="Firstname max 20 chars" />
-          <InputForm name="lastname" type="text" placeholder="Last name" label="‎" handleChange={handleChange} value={values.lastname} pattern=".{0,10}$" errorMessage="Lastname max 10 chars" />
+          <InputForm name="lastname" type="text" placeholder="Last name" label="." styleLabel={{color: "transparent"}} handleChange={handleChange} value={values.lastname} pattern=".{0,10}$" errorMessage="Lastname max 10 chars" />
         </div>
         <InputForm type="text" name="address" label="Address" placeholder="Unitary State of the Republic of Isekai" handleChange={handleChange} value={values.address} pattern=".{0,43}$" errorMessage="Address max 43 chars" />
         <div className="other-bio">
