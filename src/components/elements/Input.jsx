@@ -1,6 +1,7 @@
-import React, {useState} from "react";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
-function Input({accept, value, type, placeholder, name, handleChange, pattern, required, fileRef, disabled, maxLength}) {
+function Input({ type, name, placeholder, handleChange, pattern, required, fileRef, accept, value, disabled, maxLength }) {
   const [focused, setFocused] = useState(false);
 
   return (
@@ -10,15 +11,13 @@ function Input({accept, value, type, placeholder, name, handleChange, pattern, r
       placeholder={placeholder}
       id={name}
       onChange={handleChange}
-      className="input"
+      className='input'
       pattern={pattern}
       required={required}
       ref={fileRef}
-      // onBlur={() => {
-      //   setFocused(true);
-      // }}
       onFocus={() => setFocused(true)}
-      focused={focused.toString()}
+      onBlur={() => setFocused(false)}
+      data-focused={focused.toString()}
       value={value}
       accept={accept}
       disabled={disabled}
@@ -26,5 +25,19 @@ function Input({accept, value, type, placeholder, name, handleChange, pattern, r
     />
   );
 }
+
+Input.propTypes = {
+  type: PropTypes.string.isRequired,
+  name: PropTypes.string,
+  placeholder: PropTypes.string,
+  handleChange: PropTypes.func,
+  pattern: PropTypes.string,
+  required: PropTypes.bool,
+  fileRef: PropTypes.object,
+  value: PropTypes.string,
+  accept: PropTypes.string,
+  disabled: PropTypes.bool,
+  maxLength: PropTypes.number,
+};
 
 export default Input;

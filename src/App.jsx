@@ -1,26 +1,27 @@
-import "./assets/GlobalStyle.css";
-import "./components/elements/style.css";
-import {Route, Routes} from "react-router-dom";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Dashboard from "./pages/Dashboard";
-import GameLayout from "./layouts/gameLayout/GameLayout";
-import GameVersusCom from "./pages/GameVersusCom";
-import CreateRoom from "./pages/CreateRoom";
-import {ProtectedRoute} from "./utils/ProtectedRoute";
-import {SidebarProvider} from "./utils/SidebarContext";
-import GameVersusPlayer from "./pages/GameVersusPlayer";
-import Homepage from "./pages/Homepage";
-import PlayerProfile from "./pages/PlayerProfile";
+import React from 'react';
+import './assets/GlobalStyle.css';
+import './components/elements/style.css';
+import { Route, Routes } from 'react-router-dom';
+import { ProtectedRoute } from './utils/ProtectedRoute';
+import { SidebarProvider } from './utils/SidebarContext';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Dashboard from './pages/Dashboard';
+import GameLayout from './layouts/gameLayout/GameLayout';
+import GameVersusCom from './pages/GameVersusCom';
+import CreateRoom from './pages/CreateRoom';
+import GameVersusPlayer from './pages/GameVersusPlayer';
+import Homepage from './pages/Homepage';
+import PlayerProfile from './pages/PlayerProfile';
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Homepage />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route path='/' element={<Homepage />} />
+      <Route path='/login' element={<Login />} />
+      <Route path='/register' element={<Register />} />
       <Route
-        path="/dashboard/*"
+        path='/dashboard/*'
         element={
           <ProtectedRoute>
             <SidebarProvider>
@@ -30,7 +31,7 @@ function App() {
         }
       />
       <Route
-        path="/:username"
+        path='/:username'
         element={
           <ProtectedRoute>
             <SidebarProvider>
@@ -40,9 +41,9 @@ function App() {
         }
       />
       <Route element={<GameLayout />}>
-        <Route path="/versus-com" element={<GameVersusCom />} />
+        <Route path='/versus-com' element={<GameVersusCom />} />
         <Route
-          path="/create-room"
+          path='/create-room'
           element={
             <ProtectedRoute>
               <CreateRoom />
@@ -50,7 +51,7 @@ function App() {
           }
         />
         <Route
-          path="/versus-player/:roomId"
+          path='/versus-player/:roomId'
           element={
             <ProtectedRoute>
               <GameVersusPlayer />
@@ -59,7 +60,7 @@ function App() {
         />
       </Route>
       <Route
-        path="*"
+        path='*'
         element={
           <center>
             <h1>404 Page Not Found</h1>

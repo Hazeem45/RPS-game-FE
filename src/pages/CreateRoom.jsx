@@ -1,5 +1,5 @@
-import React from "react";
-import CreateNewGame from "../components/templates/CreateNewGame";
+import React from 'react';
+import CreateNewGame from '../components/templates/CreateNewGame';
 
 function CreateRoom() {
   return <CreateNewGame />;

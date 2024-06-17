@@ -1,5 +1,5 @@
-import React from "react";
-import HomePage from "../components/templates/Homepage/Index";
+import React from 'react';
+import HomePage from '../components/templates/Homepage/Index';
 
 function Homepage() {
   return <HomePage />;

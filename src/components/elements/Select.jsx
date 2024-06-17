@@ -1,6 +1,7 @@
-import React from "react";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-function Select({name, options, handleChange}) {
+function Select({ name, options, handleChange }) {
   return (
     <select id={name} name={name} onChange={handleChange}>
       {options.map((options) => {
@@ -13,5 +14,11 @@ function Select({name, options, handleChange}) {
     </select>
   );
 }
+
+Select.propTypes = {
+  name: PropTypes.string.isRequired,
+  options: PropTypes.array.isRequired,
+  handleChange: PropTypes.func.isRequired,
+};
 
 export default Select;

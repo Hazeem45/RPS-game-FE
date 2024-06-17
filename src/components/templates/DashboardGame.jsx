@@ -1,44 +1,44 @@
-import React, {useEffect, useState} from "react";
-import "./styles/dashboardGame.css";
-import GameBox from "../fragments/GameBox";
-import LineWithText from "../fragments/LineWithText";
-import RoomBox from "../fragments/RoomBox";
-import Select from "../elements/Select";
-import {Link, useNavigate} from "react-router-dom";
-import axios from "axios";
-import LoaderSpin from "../fragments/LoaderSpin";
-import {errorHandler} from "../../utils/errorHandler";
-import {useProfile} from "../../utils/UserProfileContext";
+import React, { useEffect, useState } from 'react';
+import './styles/dashboardGame.css';
+import GameBox from '../fragments/GameBox';
+import LineWithText from '../fragments/LineWithText';
+import RoomBox from '../fragments/RoomBox';
+import Select from '../elements/Select';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import LoaderSpin from '../fragments/LoaderSpin';
+import { errorHandler } from '../../utils/errorHandler';
+import { useProfile } from '../../utils/UserProfileContext';
 
 function DashboardGame() {
-  const token = localStorage.getItem("accessToken");
+  const token = localStorage.getItem('accessToken');
   const navigate = useNavigate();
-  const {setAlertTitle, setAlertMessage, setAlertButton, setIsAlertVisible} = useProfile();
-  const [sortRoom, setSortRoom] = useState("Available");
+  const { setAlertTitle, setAlertMessage, setAlertButton, setIsAlertVisible } = useProfile();
+  const [sortRoom, setSortRoom] = useState('Available');
   const [allRoom, setAllRoom] = useState([]);
   const [availableRoom, setAvailableRoom] = useState([]);
   const [finishedRoom, setFinishedRoom] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const fetchAPIGameRoom = async () => {
+    const fetchAPIGameRoom = async() => {
       setIsLoading(true);
       try {
-        const responseAPIallRoom = await axios.get("https://rps-game-be.vercel.app/game/all-rooms", {
+        const responseAPIallRoom = await axios.get('https://rps-game-be.vercel.app/game/all-rooms', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
         setAllRoom(responseAPIallRoom.data);
 
-        const responseAPIavailableRoom = await axios.get("https://rps-game-be.vercel.app/game/available-rooms", {
+        const responseAPIavailableRoom = await axios.get('https://rps-game-be.vercel.app/game/available-rooms', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
         setAvailableRoom(responseAPIavailableRoom.data);
 
-        const responseAPIfinishedRoom = await axios.get("https://rps-game-be.vercel.app/game/finished-rooms", {
+        const responseAPIfinishedRoom = await axios.get('https://rps-game-be.vercel.app/game/finished-rooms', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -56,9 +56,9 @@ function DashboardGame() {
   }, [setAllRoom, setAvailableRoom, setFinishedRoom]);
 
   const chooseRoomType = () => {
-    if (sortRoom === "Available") {
+    if (sortRoom === 'Available') {
       return availableRoom;
-    } else if (sortRoom === "Finish") {
+    } else if (sortRoom === 'Finish') {
       return finishedRoom;
     } else {
       return allRoom;
@@ -66,43 +66,47 @@ function DashboardGame() {
   };
 
   return (
-    <div className="dashboard unselectable">
-      <div className="game-bar">
-        <GameBox onClick={() => navigate("/versus-com")}>VS COM</GameBox>
-        <GameBox onClick={() => navigate("/create-room")}>Create Room</GameBox>
+    <div className='dashboard unselectable'>
+      <div className='game-bar'>
+        <GameBox onClick={() => navigate('/versus-com')}>VS COM</GameBox>
+        <GameBox onClick={() => navigate('/create-room')}>Create Room</GameBox>
       </div>
-      <div style={{padding: "15px", cursor: "default"}}>
+      <div style={{ padding: '15px', cursor: 'default' }}>
         <LineWithText value={`[ ${sortRoom} Rooms ]`} />
       </div>
-      <div className="sort-room">
+      <div className='sort-room'>
         <Select
-          name="type-room"
-          options={["Available", "Finish", "All Game"]}
+          name='type-room'
+          options={['Available', 'Finish', 'All Game']}
           handleChange={(e) => {
             setSortRoom(e.target.value);
           }}
         />
       </div>
-      {chooseRoomType().length > 0 ? (
-        <div className="rooms-container">
+      {chooseRoomType().length > 0
+        ? (
+        <div className='rooms-container'>
           {chooseRoomType().map((room) => {
-            return <RoomBox key={room.roomId} handleClick={() => navigate(`/versus-player/${room.roomId}`)} roomName={room.roomName} player1={room.player1} player2={room.player2 ? room.player2 : "---"} status={room.roomStatus} />;
+            return <RoomBox key={room.roomId} handleClick={() => navigate(`/versus-player/${room.roomId}`)} roomName={room.roomName} player1={room.player1} player2={room.player2 ? room.player2 : '---'} status={room.roomStatus} />;
           })}
         </div>
-      ) : (
-        <div className="rooms-container-2">
-          {isLoading ? (
-            <div style={{width: "100px", height: "100px"}}>
+          )
+        : (
+        <div className='rooms-container-2'>
+          {isLoading
+            ? (
+            <div style={{ width: '100px', height: '100px' }}>
               <LoaderSpin />
             </div>
-          ) : (
+              )
+            : (
             <div>
               <h4>{sortRoom} room was not found!</h4>
-              {sortRoom === "Available" && <Link to={"/create-room"}>Create New Room</Link>}
+              {sortRoom === 'Available' && <Link to={'/create-room'}>Create New Room</Link>}
             </div>
-          )}
+              )}
         </div>
-      )}
+          )}
     </div>
   );
 }

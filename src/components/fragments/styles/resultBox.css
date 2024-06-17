@@ -54,3 +54,11 @@
 .result-draw {
   background-color: orange;
 }
+
+.tilted-right-corner {
+  transform: rotate(-45deg);
+}
+
+.tilted-left-corner {
+  transform: rotate(45deg);
+}

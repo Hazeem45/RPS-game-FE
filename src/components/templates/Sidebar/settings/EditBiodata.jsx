@@ -1,10 +1,10 @@
-import React from "react";
-import "./editBiodata.css";
-import BiodataForm from "../../BiodataForm";
+import React from 'react';
+import './editBiodata.css';
+import BiodataForm from '../../BiodataForm';
 
 function EditBiodata() {
   return (
-    <div className="edit-biodata">
+    <div className='edit-biodata'>
       <BiodataForm />
     </div>
   );

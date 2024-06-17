@@ -1,19 +1,19 @@
-import React, {useEffect, useState} from "react";
-import "./profileHistory.css";
-import UserProfile from "../Sidebar/UserProfile";
-import GameHistory from "../GameHistory";
-import {useSidebar} from "../../../utils/SidebarContext";
-import {DefaultPict} from "../../../assets/Image";
-import {useParams} from "react-router-dom";
-import axios from "axios";
-import {useProfile} from "../../../utils/UserProfileContext";
-import {errorHandler} from "../../../utils/errorHandler";
+import React, { useEffect, useState } from 'react';
+import './profileHistory.css';
+import UserProfile from '../Sidebar/UserProfile';
+import GameHistory from '../GameHistory';
+import { useSidebar } from '../../../utils/SidebarContext';
+import { DefaultPict } from '../../../assets/Image';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import { useProfile } from '../../../utils/UserProfileContext';
+import { errorHandler } from '../../../utils/errorHandler';
 
 function Index() {
-  const token = localStorage.getItem("accessToken");
-  const {setIsSidebarOpen, setOpenProfile, setOpenSearchBar, setOpenSetting, setIsHistoryOpen} = useSidebar();
-  const {setAlertTitle, setAlertMessage, setAlertButton, setIsAlertVisible, visitedPicture, setVisitedPicture} = useProfile();
-  const {username} = useParams();
+  const token = localStorage.getItem('accessToken');
+  const { setIsSidebarOpen, setOpenProfile, setOpenSearchBar, setOpenSetting, setIsHistoryOpen } = useSidebar();
+  const { setAlertTitle, setAlertMessage, setAlertButton, setIsAlertVisible, setVisitedPicture } = useProfile();
+  const { username } = useParams();
   const [playerProfile, setPlayerProfile] = useState({
     username: null,
     firstname: null,
@@ -27,22 +27,22 @@ function Index() {
     history: null,
   });
 
-  const fetchAPIuserHistory = async () => {
+  const fetchAPIuserHistory = async() => {
     try {
       const responseAPI = await axios.get(`https://rps-game-be.vercel.app/user/${username}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      const {firstName, lastName, profilePicture, info, address, gender, birthDate, joinAt, history} = responseAPI.data;
+      const { firstName, lastName, profilePicture, info, address, gender, birthDate, joinAt, history } = responseAPI.data;
       setPlayerProfile({
         username: responseAPI.data.username,
         firstname: firstName,
         lastname: lastName,
-        pictureURL: profilePicture ? profilePicture : DefaultPict,
+        pictureURL: profilePicture || DefaultPict,
         info,
-        address: address,
-        gender: gender,
+        address,
+        gender,
         birthDate,
         joinAt,
         history,
@@ -66,13 +66,13 @@ function Index() {
   }, []);
 
   return (
-    <div className="profile-n-history-container">
-      <div className="profile-wrapper">
-        <div className="profile-float">
+    <div className='profile-n-history-container'>
+      <div className='profile-wrapper'>
+        <div className='profile-float'>
           <UserProfile playerProfile={playerProfile} />
         </div>
       </div>
-      <div className="history-wrapper">
+      <div className='history-wrapper'>
         <GameHistory gameHistory={playerProfile.history} username={playerProfile.username} />
       </div>
     </div>

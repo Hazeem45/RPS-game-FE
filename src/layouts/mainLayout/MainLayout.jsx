@@ -1,26 +1,26 @@
-import React, {useEffect, useState} from "react";
-import "./mainLayout.css";
-import Sidebar from "../../components/templates/Sidebar/Index";
-import Navbar from "../../components/templates/Navbar/Index";
-import {useSidebar} from "../../utils/SidebarContext";
-import Image from "../../components/elements/Image";
-import {DefaultPict} from "../../assets/Image";
-import {useProfile} from "../../utils/UserProfileContext";
-import {useNavigate} from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import './mainLayout.css';
+import Sidebar from '../../components/templates/Sidebar/Index';
+import Navbar from '../../components/templates/Navbar/Index';
+import { useSidebar } from '../../utils/SidebarContext';
+import Image from '../../components/elements/Image';
+import { useProfile } from '../../utils/UserProfileContext';
+import { useNavigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-function MainLayout({children}) {
-  const {isSidebarOpen, viewImage, setViewImage, setIsSidebarOpen, setOpenProfile, setOpenSearchBar, openSearchBar, setOpenSetting, setIsHistoryOpen, toggleSidebar, isHistoryOpen} = useSidebar();
-  const {userData, visitedPicture, setVisitedPicture} = useProfile();
+function MainLayout({ children }) {
+  const { isSidebarOpen, viewImage, setViewImage, setIsSidebarOpen, setOpenProfile, setOpenSearchBar, setOpenSetting, setIsHistoryOpen, toggleSidebar, isHistoryOpen } = useSidebar();
+  const { userData, visitedPicture } = useProfile();
   const navigate = useNavigate();
-  const [matches, setMatches] = useState(window.matchMedia("(max-width: 768px)").matches);
+  const [matches, setMatches] = useState(window.matchMedia('(max-width: 768px)').matches);
 
   useEffect(() => {
-    if (window.location.pathname === `/dashboard/profile`) {
+    if (window.location.pathname === '/dashboard/profile') {
       setIsSidebarOpen(true);
       setOpenProfile(true);
       setOpenSetting(false);
       setOpenSearchBar(false);
-    } else if (window.location.pathname === `/dashboard/profile/history`) {
+    } else if (window.location.pathname === '/dashboard/profile/history') {
       setOpenProfile(true);
       setIsHistoryOpen(true);
       setOpenSetting(false);
@@ -30,19 +30,19 @@ function MainLayout({children}) {
       } else {
         setIsSidebarOpen(true);
       }
-    } else if (window.location.pathname === "/dashboard/settings") {
+    } else if (window.location.pathname === '/dashboard/settings') {
       setIsSidebarOpen(true);
       setIsHistoryOpen(false);
       setOpenProfile(false);
       setOpenSearchBar(false);
       setOpenSetting(true);
-    } else if (window.location.pathname === "/dashboard/search") {
+    } else if (window.location.pathname === '/dashboard/search') {
       setIsSidebarOpen(true);
       setIsHistoryOpen(false);
       setOpenProfile(false);
       setOpenSearchBar(true);
       setOpenSetting(false);
-    } else if (window.location.pathname === "/dashboard") {
+    } else if (window.location.pathname === '/dashboard') {
       setIsSidebarOpen(false);
       setOpenProfile(false);
       setOpenSetting(false);
@@ -51,22 +51,22 @@ function MainLayout({children}) {
     }
 
     const handler = (e) => setMatches(e.matches);
-    const mediaQuery = window.matchMedia("(max-width: 768px)");
-    mediaQuery.addEventListener("change", handler);
-    return () => mediaQuery.removeEventListener("change", handler);
+    const mediaQuery = window.matchMedia('(max-width: 768px)');
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
   }, [window.location.pathname]);
 
   return (
-    <div className="main-layout" style={{overflow: isSidebarOpen && matches ? "hidden" : ""}}>
+    <div className='main-layout' style={{ overflow: isSidebarOpen && matches ? 'hidden' : '' }}>
       <Navbar
         handleClickIconGame={() => {
           if (isSidebarOpen) {
             setOpenProfile(true);
             setOpenSetting(false);
             setOpenSearchBar(false);
-            navigate(`/dashboard/profile`);
+            navigate('/dashboard/profile');
           } else {
-            navigate("/dashboard");
+            navigate('/dashboard');
           }
           setIsHistoryOpen(false);
           if (window.innerWidth <= 768) {
@@ -75,42 +75,42 @@ function MainLayout({children}) {
         }}
         handleClickIconProfile={() => {
           if (
-            location.pathname === "/dashboard" ||
-            location.pathname === `/dashboard/profile` ||
-            location.pathname === `/dashboard/profile/history` ||
-            location.pathname === `/dashboard/search` ||
-            location.pathname === `/dashboard/settings`
+            location.pathname === '/dashboard' ||
+            location.pathname === '/dashboard/profile' ||
+            location.pathname === '/dashboard/profile/history' ||
+            location.pathname === '/dashboard/search' ||
+            location.pathname === '/dashboard/settings'
           ) {
             if (isSidebarOpen) {
               if (!isHistoryOpen) {
-                navigate("/dashboard");
+                navigate('/dashboard');
               }
             } else {
               if (isHistoryOpen) {
-                navigate(`/dashboard/profile/history`);
+                navigate('/dashboard/profile/history');
               } else {
-                navigate(`/dashboard/profile`);
+                navigate('/dashboard/profile');
               }
             }
             toggleSidebar();
           }
         }}
       />
-      <div className="content">
-        <div className={`sidebar-wrap ${isSidebarOpen ? "" : "displayNone"}`}>
-          <Sidebar status={isSidebarOpen ? "open" : "close"} />
+      <div className='content'>
+        <div className={`sidebar-wrap ${isSidebarOpen ? '' : 'displayNone'}`}>
+          <Sidebar status={isSidebarOpen ? 'open' : 'close'} />
         </div>
-        <div className={`child-wrap`}>{children}</div>
+        <div className={'child-wrap'}>{children}</div>
         {viewImage && (
-          <div className="picture-full" onClick={() => setViewImage(false)}>
+          <div className='picture-full' onClick={() => setViewImage(false)}>
             <div
-              className="view-picture"
+              className='view-picture'
               onClick={(e) => {
                 e.stopPropagation();
                 setViewImage(true);
               }}
             >
-              <Image classImg="center-img" src={location.pathname === "/dashboard/profile" || location.pathname === "/dashboard/profile/history" ? userData.pictureURL : visitedPicture} />
+              <Image classImg='center-img' src={location.pathname === '/dashboard/profile' || location.pathname === '/dashboard/profile/history' ? userData.pictureURL : visitedPicture} />
             </div>
           </div>
         )}
@@ -118,5 +118,9 @@ function MainLayout({children}) {
     </div>
   );
 }
+
+MainLayout.propTypes = {
+  children: PropTypes.element.isRequired,
+};
 
 export default MainLayout;

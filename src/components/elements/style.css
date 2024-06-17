@@ -91,7 +91,7 @@ span.error-message {
   display: none;
 }
 
-input:invalid[focused="true"] ~ span.error-message {
+input:invalid[data-focused="true"] ~ span.error-message {
   display: block;
 }
 

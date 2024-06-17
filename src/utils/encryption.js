@@ -1,4 +1,4 @@
-import CryptoJS from "crypto-js";
+import CryptoJS from 'crypto-js';
 
 export const encrypt = (data) => {
   const encrypted = CryptoJS.AES.encrypt(data, import.meta.env.VITE_ENCRYPTION_KEY, {

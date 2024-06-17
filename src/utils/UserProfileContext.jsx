@@ -1,17 +1,18 @@
-import axios from "axios";
-import {createContext, useContext, useEffect, useState} from "react";
-import AlertMessage from "../components/fragments/AlertMessage";
-import {DefaultPict} from "../assets/Image";
-import {errorHandler} from "./errorHandler";
+import axios from 'axios';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import AlertMessage from '../components/fragments/AlertMessage';
+import { DefaultPict } from '../assets/Image';
+import { errorHandler } from './errorHandler';
+import PropTypes from 'prop-types';
 
 const UserProfileContext = createContext();
 export const useProfile = () => useContext(UserProfileContext);
 
-export const ProfileProvider = ({children}) => {
-  const token = localStorage.getItem("accessToken");
-  const [alertTitle, setAlertTitle] = useState("");
-  const [alertMessage, setAlertMessage] = useState("");
-  const [alertButton, setAlertButton] = useState("");
+export function ProfileProvider({ children }) {
+  const token = localStorage.getItem('accessToken');
+  const [alertTitle, setAlertTitle] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertButton, setAlertButton] = useState('');
   const [isAlertVisible, setIsAlertVisible] = useState(false);
   const [visitedPicture, setVisitedPicture] = useState(null);
   const [userData, setUserData] = useState({
@@ -28,27 +29,27 @@ export const ProfileProvider = ({children}) => {
   });
 
   useEffect(() => {
-    const fetchAPI = async () => {
+    const fetchAPI = async() => {
       try {
-        const responseAPIBiodata = await axios.get("https://rps-game-be.vercel.app/user/biodata", {
+        const responseAPIBiodata = await axios.get('https://rps-game-be.vercel.app/user/biodata', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        const {username, firstName, lastName, address, gender, birthDate, info, joinAt, profilePicture, email, newToken} = responseAPIBiodata.data;
+        const { username, firstName, lastName, address, gender, birthDate, info, joinAt, profilePicture, email, newToken } = responseAPIBiodata.data;
         setUserData({
           username,
           firstname: firstName !== null ? firstName : username,
           lastname: lastName,
           address,
-          gender: gender !== null ? gender : "",
+          gender: gender !== null ? gender : '',
           birthDate,
           infoBio: info,
           joinDate: joinAt,
-          pictureURL: profilePicture ? profilePicture : DefaultPict,
+          pictureURL: profilePicture || DefaultPict,
           email,
         });
-        localStorage.setItem("accessToken", newToken);
+        localStorage.setItem('accessToken', newToken);
       } catch (error) {
         setIsAlertVisible(true);
         setAlertTitle(errorHandler(error).alertTitle);
@@ -56,23 +57,23 @@ export const ProfileProvider = ({children}) => {
         setAlertButton(errorHandler(error).alertButton);
       }
     };
-    if (window.location.pathname !== "/" && window.location.pathname !== "/login" && window.location.pathname !== "/register") {
+    if (window.location.pathname !== '/' && window.location.pathname !== '/login' && window.location.pathname !== '/register') {
       fetchAPI();
     }
   }, []);
 
   return (
-    <UserProfileContext.Provider value={{userData, setUserData, setAlertTitle, setAlertMessage, setAlertButton, setIsAlertVisible, visitedPicture, setVisitedPicture}}>
+    <UserProfileContext.Provider value={{ userData, setUserData, setAlertTitle, setAlertMessage, setAlertButton, setIsAlertVisible, visitedPicture, setVisitedPicture }}>
       {isAlertVisible && (
         <AlertMessage
           title={alertTitle}
           handleButton={() => {
-            if (alertButton === "RELOG") {
-              localStorage.removeItem("accessToken");
+            if (alertButton === 'RELOG') {
+              localStorage.removeItem('accessToken');
               location.reload();
-            } else if (alertButton === "RELOAD") {
+            } else if (alertButton === 'RELOAD') {
               location.reload();
-            } else if (alertButton === "CLOSE") {
+            } else if (alertButton === 'CLOSE') {
               setIsAlertVisible(false);
             }
           }}
@@ -84,4 +85,8 @@ export const ProfileProvider = ({children}) => {
       {children}
     </UserProfileContext.Provider>
   );
+}
+
+ProfileProvider.propTypes = {
+  children: PropTypes.element.isRequired,
 };

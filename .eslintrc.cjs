@@ -1,13 +1,28 @@
 module.exports = {
   root: true,
-  env: {browser: true, es2020: true},
-  extends: ["eslint:recommended", "plugin:react/recommended", "plugin:react/jsx-runtime", "plugin:react-hooks/recommended"],
-  ignorePatterns: ["dist", ".eslintrc.cjs"],
-  parserOptions: {ecmaVersion: "latest", sourceType: "module"},
-  settings: {react: {version: "18.2"}},
-  plugins: ["react-refresh"],
+  env: { browser: true, es2020: true },
+  extends: [
+    'plugin:react/recommended',
+    'standard'
+  ],
+  ignorePatterns: ['dist', '.eslintrc.cjs', 'vite.config.js'],
+  parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
+  settings: { react: { version: '18.2' } },
+  plugins: ['react'],
   rules: {
-    "react/jsx-no-target-blank": "off",
-    "react-refresh/only-export-components": ["warn", {allowConstantExport: true}],
+    "quotes": ["error", "single"],
+    "object-curly-spacing": ["error", "always"],
+    "react/prop-types": ["error"],
+    "semi": ["error", "always"],
+    "space-before-function-paren": ["error", "never"],
+    "comma-dangle": ["error", "always-multiline"],
+    "camelcase": "error",
+    "jsx-quotes": ["error", "prefer-single"],
+    "react/function-component-definition": [
+      "error",
+      {
+        "namedComponents": "function-declaration"
+      }
+    ],
   },
 };

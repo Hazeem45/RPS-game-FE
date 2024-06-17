@@ -1,15 +1,15 @@
-import React from "react";
-import {RequirementBackground} from "../../../assets/Image";
+import React from 'react';
+import { RequirementBackground } from '../../../assets/Image';
 
 function SystemRequire() {
   return (
-    <section className="requirements" id="requirements" style={{background: `radial-gradient(34.26% 75% at 64.32% 47.1%, rgba(255, 255, 255, 0) 3.36%, rgba(0, 0, 0, 0) 19.22%, #000000 99.74%),url(${RequirementBackground})`}}>
+    <section className='requirements' id='requirements' style={{ background: `radial-gradient(34.26% 75% at 64.32% 47.1%, rgba(255, 255, 255, 0) 3.36%, rgba(0, 0, 0, 0) 19.22%, #000000 99.74%),url(${RequirementBackground})` }}>
       <p>can my computer run this game?</p>
-      <div className="container">
-        <div className="title">
+      <div className='container'>
+        <div className='title'>
           <h2>system requirements</h2>
         </div>
-        <table className="table-cstm">
+        <table className='table-cstm'>
           <tbody>
             <tr>
               <td>
@@ -32,7 +32,7 @@ function SystemRequire() {
               </td>
             </tr>
             <tr>
-              <td colSpan="2">
+              <td colSpan='2'>
                 <h4>graphics:</h4>
                 <p>
                   Nvidia GForce GTX 660 2GB or <br />

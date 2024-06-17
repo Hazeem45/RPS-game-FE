@@ -1,6 +1,6 @@
-import React from "react";
-import AuthLayout from "../layouts/authenticationLayout/AuthLayout";
-import RegisterForm from "../components/templates/RegisterForm";
+import React from 'react';
+import AuthLayout from '../layouts/authenticationLayout/AuthLayout';
+import RegisterForm from '../components/templates/RegisterForm';
 
 function Register() {
   return (

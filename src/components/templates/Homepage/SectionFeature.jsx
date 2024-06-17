@@ -1,15 +1,15 @@
-import React from "react";
-import {FeatureBackground} from "../../../assets/Image";
+import React from 'react';
+import { FeatureBackground } from '../../../assets/Image';
 
 function SectionFeature() {
   return (
-    <section className="features" id="features" style={{backgroundImage: `url(${FeatureBackground})`}}>
-      <div className="container">
-        <div className="title">
-          <p>What's so special?</p>
+    <section className='features' id='features' style={{ backgroundImage: `url(${FeatureBackground})` }}>
+      <div className='container'>
+        <div className='title'>
+          <p>What&apos;s so special?</p>
           <h2>features</h2>
         </div>
-        <div className="list-feature">
+        <div className='list-feature'>
           <ul>
             <li>
               <h3>traditional games</h3>
