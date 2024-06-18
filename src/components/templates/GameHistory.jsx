@@ -53,7 +53,7 @@ function GameHistory({ username, gameHistory }) {
       const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', 'GameHistory.pdf');
+      link.setAttribute('download', 'GameHistory_RPS_Game.pdf');
       document.body.appendChild(link);
       link.click();
       window.open(url);
@@ -117,7 +117,13 @@ function GameHistory({ username, gameHistory }) {
           ))}
         </tbody>
       </table>
-      {userHistory.length > 0 && <div style={{ maxWidth: '150px' }}><Button handleClick={downloadPdf}>Download PDF</Button></div>}
+      {location.pathname === '/dashboard/profile/history' && (
+        <div style={{ maxWidth: '150px' }}>
+          {userHistory.length > 0 && (
+            <Button handleClick={downloadPdf}>Download PDF</Button>
+          )}
+        </div>
+      )}
       {userHistory.length < 1 && (
         <div className='rooms-container-2'>
           {isLoading
