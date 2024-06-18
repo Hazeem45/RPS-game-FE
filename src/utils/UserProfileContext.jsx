@@ -77,7 +77,7 @@ export function ProfileProvider({ children }) {
               setIsAlertVisible(false);
             }
           }}
-          butonText={alertButton}
+          buttonText={alertButton}
         >
           {alertMessage}
         </AlertMessage>

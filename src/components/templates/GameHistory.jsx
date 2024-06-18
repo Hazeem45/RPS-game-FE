@@ -9,6 +9,7 @@ import LoaderSpin from '../fragments/LoaderSpin';
 import { useProfile } from '../../utils/UserProfileContext';
 import { errorHandler } from '../../utils/errorHandler';
 import PropTypes from 'prop-types';
+import Button from '../elements/Button';
 
 function GameHistory({ username, gameHistory }) {
   const token = localStorage.getItem('accessToken');
@@ -38,6 +39,31 @@ function GameHistory({ username, gameHistory }) {
       setAlertButton(errorHandler(error).alertButton);
     }
     setIsLoading(false);
+  };
+
+  const downloadPdf = async() => {
+    try {
+      const response = await axios.get('https://rps-game-be.vercel.app/game/generate-pdf', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        responseType: 'blob',
+      });
+
+      const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'GameHistory.pdf');
+      document.body.appendChild(link);
+      link.click();
+      window.open(url);
+      document.body.removeChild(link);
+    } catch (error) {
+      setIsAlertVisible(true);
+      setAlertTitle(errorHandler(error).alertTitle);
+      setAlertMessage(errorHandler(error).alertMessage);
+      setAlertButton(errorHandler(error).alertButton);
+    }
   };
 
   useEffect(() => {
@@ -91,6 +117,7 @@ function GameHistory({ username, gameHistory }) {
           ))}
         </tbody>
       </table>
+      {userHistory.length > 0 && <div style={{ maxWidth: '150px' }}><Button handleClick={downloadPdf}>Download PDF</Button></div>}
       {userHistory.length < 1 && (
         <div className='rooms-container-2'>
           {isLoading
